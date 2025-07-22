@@ -1,0 +1,6 @@
+{
+  "python.defaultInterpreterPath": "/home/nush/Documents/custom-addons/venv/bin/python",
+  "python.analysis.extraPaths": [
+    "/usr/lib/python3/dist-packages"
+  ]
+}

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="coffee_outlet_kathmandu" model="coffee.outlet">
+        <field name="name">Kathmandu Branch</field>
+        <field name="location">Kathmandu</field>
+        <field name="manager">Ram</field>
+    </record>
+
+    <record id="coffee_outlet_pokhara" model="coffee.outlet">
+        <field name="name">Pokhara Branch</field>
+        <field name="location">Pokhara</field>
+        <field name="manager">Sita</field>
+    </record>
+</odoo>

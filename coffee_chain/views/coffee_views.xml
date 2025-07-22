@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- List View -->
+    <record id="view_coffee_outlet_list" model="ir.ui.view">
+      <field name="name">coffee.outlet.list</field>
+      <field name="model">coffee.outlet</field>
+      <field name="type">list</field>
+      <field name="arch" type="xml">
+        <list create="1" edit="1" delete="1">
+          <field name="name"/>
+          <field name="location"/>
+          <field name="manager"/>
+        </list>
+      </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_coffee_outlet_form" model="ir.ui.view">
+      <field name="name">coffee.outlet.form</field>
+      <field name="model">coffee.outlet</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Coffee Outlet">
+          <sheet>
+            <group>
+              <field name="name"/>
+              <field name="location"/>
+              <field name="manager"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Menu Root -->
+    <menuitem id="coffee_chain_root" name="Coffee Chain"/>
+
+    <!-- Action Window -->
+    <record id="action_coffee_outlet" model="ir.actions.act_window">
+      <field name="name">Outlets</field>
+      <field name="res_model">coffee.outlet</field>
+      <field name="view_mode">list,form</field>
+      <field name="view_id" ref="view_coffee_outlet_list"/>
+    </record>
+
+    <!-- Submenu -->
+    <menuitem id="coffee_outlet_menu"
+              name="Outlets"
+              parent="coffee_chain_root"
+              action="action_coffee_outlet"/>
+  </data>
+</odoo>
