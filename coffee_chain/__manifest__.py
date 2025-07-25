@@ -4,7 +4,7 @@
     'summary': 'Manage coffee outlets',
     'author': 'Nush Ojha',
     'category': 'Management',
-    'depends': ['base'],
+    'depends': ['base', 'crm'],
     'data': ['views/coffee_views.xml',
              'data/coffee_outlet_data.xml'],
     'installable': True,

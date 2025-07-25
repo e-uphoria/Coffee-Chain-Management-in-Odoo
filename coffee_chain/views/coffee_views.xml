@@ -14,10 +14,11 @@
           <field name="manager"/>
         </list>
       </field>
-    </record>
+    </record> 
+
 
     <!-- Form View -->
-    <record id="view_coffee_outlet_form" model="ir.ui.view">
+     <record id="view_coffee_outlet_form" model="ir.ui.view">
       <field name="name">coffee.outlet.form</field>
       <field name="model">coffee.outlet</field>
       <field name="type">form</field>
@@ -26,13 +27,46 @@
           <sheet>
             <group>
               <field name="name"/>
+              <!--<field name="address"/>-->
               <field name="location"/>
               <field name="manager"/>
+              <field name="customer_id"/>
+              <field name="lead_id"/>
             </group>
           </sheet>
         </form>
       </field>
     </record>
+
+    <record id="view_res_partner_form_inherit_coffee" model="ir.ui.view">
+     <field name="name">res.partner.form.inherit.coffee</field>
+     <field name="model">res.partner</field>
+     <field name="inherit_id" ref="base.view_partner_form"/>
+     <field name="arch" type="xml">
+         <notebook position="inside">
+             <page string="Coffee Outlets">
+                 <field name="coffee_outlet_ids">
+                     <list>
+                         <field name="name"/>
+                         <field name="location"/>
+                     </list>
+                 </field>
+             </page>
+          </notebook>
+      </field>
+   </record>
+
+    <record id="view_crm_lead_form_inherit_coffee" model="ir.ui.view">
+      <field name="name">crm.lead.form.inherit.coffee</field>
+      <field name="model">crm.lead</field>
+      <field name="inherit_id" ref="crm.crm_lead_view_form"/>
+      <field name="arch" type="xml">
+        <field name="partner_id" position="after">
+          <field name="coffee_outlet_id"/>
+        </field>
+      </field>
+    </record>
+
 
     <!-- Menu Root -->
     <menuitem id="coffee_chain_root" name="Coffee Chain"/>
