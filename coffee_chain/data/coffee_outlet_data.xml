@@ -3,12 +3,12 @@
     <record id="coffee_outlet_kathmandu" model="coffee.outlet">
         <field name="name">Kathmandu Branch</field>
         <field name="location">Kathmandu</field>
-        <field name="manager">Ram</field>
+        <field name="manager">Ram Limbu</field>
     </record>
 
     <record id="coffee_outlet_pokhara" model="coffee.outlet">
         <field name="name">Pokhara Branch</field>
         <field name="location">Pokhara</field>
-        <field name="manager">Sita</field>
+        <field name="manager">Sita Kumari</field>
     </record>
 </odoo>

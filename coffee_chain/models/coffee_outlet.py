@@ -35,3 +35,4 @@ class ResPartner(models.Model):
     coffee_outlet_ids = fields.One2many('coffee.outlet', 'customer_id', string="Coffee Outlets")
 
 
+
