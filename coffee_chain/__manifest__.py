@@ -6,7 +6,8 @@
     'category': 'Management',
     'depends': ['base', 'crm'],
     'data': ['views/coffee_views.xml',
-             'data/coffee_outlet_data.xml'],
+             'data/coffee_outlet_data.xml',
+             'security/ir.model.access.csv'],
     'installable': True,
     'application': True,
 }
