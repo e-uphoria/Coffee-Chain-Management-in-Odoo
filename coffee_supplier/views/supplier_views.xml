@@ -1,0 +1,131 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<odoo>
+  <data>
+    <record id='action_coffee_supplier' model='ir.actions.act_window'>
+      <field name='name'>Suppliers</field>
+      <field name='res_model'>coffee.supplier</field>
+      <field name='view_mode'>kanban,list,form,calendar,pivot,graph</field>
+    </record>
+
+    <menuitem id='menu_coffee_root' name='Coffee Supplier' sequence='10'/>
+    <menuitem id='menu_coffee_operations' name='Operations' parent='menu_coffee_root' sequence='10'/>
+    <menuitem id='menu_coffee_suppliers' name='Suppliers' parent='menu_coffee_operations' sequence='10' action='action_coffee_supplier'/>
+
+
+    <!-- Kanban -->
+    <record id='view_coffee_supplier_kanban' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.kanban</field>
+      <field name='model'>coffee.supplier</field>
+      <field name='arch' type='xml'>
+        <kanban default_group_by='stage_id'>
+          <field name='name'/>
+          <field name='bean_origin'/>
+          <field name='contact_person'/>
+          <field name='phone'/>
+          <field name='email'/>
+          <templates>
+            <t t-name='kanban-box'>
+              <div class='oe_kanban_global_click'>
+                <strong><field name='name'/></strong><br/>
+                <small>Origin: <field name='bean_origin'/></small><br/>
+                <small>Contact: <field name='contact_person'/></small>
+              </div>
+            </t>
+          </templates>
+        </kanban>
+      </field>
+    </record>
+
+    <!-- List (instead of Tree) -->
+    <record id='view_coffee_supplier_list' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.list</field>
+      <field name='model'>coffee.supplier</field>
+      <field name='arch' type='xml'>
+        <list>
+          <field name='stage_id'/>
+          <field name='name'/>
+          <field name='bean_origin'/>
+          <field name='contact_person'/>
+          <field name='phone'/>
+          <field name='email'/>
+        </list>
+      </field>
+    </record>
+
+    <!-- Form -->
+    <record id='view_coffee_supplier_form' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.form</field>
+      <field name='model'>coffee.supplier</field>
+      <field name='arch' type='xml'>
+        <form>
+          <sheet>
+            <group>
+              <field name='stage_id'/>
+              <field name='name'/>
+              <field name='contact_person'/>
+              <field name='phone'/>
+              <field name='email'/>
+            </group>
+            <group>
+              <field name='bean_origin'/>
+              <field name='contract_start'/>
+              <field name='contract_end'/>
+              <field name='contract_duration_days' readonly='1'/>
+            </group>
+            <notebook>
+              <page string='Price List'>
+                <field name='price_line_ids'>
+                  <list editable='bottom'>
+                    <field name='product_name'/>
+                    <field name='unit_price'/>
+                    <field name='currency_id'/>
+                  </list>
+                </field>
+              </page>
+
+              <page string='Notes'>
+                <field name='notes'/>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Calendar -->
+    <record id='view_coffee_supplier_calendar' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.calendar</field>
+      <field name='model'>coffee.supplier</field>
+      <field name='arch' type='xml'>
+        <calendar string='Supplier Contracts' date_start='contract_start' date_stop='contract_end' color='stage_id'>
+          <field name='name'/>
+          <field name='stage_id'/>
+        </calendar>
+      </field>
+    </record>
+
+    <!-- Pivot -->
+    <record id='view_coffee_supplier_pivot' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.pivot</field>
+      <field name='model'>coffee.supplier</field>
+      <field name='arch' type='xml'>
+        <pivot string='Supplier Analysis'>
+          <field name='bean_origin' type='row'/>
+          <field name='contract_duration_days' type='measure'/>
+        </pivot>
+      </field>
+    </record>
+
+    <!-- Graph -->
+    <record id='view_coffee_supplier_graph' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.graph</field>
+      <field name='model'>coffee.supplier</field>
+      <field name='arch' type='xml'>
+        <graph string='Suppliers by Origin' type='bar'>
+          <field name='bean_origin' type='row'/>
+          <field name='id' type='measure'/>
+        </graph>
+      </field>
+    </record>
+  </data>
+</odoo>

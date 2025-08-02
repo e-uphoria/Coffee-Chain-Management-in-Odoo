@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Define groups -->
+    <record id="group_coffee_supplier_manager" model="res.groups">
+      <field name="name">Coffee Supplier Manager</field>
+    </record>
+
+    <record id="group_coffee_supplier_user" model="res.groups">
+      <field name="name">Coffee Supplier User</field>
+    </record>
+  </data>
+</odoo>

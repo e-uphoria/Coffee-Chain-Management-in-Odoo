@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <record id='view_coffee_supplier_price_list' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.price.list</field>
+      <field name='model'>coffee.supplier.price</field>
+      <field name='arch' type='xml'>
+        <list>
+          <field name='supplier_id'/>
+          <field name='product_name'/>
+          <field name='unit_price'/>
+          <field name='currency_id'/>
+        </list>
+      </field>
+    </record>
+
+    <record id='view_coffee_supplier_price_form' model='ir.ui.view'>
+      <field name='name'>coffee.supplier.price.form</field>
+      <field name='model'>coffee.supplier.price</field>
+      <field name='arch' type='xml'>
+        <form>
+          <sheet>
+            <group>
+              <field name='supplier_id'/>
+              <field name='product_name'/>
+              <field name='unit_price'/>
+              <field name='currency_id'/>
+              <field name='minimum_order_qty'/>
+            </group>
+            <group>
+              <field name='notes'/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+  </data>
+</odoo>

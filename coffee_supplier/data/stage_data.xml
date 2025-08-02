@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data noupdate='1'>
+    <record id='stage_prospect' model='coffee.supplier.stage'>
+      <field name='name'>Prospect</field>
+      <field name='sequence'>1</field>
+    </record>
+    <record id='stage_negotiation' model='coffee.supplier.stage'>
+      <field name='name'>Negotiation</field>
+      <field name='sequence'>2</field>
+    </record>
+    <record id='stage_active' model='coffee.supplier.stage'>
+      <field name='name'>Active Supplier</field>
+      <field name='sequence'>3</field>
+    </record>
+    <record id='stage_inactive' model='coffee.supplier.stage'>
+      <field name='name'>Inactive</field>
+      <field name='sequence'>4</field>
+      <field name='fold'>True</field>
+    </record>
+  </data>
+</odoo>
