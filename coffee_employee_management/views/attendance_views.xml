@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <!-- Kanban view as pipeline by state -->
+  <record id="view_coffee_attendance_kanban" model="ir.ui.view">
+    <field name="name">coffee.attendance.kanban</field>
+    <field name="model">coffee.attendance</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="state">
+        <field name="employee_id"/>
+        <field name="check_in"/>
+        <field name="check_out"/>
+        <field name="hours_worked"/>
+        <field name="regular_hours"/>
+        <field name="overtime_hours"/>
+        <field name="state"/>
+        <templates>
+          <t t-name="kanban-box">
+            <div class="oe_kanban_global_click o_kanban_record">
+              <div class="d-flex justify-content-between">
+                <strong><field name="employee_id"/></strong>
+                <small t-if="record.check_in.raw_value">
+                  In: <t t-esc="record.check_in.value"/>
+                </small>
+              </div>
+              <div>
+                <span>Worked: <t t-esc="record.hours_worked.raw_value"/>h</span>
+                <span t-if="record.overtime_hours.raw_value and record.overtime_hours.raw_value &gt; 0" style="margin-left:10px;color:orange;">
+                  Overtime: <t t-esc="record.overtime_hours.raw_value"/>h
+                </span>
+              </div>
+              <div>
+                <small>Status: <field name="state"/></small>
+              </div>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+  </record>
+
+  <!-- Form view -->
+  <record id="view_coffee_attendance_form" model="ir.ui.view">
+    <field name="name">coffee.attendance.form</field>
+    <field name="model">coffee.attendance</field>
+    <field name="arch" type="xml">
+      <form string="Attendance">
+        <sheet>
+          <group>
+            <field name="employee_id"/>
+            <field name="check_in"/>
+            <field name="check_out"/>
+            <field name="state"/>
+          </group>
+          <group>
+            <field name="expected_daily_hours" string="Expected Work Hours"/>
+            <field name="hours_worked" readonly="1"/>
+            <field name="regular_hours" readonly="1"/>
+            <field name="overtime_hours" readonly="1"/>
+          </group>
+          <group>
+            <field name="note"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- List view -->
+  <record id="view_coffee_attendance_list" model="ir.ui.view">
+    <field name="name">coffee.attendance.list</field>
+    <field name="model">coffee.attendance</field>
+    <field name="arch" type="xml">
+      <list editable="bottom">
+        <field name="employee_id"/>
+        <field name="check_in"/>
+        <field name="check_out"/>
+        <field name="hours_worked"/>
+        <field name="regular_hours"/>
+        <field name="overtime_hours"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+
+  <!-- Calendar view -->
+  <record id="view_coffee_attendance_calendar" model="ir.ui.view">
+    <field name="name">coffee.attendance.calendar</field>
+    <field name="model">coffee.attendance</field>
+    <field name="arch" type="xml">
+      <calendar string="Attendance Calendar" date_start="check_in" date_stop="check_out" color="state">
+        <field name="employee_id"/>
+        <field name="state"/>
+      </calendar>
+    </field>
+  </record>
+
+  <!-- Action -->
+  <record id="action_coffee_attendance" model="ir.actions.act_window">
+    <field name="name">Attendance</field>
+    <field name="res_model">coffee.attendance</field>
+    <field name="view_mode">kanban,list,form,calendar</field>
+    <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        Track employee check-in / check-out. Change status directly in pipeline: Pending Approval, Approved, Rejected.
+      </p>
+    </field>
+  </record>
+
+  <!-- Menu -->
+  <menuitem id="menu_coffee_attendance_root" name="Coffee Attendance" parent="hr.menu_hr_root" action="action_coffee_attendance"/>
+</odoo>

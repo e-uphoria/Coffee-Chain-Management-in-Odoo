@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_coffee_attendance,access_coffee_attendance,model_coffee_attendance,,1,1,1,1
+
+access_coffee_employee_stage,access_coffee_employee_stage,model_coffee_employee_stage,,1,1,1,1

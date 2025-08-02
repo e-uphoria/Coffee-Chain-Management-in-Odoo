@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Kanban view inheritance -->
+    <record id="hr_employee_kanban_inherit_defaulter" model="ir.ui.view">
+      <field name="name">hr.employee.kanban.inherit.defaulter</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.hr_kanban_view_employees"/>
+      <field name="arch" type="xml">
+        <!-- Add fields to load them in kanban -->
+        <xpath expr="//kanban" position="inside">
+          <field name="advance_salary"/>
+          <field name="is_defaulter"/>
+        </xpath>
+
+        <!-- Insert your extra UI inside the card template -->
+        <xpath expr="//templates/t[@t-name='card']" position="inside">
+          <div>
+            Advance Salary: <field name="advance_salary"/>
+          </div>
+          <t t-if="record.is_defaulter.raw_value">
+            <div style="color:red;"><b>Defaulter!</b></div>
+          </t>
+        </xpath>
+      </field>
+    </record>
+
+
+
+
+    <!-- List view inheritance -->
+    <record id="hr_employee_tree_inherit_defaulter" model="ir.ui.view">
+      <field name="name">hr.employee.list.inherit.defaulter</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_tree"/>
+      <field name="arch" type="xml">
+        <xpath expr="//list" position="inside">
+          <field name="advance_salary"/>
+          <field name="is_defaulter"/>
+        </xpath>
+      </field>
+    </record>
+
+
+    <!-- Form view inheritance -->
+    <record id="hr_employee_form_inherit_defaulter" model="ir.ui.view">
+      <field name="name">hr.employee.form.inherit.defaulter</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//sheet/group" position="inside">
+          <group name="extra_info" string="Additional Info">
+            <field name="advance_salary" string="Advance Salary Taken"/>
+            <field name="is_defaulter" string="Defaulter" readonly="1"/>
+          </group>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>
