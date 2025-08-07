@@ -1,0 +1,12 @@
+Coffee Supplier Module - QA Checklist
+
+[ ] Can Manager create/update/delete supplier records?
+[ ] Can User view only their own supplier records?
+[ ] Can both groups view supplier price list via form view?
+[ ] Are supplier stages grouped properly in Kanban view?
+[ ] Is the contract duration computed correctly?
+[ ] Does the PDF report generate for a selected supplier?
+[ ] Does the report contain: name, origin, contract, email?
+[ ] Are record rules enforced on user access?
+[ ] Does menu navigation work: Coffee Supplier > Operations > Suppliers?
+[ ] Do pivot and graph views load without error?

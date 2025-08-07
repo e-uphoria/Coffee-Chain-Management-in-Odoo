@@ -16,10 +16,15 @@ Supplier Directory for Coffee Chain ERP
     'data': [
         'security/coffee_supplier_security.xml',
         'security/ir.model.access.csv',
+        'security/coffee_supplier_rules.xml',
+        'report/coffee_supplier_templates.xml',
+        'report/coffee_supplier_report.xml',
+        'views/supplier_views.xml',
         'data/stage_data.xml',
         'views/supplier_stage_views.xml',
-        'views/supplier_views.xml',
+        
         'views/price_list_views.xml',
+        
     ],
     'license': 'LGPL-3',
     'installable': True,

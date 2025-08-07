@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <template id="report_coffee_supplier_template">
+    <t t-call="web.basic_layout">
+      <div class="page">
+        <h2>Supplier Report: <t t-esc="object.name"/></h2>
+        <p><strong>Company:</strong> <t t-esc="object.company_name"/></p>
+        <p><strong>Origin:</strong> <t t-esc="object.origin"/></p>
+        <p><strong>Contact:</strong> <t t-esc="object.phone"/> / <t t-esc="object.email"/></p>
+      </div>
+    </t>
+  </template>
+</odoo>
+

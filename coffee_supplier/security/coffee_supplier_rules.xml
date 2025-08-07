@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- Users can only see their own suppliers -->
+    <record id="rule_supplier_user_own" model="ir.rule">
+      <field name="name">Supplier User Own Records</field>
+      <field name="model_id" ref="model_coffee_supplier"/>
+      <field name="domain_force">[('create_uid', '=', user.id)]</field>
+      <field name="groups" eval="[(4, ref('coffee_supplier.group_coffee_supplier_user'))]"/>
+      <field name="perm_read" eval="True"/>
+      <field name="perm_write" eval="False"/>
+      <field name="perm_create" eval="False"/>
+      <field name="perm_unlink" eval="False"/>
+    </record>
+
+    <!-- Managers can access all supplier records -->
+    <record id="rule_supplier_manager_all" model="ir.rule">
+      <field name="name">Supplier Manager Full Access</field>
+      <field name="model_id" ref="model_coffee_supplier"/>
+      <field name="domain_force">[(1, '=', 1)]</field>
+      <field name="groups" eval="[(4, ref('coffee_supplier.group_coffee_supplier_manager'))]"/>
+      <field name="perm_read" eval="True"/>
+      <field name="perm_write" eval="True"/>
+      <field name="perm_create" eval="True"/>
+      <field name="perm_unlink" eval="True"/>
+    </record>
+
+  </data>
+</odoo>

@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- Report Template inheriting web.external_layout -->
+    <template id="report_coffee_supplier_template">
+      <t t-call="web.external_layout">
+
+        <!-- Set doc to first record in docs -->
+        <t t-set="doc" t-value="docs and docs[0] or None"/>
+
+        <main class="page">
+
+          <!-- Header with logo and title -->
+          <div style="display: flex; align-items: center; border-bottom: 2px solid #6f4e37; padding-bottom: 10px; margin-bottom: 20px;">
+            <img t-att-src="'/coffee_supplier/static/src/img/coffee_logo.png'" alt="Coffee Chain Logo" style="height: 60px; margin-right: 15px;"/>
+            <h1 style="color: #6f4e37; font-family: 'Georgia', serif; margin: 0;">Coffee Supplier Report</h1>
+          </div>
+
+          <!-- Supplier info -->
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+            <tbody>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; width: 160px; color: #4b3b28;">Stage:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.stage_id.name"/></td>
+                <td style="font-weight: bold; padding: 5px 10px; width: 160px; color: #4b3b28;">Supplier Name:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.name"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Contact Person:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.contact_person"/></td>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Phone:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.phone"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Email:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.email"/></td>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Bean Origin:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.bean_origin"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Contract Start:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.contract_start"/></td>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Contract End:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.contract_end"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Contract Duration (days):</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.contract_duration_days"/></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Price List -->
+          <h3 style="color: #6f4e37; font-family: 'Georgia', serif; margin-bottom: 10px;">Price List</h3>
+          <table style="width: 100%; border-collapse: collapse; border: 1px solid #d3c5a3; margin-bottom: 30px;">
+            <thead style="background-color: #f4e7d3; color: #5a402c;">
+              <tr>
+                <th style="padding: 8px 12px; border: 1px solid #d3c5a3; text-align: left;">Product Name</th>
+                <th style="padding: 8px 12px; border: 1px solid #d3c5a3; text-align: right;">Unit Price</th>
+                <th style="padding: 8px 12px; border: 1px solid #d3c5a3; text-align: left;">Currency</th>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-foreach="doc.price_line_ids" t-as="line">
+                <tr>
+                  <td style="padding: 6px 10px; border: 1px solid #d3c5a3;"><t t-esc="line.product_name"/></td>
+                  <td style="padding: 6px 10px; border: 1px solid #d3c5a3; text-align: right;">
+                    <t t-esc="'{:,.2f}'.format(line.unit_price)"/> ₨
+                  </td>
+                  <td style="padding: 6px 10px; border: 1px solid #d3c5a3;"><t t-esc="line.currency_id.name"/></td>
+                </tr>
+              </t>
+            </tbody>
+          </table>
+
+          <!-- Notes -->
+          <h3 style="color: #6f4e37; font-family: 'Georgia', serif; margin-bottom: 10px;">Notes</h3>
+          <div style="padding: 10px; border: 1px solid #d3c5a3; background-color: #faf5eb; min-height: 80px; font-style: italic; color: #4b3b28;">
+            <t t-esc="doc.notes or 'No additional notes.'"/>
+          </div>
+
+        </main>
+      </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_coffee_supplier" model="ir.actions.report">
+      <field name="name">Coffee Supplier Report</field>
+      <field name="model">coffee.supplier</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">coffee_supplier.report_coffee_supplier_template</field>
+      <field name="print_report_name">'Coffee Supplier - %s' % (object.name)</field>
+    </record>
+
+  </data>
+</odoo>
