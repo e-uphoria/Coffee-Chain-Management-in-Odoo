@@ -1,2 +1,3 @@
 venv/
 odoo
+__pycache__/
