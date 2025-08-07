@@ -59,6 +59,14 @@
       <field name='arch' type='xml'>
         <form>
           <sheet>
+            <header>
+              <button name="%(action_report_coffee_supplier)d"
+                type="action"
+                string="Print Report"
+                class="btn-primary"
+                context="{'model': 'coffee.supplier'}"/>
+            </header>
+
             <group>
               <field name='stage_id'/>
               <field name='name'/>
