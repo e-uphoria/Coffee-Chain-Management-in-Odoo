@@ -1,0 +1,7 @@
+<record id="view_activity_coffee_order" model="ir.ui.view">
+  <field name="name">coffee.order.activity</field>
+  <field name="model">coffee.order</field>
+  <field name="arch" type="xml">
+    <activity/>
+  </field>
+</record>

@@ -1,0 +1,9 @@
+<record id="view_map_coffee_outlet" model="ir.ui.view">
+  <field name="name">coffee.outlet.map</field>
+  <field name="model">coffee.outlet</field>
+  <field name="arch" type="xml">
+    <map string="Outlet Locations" res_partner="partner_id">
+      <field name="location"/>
+    </map>
+  </field>
+</record>

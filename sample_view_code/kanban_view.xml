@@ -1,0 +1,18 @@
+<record id="view_kanban_coffee_outlet" model="ir.ui.view">
+  <field name="name">coffee.outlet.kanban</field>
+  <field name="model">coffee.outlet</field>
+  <field name="arch" type="xml">
+    <kanban>
+      <field name="name"/>
+      <field name="location"/>
+      <templates>
+        <t t-name="kanban-box">
+          <div class="oe_kanban_card">
+            <strong><field name="name"/></strong><br/>
+            <span><field name="location"/></span>
+          </div>
+        </t>
+      </templates>
+    </kanban>
+  </field>
+</record>

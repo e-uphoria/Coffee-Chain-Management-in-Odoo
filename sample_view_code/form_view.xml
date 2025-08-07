@@ -1,0 +1,15 @@
+<record id="view_form_coffee_outlet" model="ir.ui.view">
+  <field name="name">coffee.outlet.form</field>
+  <field name="model">coffee.outlet</field>
+  <field name="arch" type="xml">
+    <form string="Coffee Outlet">
+      <sheet>
+        <group>
+          <field name="name"/>
+          <field name="location"/>
+          <field name="manager_id"/>
+        </group>
+      </sheet>
+    </form>
+  </field>
+</record>

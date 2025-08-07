@@ -1,0 +1,10 @@
+<record id="view_pivot_coffee_sales" model="ir.ui.view">
+  <field name="name">coffee.sales.pivot</field>
+  <field name="model">coffee.sales</field>
+  <field name="arch" type="xml">
+    <pivot string="Sales Analysis">
+      <field name="product_id" type="row"/>
+      <field name="amount" type="measure"/>
+    </pivot>
+  </field>
+</record>

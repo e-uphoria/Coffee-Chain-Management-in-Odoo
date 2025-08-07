@@ -1,0 +1,10 @@
+<record id="view_gantt_coffee_event" model="ir.ui.view">
+  <field name="name">coffee.event.gantt</field>
+  <field name="model">coffee.event</field>
+  <field name="arch" type="xml">
+    <gantt string="Event Schedule" date_start="start_date" date_stop="end_date">
+      <field name="name"/>
+      <field name="manager_id"/>
+    </gantt>
+  </field>
+</record>

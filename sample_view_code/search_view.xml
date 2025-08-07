@@ -1,0 +1,10 @@
+<record id="view_search_coffee_outlet" model="ir.ui.view">
+  <field name="name">coffee.outlet.search</field>
+  <field name="model">coffee.outlet</field>
+  <field name="arch" type="xml">
+    <search>
+      <field name="name"/>
+      <filter string="By Location" name="filter_location" domain="[('location','!=',False)]"/>
+    </search>
+  </field>
+</record>

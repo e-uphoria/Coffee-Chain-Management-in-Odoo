@@ -1,0 +1,9 @@
+<record id="view_calendar_coffee_event" model="ir.ui.view">
+  <field name="name">coffee.event.calendar</field>
+  <field name="model">coffee.event</field>
+  <field name="arch" type="xml">
+    <calendar string="Coffee Events" date_start="start_date" date_stop="end_date">
+      <field name="name"/>
+    </calendar>
+  </field>
+</record>

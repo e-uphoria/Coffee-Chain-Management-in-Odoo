@@ -1,0 +1,11 @@
+<record id="view_list_coffee_outlet" model="ir.ui.view">
+  <field name="name">coffee.outlet.list</field>
+  <field name="model">coffee.outlet</field>
+  <field name="arch" type="xml">
+    <list string="Coffee Outlets">
+      <field name="name"/>
+      <field name="location"/>
+      <field name="manager_id"/>
+    </list>
+  </field>
+</record>
