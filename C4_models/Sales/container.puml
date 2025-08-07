@@ -1,0 +1,28 @@
+@startuml Container_Sales
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(sales_user, "Sales User")
+System_Boundary(odoo, "Odoo Sales System") {
+  Container(web_app, "Odoo Web App", "Python/PostgreSQL", "Frontend and backend interface")
+  Container(db, "Odoo Database", "PostgreSQL", "Stores customer, sales, subscription data")
+  Container(crm_module, "CRM Module", "Odoo Module", "Lead & opportunity management")
+  Container(sales_module, "Sales Module", "Odoo Module", "Quotation and sales orders")
+  Container(pos_shop_module, "POS Shop Module", "Odoo Module", "Retail sales interface")
+  Container(pos_restaurant_module, "POS Restaurant Module", "Odoo Module", "Restaurant sales interface")
+  Container(subscriptions_module, "Subscriptions Module", "Odoo Module", "Recurring billing")
+  Container(rental_module, "Rental Module", "Odoo Module", "Manages rentals and returns")
+}
+
+Rel(sales_user, web_app, "Uses")
+Rel(web_app, crm_module, "Handles leads")
+Rel(web_app, sales_module, "Manages sales")
+Rel(web_app, pos_shop_module, "Processes retail POS")
+Rel(web_app, pos_restaurant_module, "Processes restaurant POS")
+Rel(web_app, subscriptions_module, "Manages subscriptions")
+Rel(web_app, rental_module, "Manages rentals")
+Rel(crm_module, db, "Reads/Writes")
+Rel(sales_module, db, "Reads/Writes")
+Rel(subscriptions_module, db, "Reads/Writes")
+Rel(rental_module, db, "Reads/Writes")
+
+@enduml

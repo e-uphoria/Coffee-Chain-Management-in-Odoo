@@ -1,0 +1,35 @@
+@startuml SystemContext_Sales
+
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(customer, "Customer", "Places orders via different channels")
+Person(sales_user, "Sales User", "Manages sales, subscriptions, rentals")
+Person(waiter, "Restaurant Waiter", "Takes restaurant orders via POS")
+Person(shop_cashier, "Shop Cashier", "Manages in-store POS shop")
+Person(subscriber, "Subscription Customer", "Subscribes to recurring services")
+
+System(odoo, "Odoo Sales System", "Central system for managing all sales-related operations")
+
+System_Ext(crm, "CRM", "Manages leads, opportunities, customer interactions")
+System_Ext(sales, "Sales", "Processes quotes and sales orders")
+System_Ext(pos_shop, "POS Shop", "Retail point of sale for shops")
+System_Ext(pos_restaurant, "POS Restaurant", "Point of sale for restaurants")
+System_Ext(subscriptions, "Subscriptions", "Handles recurring billing and subscriptions")
+System_Ext(rental, "Rental", "Manages rental products and contracts")
+
+Rel(customer, crm, "Contacts for inquiries")
+Rel(sales_user, crm, "Manages leads/opportunities")
+Rel(sales_user, sales, "Creates quotations & orders")
+Rel(shop_cashier, pos_shop, "Operates shop checkout")
+Rel(waiter, pos_restaurant, "Takes table orders")
+Rel(subscriber, subscriptions, "Manages subscription plans")
+Rel(sales_user, rental, "Creates rental contracts")
+
+Rel(crm, odoo, "Integrated into")
+Rel(sales, odoo, "Integrated into")
+Rel(pos_shop, odoo, "Integrated into")
+Rel(pos_restaurant, odoo, "Integrated into")
+Rel(subscriptions, odoo, "Integrated into")
+Rel(rental, odoo, "Integrated into")
+
+@enduml

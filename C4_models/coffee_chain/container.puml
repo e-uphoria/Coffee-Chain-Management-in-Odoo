@@ -1,0 +1,19 @@
+@startuml Container_CoffeeChainERP
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(customer, "Customer")
+Person(outlet_staff, "Outlet Staff / Sales User")
+
+System_Boundary(erp_sys, "Coffee Chain ERP") {
+    Container(web_interface, "Web Interface", "Odoo XML/JS Views", "UI for creating orders, managing outlets, viewing invoices and leads")
+    Container(backend, "Odoo Backend", "Python / Odoo ORM", "Business logic: outlet management, sale orders, CRM lead creation, invoicing, payments")
+    ContainerDb(database, "PostgreSQL", "Relational Database", "Persists coffee outlets, sale orders, invoices (account.move), payments, leads, partners")
+}
+
+Rel(customer, web_interface, "Interacts to place orders / select service type")
+Rel(outlet_staff, web_interface, "Creates/manages sale orders and outlets")
+
+Rel(web_interface, backend, "RPC / ORM calls")
+Rel(backend, database, "Reads/Writes persistent data")
+
+@enduml

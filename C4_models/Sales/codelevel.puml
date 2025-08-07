@@ -1,0 +1,32 @@
+@startuml CodeLevel_Sales
+
+package "SalesOrder Component" {
+  class SalesOrder {
+    +id: int
+    +customer_id: int
+    +order_date: date
+    +status: string
+    +total_amount: float
+    +createOrder(): void
+    +confirmOrder(): void
+    +cancelOrder(): void
+  }
+
+  class ProductLine {
+    +product_id: int
+    +quantity: int
+    +price: float
+    +subtotal(): float
+  }
+
+  class Customer {
+    +id: int
+    +name: string
+    +email: string
+  }
+
+  SalesOrder "1" *-- "many" ProductLine : contains >
+  SalesOrder --> Customer : placed by >
+}
+
+@enduml

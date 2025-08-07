@@ -1,0 +1,32 @@
+@startuml SystemContext_SupplyChain
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(procurement_user, "Procurement Officer", "Creates purchase requisitions")
+Person(warehouse_manager, "Warehouse Manager", "Manages stock movement")
+Person(quality_user, "Quality Inspector", "Performs quality checks")
+Person(maintenance_user, "Maintenance Technician", "Maintains machines")
+Person(manufacturing_user, "Production Manager", "Plans and oversees manufacturing")
+
+System(odoo, "Odoo Supply Chain System", "Unified system for managing logistics and production")
+
+System_Ext(inventory, "Inventory", "Tracks products, transfers, and stock levels")
+System_Ext(manufacturing, "Manufacturing", "Manages bills of materials and work orders")
+System_Ext(plm, "PLM", "Manages engineering changes and product lifecycles")
+System_Ext(purchase, "Purchase", "Handles RFQs, purchase orders, vendors")
+System_Ext(maintenance, "Maintenance", "Schedules and logs equipment maintenance")
+System_Ext(quality, "Quality", "Records quality checks during inventory or production")
+
+Rel(procurement_user, purchase, "Creates purchase orders")
+Rel(warehouse_manager, inventory, "Handles incoming/outgoing stock")
+Rel(quality_user, quality, "Performs quality control")
+Rel(maintenance_user, maintenance, "Logs maintenance activities")
+Rel(manufacturing_user, manufacturing, "Runs production orders")
+
+Rel(inventory, odoo, "Integrated into")
+Rel(manufacturing, odoo, "Integrated into")
+Rel(plm, odoo, "Integrated into")
+Rel(purchase, odoo, "Integrated into")
+Rel(maintenance, odoo, "Integrated into")
+Rel(quality, odoo, "Integrated into")
+
+@enduml

@@ -1,0 +1,35 @@
+@startuml Class_StockPicking
+
+!define Model(name,desc) class name as "desc" << (M,#ADD1B2) >>
+
+Model(BaseModel, "Odoo BaseModel")
+Model(StockPicking, "Stock Picking")
+Model(StockMove, "Stock Move")
+Model(StockLocation, "Stock Location")
+Model(StockQuant, "Stock Quant")
+
+StockPicking -|> BaseModel
+StockMove -|> BaseModel
+StockLocation -|> BaseModel
+StockQuant -|> BaseModel
+
+StockPicking "1" *-- "0..n" StockMove : contains >
+StockMove --> StockLocation : source >
+StockMove --> StockLocation : destination >
+
+StockPicking : +name
+StockPicking : +state
+StockPicking : +location_id
+StockPicking : +location_dest_id
+StockPicking : +move_lines
+StockPicking : +button_validate()
+
+StockMove : +product_id
+StockMove : +quantity_done
+StockMove : +_action_done()
+
+StockQuant : +product_id
+StockQuant : +location_id
+StockQuant : +quantity
+
+@enduml

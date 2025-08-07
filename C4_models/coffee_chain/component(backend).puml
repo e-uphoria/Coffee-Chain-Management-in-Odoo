@@ -1,0 +1,17 @@
+@startuml Component_Backend_CoffeeChainERP
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(backend, "Odoo Backend", "Python / Odoo ORM", "Handles domain logic for Coffee Chain ERP")
+
+Component(coffee_outlet_module, "Coffee Outlet Module", "Odoo Model", "Defines coffee.outlet; on create, links to res.partner and creates crm.lead opportunity")
+Component(crm_lead_extension, "CRM Lead Extension", "Odoo Model", "Adds coffee_outlet_id to crm.lead for linkage")
+Component(res_partner_extension, "Partner Extension", "Odoo Model", "Exposes associated coffee outlets on res.partner")
+Component(sale_order_module, "Sale Order Extension", "Odoo Model", "Extends sale.order with outlet, service type, payment method; defaulting logic for walk-in customer and cash; prepares invoice")
+Component(invoice_extension, "Invoice Extension", "Odoo Model", "Extends account.move to receive outlet_id and payment_method_id from sale orders")
+Component(payment_extension, "Payment Extension", "Odoo Model", "Extends account.payment with outlet linkage")
+
+Rel(sale_order_module, invoice_extension, "Prepares invoice with outlet_id and payment_method_id")
+Rel(coffee_outlet_module, crm_lead_extension, "Creates opportunity lead on create")
+Rel(res_partner_extension, coffee_outlet_module, "Customer ↔ Outlet association")
+
+@enduml

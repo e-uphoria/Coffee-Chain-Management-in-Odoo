@@ -1,0 +1,48 @@
+@startuml CodeLevel_CoffeeChainERP
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+package "Models" {
+    class CoffeeOutlet {
+        +name: Char
+        +location: Char
+        +manager: Char
+        +customer_id: Many2one(res.partner)
+        +lead_id: Many2one(crm.lead)
+        +create(vals)
+    }
+
+    class ResPartner {
+        +coffee_outlet_ids: One2many(coffee.outlet, customer_id)
+    }
+
+    class CrmLead {
+        +coffee_outlet_id: Many2one(coffee.outlet)
+    }
+
+    class SaleOrder {
+        +outlet_id: Many2one(coffee.outlet)
+        +service_type: Selection
+        +payment_method_id: Many2one(account.payment.method)
+        +_prepare_invoice()
+        +default_get(fields_list)
+    }
+
+    class AccountMove {
+        +outlet_id: Many2one(coffee.outlet)
+        +payment_method_id: Many2one(account.payment.method)
+    }
+
+    class AccountPayment {
+        +outlet_id: Many2one(coffee.outlet)
+    }
+}
+
+CoffeeOutlet --> CrmLead : creates and links lead
+ResPartner --> CoffeeOutlet : owns (customer ↔ outlets)
+CrmLead --> CoffeeOutlet : inverse reference (via coffee_outlet_id)
+SaleOrder --> AccountMove : prepares invoice with outlet/payment info
+SaleOrder --> AccountPayment : references payment method
+AccountMove --> CoffeeOutlet : carries outlet_id
+AccountMove --> AccountPayment : shares payment context
+
+@enduml

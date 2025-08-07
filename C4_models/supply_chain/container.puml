@@ -1,0 +1,31 @@
+@startuml Container_SupplyChain
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(warehouse_manager, "Warehouse Manager")
+
+System_Boundary(odoo, "Odoo Supply Chain System") {
+  Container(web_app, "Odoo Web App", "Python/XML", "Interface for managing supply chain")
+  Container(db, "PostgreSQL DB", "Database", "Stores inventory, purchase, manufacturing data")
+
+  Container(inventory_module, "Inventory Module", "Odoo Module", "Handles stock moves and warehouses")
+  Container(purchase_module, "Purchase Module", "Odoo Module", "Manages vendors and purchase orders")
+  Container(manufacturing_module, "Manufacturing Module", "Odoo Module", "Manages production orders and BoMs")
+  Container(plm_module, "PLM Module", "Odoo Module", "Handles engineering changes and versions")
+  Container(maintenance_module, "Maintenance Module", "Odoo Module", "Schedules equipment maintenance")
+  Container(quality_module, "Quality Module", "Odoo Module", "Manages inspections and tests")
+}
+
+Rel(warehouse_manager, web_app, "Uses")
+Rel(web_app, inventory_module, "Transfers stock")
+Rel(web_app, purchase_module, "Creates purchase orders")
+Rel(web_app, manufacturing_module, "Launches production")
+Rel(web_app, maintenance_module, "Schedules maintenance")
+Rel(web_app, quality_module, "Performs checks")
+
+Rel(inventory_module, db, "Reads/Writes")
+Rel(purchase_module, db, "Reads/Writes")
+Rel(manufacturing_module, db, "Reads/Writes")
+Rel(maintenance_module, db, "Reads/Writes")
+Rel(quality_module, db, "Reads/Writes")
+
+@enduml

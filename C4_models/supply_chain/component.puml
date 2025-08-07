@@ -1,0 +1,26 @@
+@startuml Component_InventoryModule
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' Actor
+Person(warehouse_manager, "Warehouse Manager")
+
+' Container definition (inside System)
+Container_Boundary(odoo_inventory, "Inventory Module") {
+  
+  Component(stock_picking_component, "Stock Picking Component", "Handles incoming/outgoing transfers and delivery orders")
+  Component(stock_move_component, "Stock Move Component", "Handles the movement of individual products between locations")
+  Component(stock_quant_component, "Stock Quant Component", "Tracks quantity per product per location")
+  Component(location_component, "Location Component", "Manages storage locations and warehouses")
+  Component(reporting_component, "Reporting & Forecasting", "Generates inventory forecasts and reports")
+}
+
+' Interactions
+Rel(warehouse_manager, stock_picking_component, "Confirms delivery/receipt orders")
+
+Rel(stock_picking_component, stock_move_component, "Triggers product moves")
+Rel(stock_move_component, stock_quant_component, "Updates stock levels")
+Rel(stock_move_component, location_component, "Uses source/destination location")
+Rel(stock_quant_component, reporting_component, "Feeds stock data")
+Rel(location_component, reporting_component, "Provides location metadata")
+
+@enduml

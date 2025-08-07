@@ -1,0 +1,14 @@
+@startuml SystemContext_CoffeeChainERP
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(customer, "Customer", "Places orders, selects service type")
+Person(outlet_staff, "Outlet Staff / Sales User", "Creates/manages sale orders, fulfills orders, handles payments")
+
+System_Boundary(erp, "Coffee Chain ERP System") {
+    System(erp_system, "Coffee Chain ERP", "Odoo-based system managing outlets, sales, accounting, and CRM")
+}
+
+Rel(customer, erp_system, "Places order / selects service type")
+Rel(outlet_staff, erp_system, "Creates and manages sale orders with outlet/payment info, fulfills orders")
+
+@enduml

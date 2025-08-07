@@ -1,0 +1,22 @@
+@startuml Component_Sales
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' Define the user of the module
+Person(sales_user, "Sales User")
+
+' Wrap all components within the container boundary
+Container_Boundary(sales_module, "Sales Module") {
+  Component(order_service, "Order Service", "Python Class", "Handles sales order creation and validation")
+  Component(quotation_service, "Quotation Service", "Python Class", "Generates and sends quotations")
+  Component(invoicing_service, "Invoicing Service", "Python Class", "Creates invoices for sales")
+  Component(sales_model, "Sales Order Model", "Odoo Model", "Database ORM model for storing sales data")
+}
+
+Rel(sales_user, order_service, "Creates orders via")
+Rel(order_service, quotation_service, "Uses to create quotations")
+Rel(order_service, invoicing_service, "Triggers invoicing")
+Rel(order_service, sales_model, "Reads/Writes data to")
+Rel(quotation_service, sales_model, "Reads/Writes data to")
+Rel(invoicing_service, sales_model, "Reads/Writes data to")
+
+@enduml
