@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_Sales_POS"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="SalesProcess" isExecutable="true">
+    
+    <!-- Start Event -->
+    <bpmn:startEvent id="StartEvent_Sales" name="Start Sales Process">
+      <bpmn:outgoing>Flow_Start_CRM</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- CRM Task -->
+    <bpmn:task id="Task_CRM" name="Manage CRM">
+      <bpmn:incoming>Flow_Start_CRM</bpmn:incoming>
+      <bpmn:outgoing>Flow_CRM_SalesOrder</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Sales Order Task -->
+    <bpmn:task id="Task_SalesOrder" name="Create Sales Order">
+      <bpmn:incoming>Flow_CRM_SalesOrder</bpmn:incoming>
+      <bpmn:outgoing>Flow_SalesOrder_POS</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- POS Task (merged) -->
+    <bpmn:subProcess id="SubProcess_POS" name="POS">
+      <bpmn:incoming>Flow_SalesOrder_POS</bpmn:incoming>
+      <bpmn:outgoing>Flow_POS_Subscription</bpmn:outgoing>
+
+      <!-- Inside POS: Decision -->
+      <bpmn:startEvent id="POS_Start" name="Select POS Type">
+        <bpmn:outgoing>POSFlow_Decision</bpmn:outgoing>
+      </bpmn:startEvent>
+
+      <bpmn:exclusiveGateway id="Gateway_POSChoice" name="POS Type?">
+        <bpmn:incoming>POSFlow_Decision</bpmn:incoming>
+        <bpmn:outgoing>POSFlow_Shop</bpmn:outgoing>
+        <bpmn:outgoing>POSFlow_Restaurant</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+
+      <bpmn:task id="Task_POSShop" name="POS Shop">
+        <bpmn:incoming>POSFlow_Shop</bpmn:incoming>
+        <bpmn:outgoing>POSFlow_Merge</bpmn:outgoing>
+      </bpmn:task>
+
+      <bpmn:task id="Task_POSRestaurant" name="POS Restaurant">
+        <bpmn:incoming>POSFlow_Restaurant</bpmn:incoming>
+        <bpmn:outgoing>POSFlow_Merge</bpmn:outgoing>
+      </bpmn:task>
+
+      <bpmn:exclusiveGateway id="Gateway_POSMerge">
+        <bpmn:incoming>POSFlow_Merge</bpmn:incoming>
+        <bpmn:outgoing>POSFlow_Subscription</bpmn:outgoing>
+      </bpmn:exclusiveGateway>
+
+      <bpmn:sequenceFlow id="POSFlow_Decision" sourceRef="POS_Start" targetRef="Gateway_POSChoice"/>
+      <bpmn:sequenceFlow id="POSFlow_Shop" sourceRef="Gateway_POSChoice" targetRef="Task_POSShop"/>
+      <bpmn:sequenceFlow id="POSFlow_Restaurant" sourceRef="Gateway_POSChoice" targetRef="Task_POSRestaurant"/>
+      <bpmn:sequenceFlow id="POSFlow_Merge" sourceRef="Task_POSShop" targetRef="Gateway_POSMerge"/>
+      <bpmn:sequenceFlow id="POSFlow_Merge2" sourceRef="Task_POSRestaurant" targetRef="Gateway_POSMerge"/>
+      <bpmn:sequenceFlow id="POSFlow_Subscription" sourceRef="Gateway_POSMerge" targetRef="EndEvent_POS"/>
+      
+      <bpmn:endEvent id="EndEvent_POS" name="POS Complete">
+        <bpmn:incoming>POSFlow_Subscription</bpmn:incoming>
+      </bpmn:endEvent>
+    </bpmn:subProcess>
+
+    <!-- Subscription Task -->
+    <bpmn:task id="Task_Subscription" name="Manage Subscription">
+      <bpmn:incoming>Flow_POS_Subscription</bpmn:incoming>
+      <bpmn:outgoing>Flow_Subscription_Rental</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Rental Task -->
+    <bpmn:task id="Task_Rental" name="Manage Rental">
+      <bpmn:incoming>Flow_Subscription_Rental</bpmn:incoming>
+      <bpmn:outgoing>Flow_Rental_Invoice</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Invoice Task -->
+    <bpmn:task id="Task_Invoice" name="Create Invoice">
+      <bpmn:incoming>Flow_Rental_Invoice</bpmn:incoming>
+      <bpmn:outgoing>Flow_Invoice_Payment</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Payment Task -->
+    <bpmn:task id="Task_Payment" name="Process Payment">
+      <bpmn:incoming>Flow_Invoice_Payment</bpmn:incoming>
+      <bpmn:outgoing>Flow_Payment_End</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- End Event -->
+    <bpmn:endEvent id="EndEvent_Sales" name="Sales Complete">
+      <bpmn:incoming>Flow_Payment_End</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="Flow_Start_CRM" sourceRef="StartEvent_Sales" targetRef="Task_CRM"/>
+    <bpmn:sequenceFlow id="Flow_CRM_SalesOrder" sourceRef="Task_CRM" targetRef="Task_SalesOrder"/>
+    <bpmn:sequenceFlow id="Flow_SalesOrder_POS" sourceRef="Task_SalesOrder" targetRef="SubProcess_POS"/>
+    <bpmn:sequenceFlow id="Flow_POS_Subscription" sourceRef="SubProcess_POS" targetRef="Task_Subscription"/>
+    <bpmn:sequenceFlow id="Flow_Subscription_Rental" sourceRef="Task_Subscription" targetRef="Task_Rental"/>
+    <bpmn:sequenceFlow id="Flow_Rental_Invoice" sourceRef="Task_Rental" targetRef="Task_Invoice"/>
+    <bpmn:sequenceFlow id="Flow_Invoice_Payment" sourceRef="Task_Invoice" targetRef="Task_Payment"/>
+    <bpmn:sequenceFlow id="Flow_Payment_End" sourceRef="Task_Payment" targetRef="EndEvent_Sales"/>
+
+  </bpmn:process>
+
+  <!-- BPMN Diagram Layout -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Sales">
+    <bpmndi:BPMNPlane id="BPMNPlane_Sales" bpmnElement="SalesProcess">
+
+      <!-- Main process shapes -->
+      <bpmndi:BPMNShape id="StartEvent_Sales_di" bpmnElement="StartEvent_Sales">
+        <dc:Bounds x="100" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_CRM_di" bpmnElement="Task_CRM">
+        <dc:Bounds x="200" y="90" width="100" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_SalesOrder_di" bpmnElement="Task_SalesOrder">
+        <dc:Bounds x="350" y="90" width="100" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="SubProcess_POS_di" bpmnElement="SubProcess_POS">
+        <dc:Bounds x="500" y="70" width="300" height="200"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_Subscription_di" bpmnElement="Task_Subscription">
+        <dc:Bounds x="830" y="90" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_Rental_di" bpmnElement="Task_Rental">
+        <dc:Bounds x="980" y="90" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_Invoice_di" bpmnElement="Task_Invoice">
+        <dc:Bounds x="1130" y="90" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_Payment_di" bpmnElement="Task_Payment">
+        <dc:Bounds x="1280" y="90" width="120" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="EndEvent_Sales_di" bpmnElement="EndEvent_Sales">
+        <dc:Bounds x="1450" y="105" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Edges -->
+
+      <bpmndi:BPMNEdge id="Flow_Start_CRM_di" bpmnElement="Flow_Start_CRM">
+        <di:waypoint x="136" y="118"/>
+        <di:waypoint x="200" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_CRM_SalesOrder_di" bpmnElement="Flow_CRM_SalesOrder">
+        <di:waypoint x="300" y="115"/>
+        <di:waypoint x="350" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_SalesOrder_POS_di" bpmnElement="Flow_SalesOrder_POS">
+        <di:waypoint x="450" y="115"/>
+        <di:waypoint x="500" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_POS_Subscription_di" bpmnElement="Flow_POS_Subscription">
+        <di:waypoint x="800" y="115"/>
+        <di:waypoint x="830" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_Subscription_Rental_di" bpmnElement="Flow_Subscription_Rental">
+        <di:waypoint x="950" y="115"/>
+        <di:waypoint x="980" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_Rental_Invoice_di" bpmnElement="Flow_Rental_Invoice">
+        <di:waypoint x="1100" y="115"/>
+        <di:waypoint x="1130" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_Invoice_Payment_di" bpmnElement="Flow_Invoice_Payment">
+        <di:waypoint x="1230" y="115"/>
+        <di:waypoint x="1280" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_Payment_End_di" bpmnElement="Flow_Payment_End">
+        <di:waypoint x="1400" y="115"/>
+        <di:waypoint x="1450" y="123"/>
+      </bpmndi:BPMNEdge>
+
+      <!-- POS Subprocess inner shapes -->
+      <bpmndi:BPMNShape id="POS_Start_di" bpmnElement="POS_Start">
+        <dc:Bounds x="520" y="90" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_POSChoice_di" bpmnElement="Gateway_POSChoice">
+        <dc:Bounds x="570" y="90" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_POSShop_di" bpmnElement="Task_POSShop">
+        <dc:Bounds x="630" y="50" width="100" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_POSRestaurant_di" bpmnElement="Task_POSRestaurant">
+        <dc:Bounds x="630" y="130" width="100" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_POSMerge_di" bpmnElement="Gateway_POSMerge">
+        <dc:Bounds x="760" y="90" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="EndEvent_POS_di" bpmnElement="EndEvent_POS">
+        <dc:Bounds x="820" y="105" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- POS Subprocess edges except POSFlow_Merge edge (blue arrow inside POS) is removed -->
+
+      <bpmndi:BPMNEdge id="POSFlow_Decision_di" bpmnElement="POSFlow_Decision">
+        <di:waypoint x="556" y="108"/>
+        <di:waypoint x="570" y="115"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="POSFlow_Shop_di" bpmnElement="POSFlow_Shop">
+        <di:waypoint x="620" y="115"/>
+        <di:waypoint x="630" y="75"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="POSFlow_Restaurant_di" bpmnElement="POSFlow_Restaurant">
+        <di:waypoint x="620" y="115"/>
+        <di:waypoint x="630" y="155"/>
+      </bpmndi:BPMNEdge>
+
+      <!--
+      Removed the edge below that corresponds to blue arrow inside POS:
+
+      <bpmndi:BPMNEdge id="POSFlow_Merge_di" bpmnElement="POSFlow_Merge">
+        <di:waypoint x="730" y="75"/>
+        <di:waypoint x="760" y="115"/>
+      </bpmndi:BPMNEdge>
+      -->
+
+      <bpmndi:BPMNEdge id="POSFlow_Merge2_di" bpmnElement="POSFlow_Merge2">
+        <di:waypoint x="730" y="180"/>
+        <di:waypoint x="760" y="140"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="POSFlow_Subscription_di" bpmnElement="POSFlow_Subscription">
+        <di:waypoint x="810" y="115"/>
+        <di:waypoint x="820" y="123"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
+

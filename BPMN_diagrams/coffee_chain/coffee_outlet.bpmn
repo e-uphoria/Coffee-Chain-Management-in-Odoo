@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="CoffeeChainProcess" name="Coffee Chain Process" isExecutable="true">
+
+    <!-- Start -->
+    <bpmn:startEvent id="StartEvent" name="Start">
+      <bpmn:outgoing>Flow_Start_To_CreateOutlet</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <!-- Create Coffee Outlet -->
+    <bpmn:task id="Task_CreateOutlet" name="Create Coffee Outlet">
+      <bpmn:incoming>Flow_Start_To_CreateOutlet</bpmn:incoming>
+      <bpmn:outgoing>Flow_CreateOutlet_To_CreateLead</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Create CRM Lead -->
+    <bpmn:task id="Task_CreateLead" name="Create CRM Lead (Opportunity)">
+      <bpmn:incoming>Flow_CreateOutlet_To_CreateLead</bpmn:incoming>
+      <bpmn:outgoing>Flow_CreateLead_To_SalesOrder</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Create Sales Order -->
+    <bpmn:task id="Task_SalesOrder" name="Create Sales Order">
+      <bpmn:incoming>Flow_CreateLead_To_SalesOrder</bpmn:incoming>
+      <bpmn:outgoing>Flow_SalesOrder_To_Invoice</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Create Invoice -->
+    <bpmn:task id="Task_CreateInvoice" name="Generate Invoice">
+      <bpmn:incoming>Flow_SalesOrder_To_Invoice</bpmn:incoming>
+      <bpmn:outgoing>Flow_Invoice_To_Payment</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- Register Payment -->
+    <bpmn:task id="Task_RegisterPayment" name="Register Payment">
+      <bpmn:incoming>Flow_Invoice_To_Payment</bpmn:incoming>
+      <bpmn:outgoing>Flow_Payment_To_End</bpmn:outgoing>
+    </bpmn:task>
+
+    <!-- End -->
+    <bpmn:endEvent id="EndEvent" name="End">
+      <bpmn:incoming>Flow_Payment_To_End</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="Flow_Start_To_CreateOutlet" sourceRef="StartEvent" targetRef="Task_CreateOutlet"/>
+    <bpmn:sequenceFlow id="Flow_CreateOutlet_To_CreateLead" sourceRef="Task_CreateOutlet" targetRef="Task_CreateLead"/>
+    <bpmn:sequenceFlow id="Flow_CreateLead_To_SalesOrder" sourceRef="Task_CreateLead" targetRef="Task_SalesOrder"/>
+    <bpmn:sequenceFlow id="Flow_SalesOrder_To_Invoice" sourceRef="Task_SalesOrder" targetRef="Task_CreateInvoice"/>
+    <bpmn:sequenceFlow id="Flow_Invoice_To_Payment" sourceRef="Task_CreateInvoice" targetRef="Task_RegisterPayment"/>
+    <bpmn:sequenceFlow id="Flow_Payment_To_End" sourceRef="Task_RegisterPayment" targetRef="EndEvent"/>
+
+  </bpmn:process>
+
+  <!-- BPMN Diagram -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_CoffeeChain">
+    <bpmndi:BPMNPlane id="BPMNPlane_CoffeeChain" bpmnElement="CoffeeChainProcess">
+
+      <!-- Start Event Shape -->
+      <bpmndi:BPMNShape id="Shape_StartEvent" bpmnElement="StartEvent">
+        <dc:Bounds x="100" y="150" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Create Coffee Outlet -->
+      <bpmndi:BPMNShape id="Shape_CreateOutlet" bpmnElement="Task_CreateOutlet">
+        <dc:Bounds x="200" y="130" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Create CRM Lead -->
+      <bpmndi:BPMNShape id="Shape_CreateLead" bpmnElement="Task_CreateLead">
+        <dc:Bounds x="360" y="130" width="150" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Create Sales Order -->
+      <bpmndi:BPMNShape id="Shape_SalesOrder" bpmnElement="Task_SalesOrder">
+        <dc:Bounds x="550" y="130" width="140" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Create Invoice -->
+      <bpmndi:BPMNShape id="Shape_CreateInvoice" bpmnElement="Task_CreateInvoice">
+        <dc:Bounds x="730" y="130" width="130" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Register Payment -->
+      <bpmndi:BPMNShape id="Shape_RegisterPayment" bpmnElement="Task_RegisterPayment">
+        <dc:Bounds x="900" y="130" width="140" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- End Event -->
+      <bpmndi:BPMNShape id="Shape_EndEvent" bpmnElement="EndEvent">
+        <dc:Bounds x="1100" y="150" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Flows -->
+      <bpmndi:BPMNEdge id="Edge_Flow_Start_To_CreateOutlet" bpmnElement="Flow_Start_To_CreateOutlet">
+        <di:waypoint x="136" y="168"/>
+        <di:waypoint x="200" y="168"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_CreateOutlet_To_CreateLead" bpmnElement="Flow_CreateOutlet_To_CreateLead">
+        <di:waypoint x="320" y="168"/>
+        <di:waypoint x="360" y="168"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_CreateLead_To_SalesOrder" bpmnElement="Flow_CreateLead_To_SalesOrder">
+        <di:waypoint x="510" y="168"/>
+        <di:waypoint x="550" y="168"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_SalesOrder_To_Invoice" bpmnElement="Flow_SalesOrder_To_Invoice">
+        <di:waypoint x="690" y="168"/>
+        <di:waypoint x="730" y="168"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Invoice_To_Payment" bpmnElement="Flow_Invoice_To_Payment">
+        <di:waypoint x="860" y="168"/>
+        <di:waypoint x="900" y="168"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Payment_To_End" bpmnElement="Flow_Payment_To_End">
+        <di:waypoint x="1040" y="168"/>
+        <di:waypoint x="1100" y="168"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
+

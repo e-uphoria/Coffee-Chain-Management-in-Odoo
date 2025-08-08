@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+                  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+                  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+                  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+                  id="Definitions_1"
+                  targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:process id="SalesProcess" name="Odoo Sales App Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start Sales Flow">
+      <bpmn:outgoing>Flow_1</bpmn:outgoing>
+    </bpmn:startEvent>
+
+    <bpmn:task id="Task_CRM" name="CRM">
+      <bpmn:incoming>Flow_1</bpmn:incoming>
+      <bpmn:outgoing>Flow_2</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Sales" name="Sales">
+      <bpmn:incoming>Flow_2</bpmn:incoming>
+      <bpmn:outgoing>Flow_3</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_POSShop" name="POS Shop">
+      <bpmn:incoming>Flow_3</bpmn:incoming>
+      <bpmn:outgoing>Flow_4</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_POSRestaurant" name="POS Restaurant">
+      <bpmn:incoming>Flow_4</bpmn:incoming>
+      <bpmn:outgoing>Flow_5</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Subscriptions" name="Subscriptions">
+      <bpmn:incoming>Flow_5</bpmn:incoming>
+      <bpmn:outgoing>Flow_6</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:task id="Task_Rental" name="Rental">
+      <bpmn:incoming>Flow_6</bpmn:incoming>
+      <bpmn:outgoing>Flow_7</bpmn:outgoing>
+    </bpmn:task>
+
+    <bpmn:endEvent id="EndEvent_1" name="Sales Flow Complete">
+      <bpmn:incoming>Flow_7</bpmn:incoming>
+    </bpmn:endEvent>
+
+    <!-- Flows -->
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_CRM"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_CRM" targetRef="Task_Sales"/>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Task_Sales" targetRef="Task_POSShop"/>
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_POSShop" targetRef="Task_POSRestaurant"/>
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_POSRestaurant" targetRef="Task_Subscriptions"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_Subscriptions" targetRef="Task_Rental"/>
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_Rental" targetRef="EndEvent_1"/>
+  </bpmn:process>
+
+  <!-- Diagram -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Sales">
+    <bpmndi:BPMNPlane id="BPMNPlane_Sales" bpmnElement="SalesProcess">
+
+      <bpmndi:BPMNShape id="Shape_StartEvent" bpmnElement="StartEvent_1">
+        <dc:Bounds x="100" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Shape_CRM" bpmnElement="Task_CRM">
+        <dc:Bounds x="180" y="160" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Shape_Sales" bpmnElement="Task_Sales">
+        <dc:Bounds x="320" y="160" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Shape_POSShop" bpmnElement="Task_POSShop">
+        <dc:Bounds x="460" y="160" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Shape_POSRestaurant" bpmnElement="Task_POSRestaurant">
+        <dc:Bounds x="620" y="160" width="140" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Shape_Subscriptions" bpmnElement="Task_Subscriptions">
+        <dc:Bounds x="800" y="160" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Shape_Rental" bpmnElement="Task_Rental">
+        <dc:Bounds x="960" y="160" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Shape_EndEvent" bpmnElement="EndEvent_1">
+        <dc:Bounds x="1100" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Edges -->
+      <bpmndi:BPMNEdge id="Edge_Flow_1" bpmnElement="Flow_1">
+        <di:waypoint x="136" y="198"/>
+        <di:waypoint x="180" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Edge_Flow_2" bpmnElement="Flow_2">
+        <di:waypoint x="280" y="200"/>
+        <di:waypoint x="320" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Edge_Flow_3" bpmnElement="Flow_3">
+        <di:waypoint x="420" y="200"/>
+        <di:waypoint x="460" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Edge_Flow_4" bpmnElement="Flow_4">
+        <di:waypoint x="580" y="200"/>
+        <di:waypoint x="620" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Edge_Flow_5" bpmnElement="Flow_5">
+        <di:waypoint x="760" y="200"/>
+        <di:waypoint x="800" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Edge_Flow_6" bpmnElement="Flow_6">
+        <di:waypoint x="920" y="200"/>
+        <di:waypoint x="960" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Edge_Flow_7" bpmnElement="Flow_7">
+        <di:waypoint x="1060" y="200"/>
+        <di:waypoint x="1100" y="198"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
+
