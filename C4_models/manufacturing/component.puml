@@ -1,0 +1,18 @@
+@startuml cafe_mrp_component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(cafe_mrp, "Cafe Manufacturing Module", "Odoo Module", "Prepares food/beverage stock using recipes")
+
+Component(bom_model, "BoM Model", "cafe.bom", "Stores recipes and ingredients for products")
+Component(mo_model, "Manufacturing Order", "cafe.manufacturing.order", "Executes production based on BoM")
+Component(qc_model, "Quality Check", "cafe.qc", "Stores QC data for each batch")
+
+Component(product_model, "Product", "product.product", "Linked with menu/inventory items")
+Component(stock_model, "Stock", "stock.quant / stock.move", "Handles raw material and finished stock")
+
+Rel(bom_model, mo_model, "Used by")
+Rel(mo_model, qc_model, "Sends QC logs to")
+Rel(mo_model, product_model, "Links to product")
+Rel(mo_model, stock_model, "Consumes and produces stock")
+
+@enduml

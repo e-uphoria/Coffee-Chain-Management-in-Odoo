@@ -1,0 +1,19 @@
+@startuml cafe_system_context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(customer, "Customer", "Buys food and drinks")
+Person(staff, "Café Staff", "Uses POS to take orders")
+Person(kitchen, "Kitchen Staff", "Prepares food and drinks")
+Person(admin, "Admin", "Manages menu, recipes, and production")
+
+System(odoo, "Odoo Café Management System", "Manages POS, Inventory, Manufacturing, CRM")
+
+System_Ext(supplier, "Suppliers", "Provide ingredients and supplies")
+
+Rel(customer, odoo, "Places orders via POS")
+Rel(staff, odoo, "Takes orders, processes payments")
+Rel(kitchen, odoo, "Receives kitchen orders")
+Rel(admin, odoo, "Manages modules and recipes")
+Rel(supplier, odoo, "Supplies ingredients")
+
+@enduml
