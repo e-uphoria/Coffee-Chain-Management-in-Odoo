@@ -25,6 +25,8 @@ class SaleOrder(models.Model):
         domain=[('payment_type', '=', 'inbound')]
     )
 
+    coffee_menu_item_id = fields.Many2one('coffee.menu.item', string='Coffee Menu Item')
+
     def _prepare_invoice(self):
         invoice_vals = super()._prepare_invoice()
         invoice_vals.update({

@@ -77,6 +77,7 @@
           <field name="outlet_id"/>
           <field name="service_type"/>
           <field name="payment_method_id"/>
+          <field name="coffee_menu_item_id"/>
         </xpath>
       </field>
     </record>
