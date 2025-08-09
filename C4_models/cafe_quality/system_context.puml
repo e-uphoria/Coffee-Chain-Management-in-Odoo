@@ -1,0 +1,19 @@
+@startuml quality_context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(admin, "Quality Manager", "Oversees quality assurance processes")
+Person(operator, "Production Staff", "Performs manufacturing and initial QC checks")
+Person(auditor, "Quality Auditor", "Performs audits and reports")
+
+System(odoo, "Odoo Cafe Management System", "Manages cafe operations including quality")
+
+System_Ext(supplier, "Supplier", "Provides ingredients")
+System_Ext(customer, "Customer", "Buys cafe products")
+
+Rel(admin, odoo, "Manages quality processes")
+Rel(operator, odoo, "Executes production and QC checks")
+Rel(auditor, odoo, "Performs audits and compliance checks")
+Rel(supplier, odoo, "Provides ingredients subject to quality checks")
+Rel(customer, odoo, "Receives quality-assured products")
+
+@enduml

@@ -1,0 +1,26 @@
+@startuml maintenance_container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(admin, "Maintenance Manager")
+Person(technician, "Technician")
+
+System_Boundary(odoo, "Odoo Cafe Management System") {
+  Container(web, "Odoo Web Client", "HTML/JS", "Used by all staff")
+  Container(server, "Odoo Server", "Python", "Handles business logic")
+
+  Container(maintenance_module, "Maintenance Module", "Python/Odoo", "Manages asset upkeep, requests, and work orders")
+  ContainerDb(db, "PostgreSQL Database", "SQL", "Stores maintenance data")
+
+  Container(cafe_inventory, "Cafe Inventory Module", "Python/Odoo", "Manages spare parts")
+}
+
+Rel(admin, web, "Uses", "HTTPS")
+Rel(technician, web, "Uses", "HTTPS")
+Rel(web, server, "Sends requests")
+Rel(server, db, "Reads/Writes")
+
+Rel(server, maintenance_module, "Uses")
+Rel(server, cafe_inventory, "Uses")
+Rel(maintenance_module, cafe_inventory, "Consumes spare parts")
+
+@enduml

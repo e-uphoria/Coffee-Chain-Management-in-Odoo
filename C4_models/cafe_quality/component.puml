@@ -1,0 +1,16 @@
+@startuml quality_component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(quality_module, "Quality Management Module", "Odoo Module", "Manages QC processes")
+
+Component(qc_check_model, "Quality Check Model", "quality.qc.check", "Records QC checks on batches/products")
+Component(audit_model, "Audit Model", "quality.audit", "Tracks audits and compliance reports")
+Component(non_conformity_model, "Non-Conformity Model", "quality.nonconformity", "Logs quality issues and rework tasks")
+Component(report_model, "Quality Report Model", "quality.report", "Generates quality performance reports")
+
+Rel(qc_check_model, non_conformity_model, "Creates non-conformity if check fails")
+Rel(audit_model, report_model, "Feeds data to")
+Rel(qc_check_model, report_model, "Feeds data to")
+Rel(non_conformity_model, report_model, "Feeds data to")
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml maintenance_context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+Person(admin, "Maintenance Manager", "Oversees equipment maintenance and repairs")
+Person(technician, "Maintenance Technician", "Performs repairs and upkeep")
+Person(staff, "Cafe Staff", "Reports equipment issues")
+
+System(odoo, "Odoo Cafe Management System", "Manages cafe operations including maintenance")
+
+Rel(staff, odoo, "Reports equipment issues")
+Rel(technician, odoo, "Receives maintenance tasks")
+Rel(admin, odoo, "Manages maintenance schedules and inventory")
+
+@enduml

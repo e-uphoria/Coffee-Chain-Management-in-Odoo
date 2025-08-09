@@ -1,0 +1,17 @@
+@startuml maintenance_component
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(maintenance_module, "Maintenance Module", "Odoo Module", "Handles all maintenance operations")
+
+Component(asset_model, "Asset Model", "maintenance.asset", "Stores equipment details")
+Component(request_model, "Maintenance Request", "maintenance.request", "Reports and tracks maintenance requests")
+Component(workorder_model, "Work Order", "maintenance.workorder", "Tracks assigned repair tasks")
+Component(sparepart_model, "Spare Part", "maintenance.sparepart", "Inventory of spare parts")
+Component(cost_model, "Maintenance Cost", "maintenance.cost", "Tracks costs associated with maintenance")
+
+Rel(request_model, workorder_model, "Creates work orders from requests")
+Rel(workorder_model, sparepart_model, "Uses spare parts for repairs")
+Rel(workorder_model, cost_model, "Logs maintenance costs")
+Rel(asset_model, request_model, "Assets have maintenance requests")
+
+@enduml

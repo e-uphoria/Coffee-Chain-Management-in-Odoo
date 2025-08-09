@@ -1,0 +1,22 @@
+@startuml quality_container
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(admin, "Quality Manager")
+
+System_Boundary(odoo, "Odoo Cafe Management System") {
+  Container(web, "Odoo Web Client", "HTML/JS", "Used by staff and quality team")
+  Container(server, "Odoo Server", "Python", "Runs business logic and modules")
+  ContainerDb(db, "PostgreSQL Database", "SQL", "Stores all data")
+
+  Container(quality_module, "Quality Management Module", "Python/Odoo", "Manages QC checks, audits, and reports")
+  Container(cafe_mrp, "Cafe Manufacturing Module", "Python/Odoo", "Handles production and links with QC")
+}
+
+Rel(admin, web, "Uses", "HTTPS")
+Rel(web, server, "Sends requests")
+Rel(server, db, "Reads/Writes")
+Rel(server, quality_module, "Uses")
+Rel(server, cafe_mrp, "Uses")
+Rel(quality_module, cafe_mrp, "Receives manufacturing data from")
+
+@enduml
