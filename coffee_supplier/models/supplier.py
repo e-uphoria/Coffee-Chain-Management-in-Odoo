@@ -4,8 +4,10 @@ class CoffeeSupplier(models.Model):
     _name = 'coffee.supplier'
     _description = 'Coffee Bean Supplier'
     _inherit = ['mail.thread', 'mail.activity.mixin']
+    
 
     name = fields.Char(string='Supplier Name', required=True, tracking=True)
+    image_1920 = fields.Image(string="Supplier Image")
     contact_person = fields.Char(string='Contact Person')
     phone = fields.Char(string='Phone')
     email = fields.Char(string='Email')
@@ -18,6 +20,11 @@ class CoffeeSupplier(models.Model):
     contract_end = fields.Date(string='Contract End')
     active = fields.Boolean(default=True)
     notes = fields.Text(string='Notes')
+    company_id = fields.Many2one(
+        'res.company',
+        string='Company',
+        default=lambda self: self.env.company
+    )
     price_line_ids = fields.One2many('coffee.supplier.price', 'supplier_id', string='Price List')
 
     stage_id = fields.Many2one(

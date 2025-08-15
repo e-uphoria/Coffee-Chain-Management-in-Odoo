@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-  <template id="report_coffee_supplier_template">
+  <template id="report_coffee_supplier_basic_template">
     <t t-call="web.basic_layout">
       <div class="page">
         <h2>Supplier Report: <t t-esc="object.name"/></h2>

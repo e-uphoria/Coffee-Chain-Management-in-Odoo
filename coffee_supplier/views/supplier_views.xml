@@ -13,28 +13,35 @@
 
 
     <!-- Kanban -->
-    <record id='view_coffee_supplier_kanban' model='ir.ui.view'>
-      <field name='name'>coffee.supplier.kanban</field>
-      <field name='model'>coffee.supplier</field>
-      <field name='arch' type='xml'>
-        <kanban default_group_by='stage_id'>
-          <field name='name'/>
-          <field name='bean_origin'/>
-          <field name='contact_person'/>
-          <field name='phone'/>
-          <field name='email'/>
-          <templates>
-            <t t-name='kanban-box'>
-              <div class='oe_kanban_global_click'>
-                <strong><field name='name'/></strong><br/>
-                <small>Origin: <field name='bean_origin'/></small><br/>
-                <small>Contact: <field name='contact_person'/></small>
+   <record id="view_coffee_supplier_kanban" model="ir.ui.view">
+    <field name="name">coffee.supplier.kanban</field>
+    <field name="model">coffee.supplier</field>
+    <field name="arch" type="xml">
+      <kanban default_group_by="stage_id">
+        <field name="name"/>
+        <field name="bean_origin"/>
+        <field name="contact_person"/>
+        <field name="phone"/>
+        <field name="email"/>
+        <templates>
+          <t t-name="kanban-box">
+            <div class="oe_kanban_global_click o_kanban_record">
+                <div class="o_kanban_image">
+                    <field name="image_1920" widget="image" options="{'preview_image': 'image_1920'}"/>
+                </div>
+              <div>
+                <strong><field name="name"/></strong><br/>
+                <small>Origin: <field name="bean_origin"/></small><br/>
+                <small>Contact: <field name="contact_person"/></small>
               </div>
-            </t>
-          </templates>
-        </kanban>
-      </field>
-    </record>
+            </div>
+          </t>
+        </templates>
+      </kanban>
+    </field>
+   </record>
+
+
 
     <!-- List (instead of Tree) -->
     <record id='view_coffee_supplier_list' model='ir.ui.view'>
@@ -68,6 +75,7 @@
             </header>
 
             <group>
+              <field name="image_1920" class="oe_avatar" widget="image" options="{'size': [128, 128]}" nolabel="1"/>
               <field name='stage_id'/>
               <field name='name'/>
               <field name='contact_person'/>
