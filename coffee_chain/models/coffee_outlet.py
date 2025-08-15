@@ -7,6 +7,8 @@ class CoffeeOutlet(models.Model):
     name = fields.Char(string="Outlet Name", required=True)
     location = fields.Char(string="Location")
     manager = fields.Char(string="Manager")
+    regional_manager = fields.Char(string="Regional Manager")
+
 
     # Link to CRM Customers
     customer_id = fields.Many2one('res.partner', string='Customer')

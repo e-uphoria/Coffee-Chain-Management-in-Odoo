@@ -12,6 +12,7 @@
           <field name="name"/>
           <field name="location"/>
           <field name="manager"/>
+          <field name="regional_manager"/>
         </list>
       </field>
     </record> 
@@ -30,6 +31,7 @@
               <!--<field name="address"/>-->
               <field name="location"/>
               <field name="manager"/>
+              <field name="regional_manager"/>
               <field name="customer_id"/>
               <field name="lead_id"/>
             </group>
