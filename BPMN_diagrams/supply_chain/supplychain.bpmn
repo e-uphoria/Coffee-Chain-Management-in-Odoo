@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_SupplyChainSnake" targetNamespace="http://example.com/odoo/supplychain" exporter="Camunda Modeler" exporterVersion="5.37.0">
+  <bpmn:process id="SupplyChainSnakeFlow" name="Odoo Supply Chain - Snake Portrait" isExecutable="false">
+    <bpmn:startEvent id="StartEvent" name="Purchase Request Received">
+      <bpmn:outgoing>Flow_Start_PO</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_CreatePO" name="Create Purchase Order">
+      <bpmn:incoming>Flow_Start_PO</bpmn:incoming>
+      <bpmn:outgoing>Flow_PO_GR</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_GoodsReceipt" name="Goods Receipt / Putaway">
+      <bpmn:incoming>Flow_PO_GR</bpmn:incoming>
+      <bpmn:outgoing>Flow_GR_UpdateStock</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_UpdateStock" name="Update Stock &#38; Location">
+      <bpmn:incoming>Flow_GR_UpdateStock</bpmn:incoming>
+      <bpmn:outgoing>Flow_UpdateStock_CreateMO</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_CreateMO" name="Create Manufacturing Order">
+      <bpmn:incoming>Flow_UpdateStock_CreateMO</bpmn:incoming>
+      <bpmn:outgoing>Flow_CreateMO_Manufacture</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_Manufacture" name="Execute Production">
+      <bpmn:incoming>Flow_CreateMO_Manufacture</bpmn:incoming>
+      <bpmn:outgoing>Flow_Manufacture_Finish</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_FinishProd" name="Finish Production / Update Qty">
+      <bpmn:incoming>Flow_Manufacture_Finish</bpmn:incoming>
+      <bpmn:outgoing>Flow_Finish_PLM</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_PLM" name="Engineering Change / BOM Update">
+      <bpmn:incoming>Flow_Finish_PLM</bpmn:incoming>
+      <bpmn:outgoing>Flow_PLM_QCRequired</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_QCRequired" name="QC Required?">
+      <bpmn:incoming>Flow_PLM_QCRequired</bpmn:incoming>
+      <bpmn:outgoing>Flow_QCReq_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_QCReq_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_QualityInspection" name="Quality Inspection">
+      <bpmn:incoming>Flow_QCReq_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_QI_QCResult</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_QCResult" name="QC Passed?">
+      <bpmn:incoming>Flow_QI_QCResult</bpmn:incoming>
+      <bpmn:incoming>Flow_Reinspect_BackToResult</bpmn:incoming>
+      <bpmn:outgoing>Flow_QC_Pass</bpmn:outgoing>
+      <bpmn:outgoing>Flow_QC_Fail</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_ApproveBatch" name="Approve / Release Batch">
+      <bpmn:incoming>Flow_QC_Pass</bpmn:incoming>
+      <bpmn:outgoing>Flow_Approve_UpdateInv</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_UpdateInventory" name="Update Inventory (Available to Sell)">
+      <bpmn:incoming>Flow_Approve_UpdateInv</bpmn:incoming>
+      <bpmn:incoming>Flow_QCReq_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_UpdateInv_End</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_CreateMaintenance" name="Create Maintenance / Rework">
+      <bpmn:incoming>Flow_QC_Fail</bpmn:incoming>
+      <bpmn:outgoing>Flow_CreateMaint_Do</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_MaintenanceDo" name="Perform Maintenance / Rework">
+      <bpmn:incoming>Flow_CreateMaint_Do</bpmn:incoming>
+      <bpmn:outgoing>Flow_Do_Reinspect</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_QualityReinspect" name="Reinspect after Rework">
+      <bpmn:incoming>Flow_Do_Reinspect</bpmn:incoming>
+      <bpmn:outgoing>Flow_Reinspect_BackToResult</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent" name="Supply Chain Flow Complete">
+      <bpmn:incoming>Flow_UpdateInv_End</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Start_PO" sourceRef="StartEvent" targetRef="Task_CreatePO" />
+    <bpmn:sequenceFlow id="Flow_PO_GR" sourceRef="Task_CreatePO" targetRef="Task_GoodsReceipt" />
+    <bpmn:sequenceFlow id="Flow_GR_UpdateStock" sourceRef="Task_GoodsReceipt" targetRef="Task_UpdateStock" />
+    <bpmn:sequenceFlow id="Flow_UpdateStock_CreateMO" sourceRef="Task_UpdateStock" targetRef="Task_CreateMO" />
+    <bpmn:sequenceFlow id="Flow_CreateMO_Manufacture" sourceRef="Task_CreateMO" targetRef="Task_Manufacture" />
+    <bpmn:sequenceFlow id="Flow_Manufacture_Finish" sourceRef="Task_Manufacture" targetRef="Task_FinishProd" />
+    <bpmn:sequenceFlow id="Flow_Finish_PLM" sourceRef="Task_FinishProd" targetRef="Task_PLM" />
+    <bpmn:sequenceFlow id="Flow_PLM_QCRequired" sourceRef="Task_PLM" targetRef="Gateway_QCRequired" />
+    <bpmn:sequenceFlow id="Flow_QCReq_Yes" name="Yes" sourceRef="Gateway_QCRequired" targetRef="Task_QualityInspection" />
+    <bpmn:sequenceFlow id="Flow_QCReq_No" name="No" sourceRef="Gateway_QCRequired" targetRef="Task_UpdateInventory" />
+    <bpmn:sequenceFlow id="Flow_QI_QCResult" sourceRef="Task_QualityInspection" targetRef="Gateway_QCResult" />
+    <bpmn:sequenceFlow id="Flow_QC_Pass" name="Pass" sourceRef="Gateway_QCResult" targetRef="Task_ApproveBatch" />
+    <bpmn:sequenceFlow id="Flow_QC_Fail" name="Fail" sourceRef="Gateway_QCResult" targetRef="Task_CreateMaintenance" />
+    <bpmn:sequenceFlow id="Flow_Approve_UpdateInv" sourceRef="Task_ApproveBatch" targetRef="Task_UpdateInventory" />
+    <bpmn:sequenceFlow id="Flow_UpdateInv_End" sourceRef="Task_UpdateInventory" targetRef="EndEvent" />
+    <bpmn:sequenceFlow id="Flow_CreateMaint_Do" sourceRef="Task_CreateMaintenance" targetRef="Task_MaintenanceDo" />
+    <bpmn:sequenceFlow id="Flow_Do_Reinspect" sourceRef="Task_MaintenanceDo" targetRef="Task_QualityReinspect" />
+    <bpmn:sequenceFlow id="Flow_Reinspect_BackToResult" sourceRef="Task_QualityReinspect" targetRef="Gateway_QCResult" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_SnakePortrait">
+    <bpmndi:BPMNPlane id="BPMNPlane_SnakePortrait" bpmnElement="SupplyChainSnakeFlow">
+      <bpmndi:BPMNShape id="Shape_CreatePO" bpmnElement="Task_CreatePO">
+        <dc:Bounds x="160" y="170" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_GoodsReceipt" bpmnElement="Task_GoodsReceipt">
+        <dc:Bounds x="160" y="260" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_UpdateStock" bpmnElement="Task_UpdateStock">
+        <dc:Bounds x="160" y="350" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CreateMO" bpmnElement="Task_CreateMO">
+        <dc:Bounds x="380" y="350" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Manufacture" bpmnElement="Task_Manufacture">
+        <dc:Bounds x="380" y="260" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_FinishProd" bpmnElement="Task_FinishProd">
+        <dc:Bounds x="380" y="170" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_PLM" bpmnElement="Task_PLM">
+        <dc:Bounds x="600" y="170" width="190" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_QCRequired" bpmnElement="Gateway_QCRequired" isMarkerVisible="true">
+        <dc:Bounds x="660" y="260" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578.5" y="278" width="71" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_QualityInspection" bpmnElement="Task_QualityInspection">
+        <dc:Bounds x="600" y="350" width="190" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_QCResult" bpmnElement="Gateway_QCResult" isMarkerVisible="true">
+        <dc:Bounds x="880" y="350" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="874" y="400" width="63" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ApproveBatch" bpmnElement="Task_ApproveBatch">
+        <dc:Bounds x="820" y="260" width="190" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_UpdateInventory" bpmnElement="Task_UpdateInventory">
+        <dc:Bounds x="820" y="170" width="190" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_EndEvent" bpmnElement="EndEvent">
+        <dc:Bounds x="1040" y="100" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1021" y="136" width="74" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_StartEvent" bpmnElement="StartEvent">
+        <dc:Bounds x="227" y="82" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="160" y="118" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Reinspect" bpmnElement="Task_QualityReinspect">
+        <dc:Bounds x="1110" y="170" width="200" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_MaintenanceDo" bpmnElement="Task_MaintenanceDo">
+        <dc:Bounds x="1110" y="260" width="200" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_CreateMaintenance" bpmnElement="Task_CreateMaintenance">
+        <dc:Bounds x="1110" y="350" width="200" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_Start_PO" bpmnElement="Flow_Start_PO">
+        <di:waypoint x="263" y="100" />
+        <di:waypoint x="260" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PO_GR" bpmnElement="Flow_PO_GR">
+        <di:waypoint x="245" y="230" />
+        <di:waypoint x="245" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_GR_UpdateStock" bpmnElement="Flow_GR_UpdateStock">
+        <di:waypoint x="245" y="320" />
+        <di:waypoint x="245" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_UpdateStock_CreateMO" bpmnElement="Flow_UpdateStock_CreateMO">
+        <di:waypoint x="330" y="380" />
+        <di:waypoint x="380" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_CreateMO_Manufacture" bpmnElement="Flow_CreateMO_Manufacture">
+        <di:waypoint x="465" y="350" />
+        <di:waypoint x="465" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Manufacture_Finish" bpmnElement="Flow_Manufacture_Finish">
+        <di:waypoint x="465" y="260" />
+        <di:waypoint x="465" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Finish_PLM" bpmnElement="Flow_Finish_PLM">
+        <di:waypoint x="550" y="200" />
+        <di:waypoint x="600" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_PLM_QCRequired" bpmnElement="Flow_PLM_QCRequired">
+        <di:waypoint x="677" y="230" />
+        <di:waypoint x="677" y="245" />
+        <di:waypoint x="685" y="245" />
+        <di:waypoint x="685" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QCReq_Yes" bpmnElement="Flow_QCReq_Yes">
+        <di:waypoint x="685" y="310" />
+        <di:waypoint x="685" y="350" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="691" y="320" width="19" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QCReq_No" bpmnElement="Flow_QCReq_No">
+        <di:waypoint x="710" y="285" />
+        <di:waypoint x="810" y="285" />
+        <di:waypoint x="810" y="150" />
+        <di:waypoint x="910" y="150" />
+        <di:waypoint x="910" y="170" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="742" y="263" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QI_QCResult" bpmnElement="Flow_QI_QCResult">
+        <di:waypoint x="790" y="380" />
+        <di:waypoint x="880" y="380" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QC_Pass" bpmnElement="Flow_QC_Pass">
+        <di:waypoint x="905" y="350" />
+        <di:waypoint x="905" y="320" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="917" y="333" width="25" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QC_Fail" bpmnElement="Flow_QC_Fail">
+        <di:waypoint x="930" y="375" />
+        <di:waypoint x="1110" y="375" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1011" y="350" width="18" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Approve_UpdateInv" bpmnElement="Flow_Approve_UpdateInv">
+        <di:waypoint x="915" y="260" />
+        <di:waypoint x="915" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_UpdateInv_End" bpmnElement="Flow_UpdateInv_End">
+        <di:waypoint x="1010" y="200" />
+        <di:waypoint x="1010" y="118" />
+        <di:waypoint x="1040" y="118" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_CreateMaint_Do" bpmnElement="Flow_CreateMaint_Do">
+        <di:waypoint x="1210" y="350" />
+        <di:waypoint x="1210" y="320" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Do_Reinspect" bpmnElement="Flow_Do_Reinspect">
+        <di:waypoint x="1210" y="260" />
+        <di:waypoint x="1210" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Reinspect_BackToResult" bpmnElement="Flow_Reinspect_BackToResult">
+        <di:waypoint x="1310" y="200" />
+        <di:waypoint x="1330" y="200" />
+        <di:waypoint x="1330" y="430" />
+        <di:waypoint x="820" y="430" />
+        <di:waypoint x="820" y="380" />
+        <di:waypoint x="885" y="380" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
