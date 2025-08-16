@@ -1,0 +1,47 @@
+@startuml CafeSupplyChain_BPMN
+!pragma layout smetana
+
+start
+
+partition "Procurement Officer" {
+    :Identify Need for Ingredient/Equipment;
+    :Create Purchase Requisition;
+    :Approve & Send Purchase Order;
+}
+
+partition "Warehouse Manager" {
+    :Receive Goods from Vendor;
+    :Update Inventory Module;
+    if (Quality Check Required?) then (Yes)
+        :Send Stock to Quality Inspector;
+    else (No)
+        :Stock Updated in Inventory Module;
+    endif
+}
+
+partition "Quality Inspector" {
+    :Inspect Incoming Stock;
+    if (Stock Passed QC?) then (Yes)
+        :Send Stock to Warehouse Manager to Store;
+    else (No)
+        :Return / Reject Stock to Procurement;
+    endif
+}
+
+partition "Maintenance Technician" {
+    :Maintenance Triggered (Scheduled / Issue Reported);
+    :Perform Maintenance;
+    :Log Maintenance in Maintenance Module;
+}
+
+partition "Production Manager" {
+    :Create Production Order;
+    :Plan Production using BoM (PLM Module);
+    :Allocate Materials from Inventory Module;
+    :Execute Production Order;
+    :Record Production Completion in Manufacturing Module;
+}
+
+stop
+
+@enduml
