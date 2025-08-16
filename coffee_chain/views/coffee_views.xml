@@ -10,6 +10,7 @@
       <field name="arch" type="xml">
         <list create="1" edit="1" delete="1">
           <field name="name"/>
+          <field name="code"/>
           <field name="location"/>
           <field name="manager"/>
         </list>
@@ -28,6 +29,7 @@
             <group>
               <field name="name"/>
               <!--<field name="address"/>-->
+              <field name="code"/>
               <field name="location"/>
               <field name="manager"/>
               <field name="customer_id"/>
