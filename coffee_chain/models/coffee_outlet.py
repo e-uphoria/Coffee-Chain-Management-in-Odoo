@@ -8,6 +8,10 @@ class CoffeeOutlet(models.Model):
     location = fields.Char(string="Location")
     manager = fields.Char(string="Manager")
     code = fields.Char(string="Code", required=True, help="Short code for the outlet, e.g., KTM-01")
+    phone = fields.Char(string="Phone")
+    email = fields.Char(string="Email")
+    state = fields.Selection([('active', 'Active'), ('inactive', 'Inactive')], default='active')
+    outlet_type = fields.Selection([('owned', 'Owned'), ('franchise', 'Franchise')], string="Outlet Type")
 
 
     # Link to CRM Customers
@@ -15,6 +19,8 @@ class CoffeeOutlet(models.Model):
 
     # Link to CRM Leads/Opportunities
     lead_id = fields.Many2one('crm.lead', string='Related Lead')
+    sale_order_ids = fields.One2many('sale.order', 'outlet_id', string="Sales Orders")
+
 
     @api.model
     def create(self, vals):
