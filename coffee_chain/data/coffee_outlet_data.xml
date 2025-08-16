@@ -1,16 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="coffee_outlet_kathmandu" model="coffee.outlet">
-        <field name="name">Kathmandu Branch</field>
-        <field name="code">KT001</field>
-        <field name="location">Kathmandu</field>
-        <field name="manager">Ram Limbu</field>
+    <record id="coffee_outlet_butwal_1" model="coffee.outlet">
+        <field name="name">Butwal Central Cafe</field>
+        <field name="code">BUT-01</field>
+        <field name="location">Main Street, Butwal</field>
+        <field name="manager">Anjali Sapkota</field>
+        <field name="phone">+977-9800000001</field>
+        <field name="email">central@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">owned</field>
     </record>
 
-    <record id="coffee_outlet_pokhara" model="coffee.outlet">
-        <field name="name">Pokhara Branch</field>
-        <field name="code">PK001</field>
-        <field name="location">Pokhara</field>
-        <field name="manager">Sita Kumari</field>
+    <record id="coffee_outlet_butwal_2" model="coffee.outlet">
+        <field name="name">Butwal Lakeside Cafe</field>
+        <field name="code">BUT-02</field>
+        <field name="location">Lakeside Area, Butwal</field>
+        <field name="manager">Archana Mahat</field>
+        <field name="phone">+977-9800000002</field>
+        <field name="email">lakeside@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">franchise</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_3" model="coffee.outlet">
+        <field name="name">Butwal College Road Cafe</field>
+        <field name="code">BUT-03</field>
+        <field name="location">College Road, Butwal</field>
+        <field name="manager">Nush Ojha</field>
+        <field name="phone">+977-9800000003</field>
+        <field name="email">college@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">owned</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_4" model="coffee.outlet">
+        <field name="name">Butwal Airport Road Cafe</field>
+        <field name="code">BUT-04</field>
+        <field name="location">Airport Road, Butwal</field>
+        <field name="manager">Rekha Sharma</field>
+        <field name="phone">+977-9800000004</field>
+        <field name="email">airport@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">franchise</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_5" model="coffee.outlet">
+        <field name="name">Butwal New Road Cafe</field>
+        <field name="code">BUT-05</field>
+        <field name="location">New Road, Butwal</field>
+        <field name="manager">Rajesh Thapa</field>
+        <field name="phone">+977-9800000005</field>
+        <field name="email">newroad@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">owned</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_6" model="coffee.outlet">
+        <field name="name">Butwal Bazaar Cafe</field>
+        <field name="code">BUT-06</field>
+        <field name="location">Butwal Bazaar</field>
+        <field name="manager">Anjali Shrestha</field>
+        <field name="phone">+977-9800000006</field>
+        <field name="email">bazaar@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">franchise</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_7" model="coffee.outlet">
+        <field name="name">Butwal Riverside Cafe</field>
+        <field name="code">BUT-07</field>
+        <field name="location">Riverside Area, Butwal</field>
+        <field name="manager">Kiran KC</field>
+        <field name="phone">+977-9800000007</field>
+        <field name="email">riverside@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">owned</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_8" model="coffee.outlet">
+        <field name="name">Butwal Garden Cafe</field>
+        <field name="code">BUT-08</field>
+        <field name="location">Garden Street, Butwal</field>
+        <field name="manager">Sunita Gurung</field>
+        <field name="phone">+977-9800000008</field>
+        <field name="email">garden@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">franchise</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_9" model="coffee.outlet">
+        <field name="name">Butwal Mall Cafe</field>
+        <field name="code">BUT-09</field>
+        <field name="location">City Mall, Butwal</field>
+        <field name="manager">Prakash Lama</field>
+        <field name="phone">+977-9800000009</field>
+        <field name="email">mall@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">owned</field>
+    </record>
+
+    <record id="coffee_outlet_butwal_10" model="coffee.outlet">
+        <field name="name">Butwal Park Cafe</field>
+        <field name="code">BUT-10</field>
+        <field name="location">City Park, Butwal</field>
+        <field name="manager">Ramesh Adhikari</field>
+        <field name="phone">+977-9800000010</field>
+        <field name="email">park@butwalcafe.com</field>
+        <field name="state">active</field>
+        <field name="outlet_type">franchise</field>
     </record>
 </odoo>
