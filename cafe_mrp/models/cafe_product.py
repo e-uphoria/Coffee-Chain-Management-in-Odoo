@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class CafeProduct(models.Model):
     _name = 'cafe.product'
@@ -13,3 +13,14 @@ class CafeProduct(models.Model):
     ], string='Product Type', default='other')
     price = fields.Float(string='Price')
     # uom_id = fields.Many2one('uom.uom', string='Unit of Measure', required=True)
+
+    @api.model
+    def create(self, vals):
+        product = super(CafeProduct, self).create(vals)
+        # Auto-create empty BOM
+        self.env['cafe.bom'].create({
+            'name': f"{product.name} BoM",
+            'product_id': product.id,
+            'revision': 'v1.0'
+        })
+        return product
