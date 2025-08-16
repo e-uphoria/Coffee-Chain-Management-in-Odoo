@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+    xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    id="Definitions_Quality"
+    targetNamespace="http://bpmn.io/schema/bpmn">
+
+  <bpmn:process id="Quality_Management_Process" name="Quality Management Process" isExecutable="true">
+
+    <bpmn:startEvent id="StartEvent_QC" name="Start QC Check"/>
+    <bpmn:task id="Task_PerformQC" name="Perform Quality Check"/>
+    <bpmn:exclusiveGateway id="Gateway_QCResult" name="QC Passed?"/>
+    <bpmn:task id="Task_LogNonConformity" name="Log Non-Conformity"/>
+    <bpmn:task id="Task_PerformRework" name="Perform Rework"/>
+    <bpmn:task id="Task_RecheckQC" name="Recheck QC"/>
+    <bpmn:endEvent id="EndEvent_QCFail" name="QC Failed - Alert"/>
+    <bpmn:task id="Task_GenerateReport" name="Generate QC Report"/>
+    <bpmn:endEvent id="EndEvent_QCPass" name="QC Passed - Complete"/>
+
+    <!-- Flows -->
+    <bpmn:sequenceFlow id="flow_1" sourceRef="StartEvent_QC" targetRef="Task_PerformQC"/>
+    <bpmn:sequenceFlow id="flow_2" sourceRef="Task_PerformQC" targetRef="Gateway_QCResult"/>
+    <bpmn:sequenceFlow id="flow_3" sourceRef="Gateway_QCResult" targetRef="Task_GenerateReport">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[pass]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flow_4" sourceRef="Gateway_QCResult" targetRef="Task_LogNonConformity">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[fail]]></bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="flow_5" sourceRef="Task_GenerateReport" targetRef="EndEvent_QCPass"/>
+    <bpmn:sequenceFlow id="flow_6" sourceRef="Task_LogNonConformity" targetRef="Task_PerformRework"/>
+    <bpmn:sequenceFlow id="flow_7" sourceRef="Task_PerformRework" targetRef="Task_RecheckQC"/>
+    <bpmn:sequenceFlow id="flow_8" sourceRef="Task_RecheckQC" targetRef="Gateway_QCResult"/>
+  </bpmn:process>
+
+  <!-- Diagram Interchange -->
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Quality">
+    <bpmndi:BPMNPlane id="BPMNPlane_Quality" bpmnElement="Quality_Management_Process">
+
+      <!-- Shapes -->
+      <bpmndi:BPMNShape id="StartEvent_QC_di" bpmnElement="StartEvent_QC">
+        <dc:Bounds x="100" y="150" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_PerformQC_di" bpmnElement="Task_PerformQC">
+        <dc:Bounds x="180" y="130" width="100" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_QCResult_di" bpmnElement="Gateway_QCResult" isMarkerVisible="true">
+        <dc:Bounds x="300" y="140" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_GenerateReport_di" bpmnElement="Task_GenerateReport">
+        <dc:Bounds x="380" y="50" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="EndEvent_QCPass_di" bpmnElement="EndEvent_QCPass">
+        <dc:Bounds x="530" y="70" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_LogNonConformity_di" bpmnElement="Task_LogNonConformity">
+        <dc:Bounds x="380" y="230" width="130" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_PerformRework_di" bpmnElement="Task_PerformRework">
+        <dc:Bounds x="530" y="230" width="130" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_RecheckQC_di" bpmnElement="Task_RecheckQC">
+        <dc:Bounds x="690" y="230" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Sequence Flows -->
+      <bpmndi:BPMNEdge id="flow_1_di" bpmnElement="flow_1">
+        <di:waypoint x="136" y="168"/>
+        <di:waypoint x="180" y="170"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="flow_2_di" bpmnElement="flow_2">
+        <di:waypoint x="280" y="170"/>
+        <di:waypoint x="300" y="165"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="flow_3_di" bpmnElement="flow_3">
+        <di:waypoint x="350" y="165"/>
+        <di:waypoint x="380" y="90"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="flow_4_di" bpmnElement="flow_4">
+        <di:waypoint x="325" y="190"/>
+        <di:waypoint x="380" y="270"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="flow_5_di" bpmnElement="flow_5">
+        <di:waypoint x="500" y="90"/>
+        <di:waypoint x="530" y="88"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="flow_6_di" bpmnElement="flow_6">
+        <di:waypoint x="510" y="270"/>
+        <di:waypoint x="530" y="270"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="flow_7_di" bpmnElement="flow_7">
+        <di:waypoint x="660" y="270"/>
+        <di:waypoint x="690" y="270"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="flow_8_di" bpmnElement="flow_8">
+        <di:waypoint x="810" y="270"/>
+        <di:waypoint x="815" y="165"/>
+        <di:waypoint x="325" y="165"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
