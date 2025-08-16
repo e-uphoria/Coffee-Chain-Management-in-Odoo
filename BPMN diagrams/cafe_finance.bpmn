@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:bioc="http://bpmn.io/schema/bpmn/biocolor/1.0" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_FinanceWorkflow" targetNamespace="http://example.com/odoo/finance" exporter="Camunda Web Modeler" exporterVersion="107b38b" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:collaboration id="Collab_Finance">
+    <bpmn:participant id="Participant_Finance" name="Odoo Finance" processRef="FinanceFlow" />
+  </bpmn:collaboration>
+  <bpmn:process id="FinanceFlow" name="Odoo Finance Workflow" isExecutable="false">
+    <bpmn:laneSet id="LaneSet_Finance">
+      <bpmn:lane id="Lane_AP" name="Accounts Payable">
+        <bpmn:flowNodeRef>StartEvent_Invoice</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ValidateInvoice</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ApprovePayment</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_AR" name="Accounts Receivable">
+        <bpmn:flowNodeRef>Task_RecordPayment</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_FinanceMgmt" name="Finance Management">
+        <bpmn:flowNodeRef>Task_UpdateLedger</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Audit" name="Audit">
+        <bpmn:flowNodeRef>Gateway_QCRequired</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RecheckInvoice</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="StartEvent_Invoice" name="Invoice Received">
+      <bpmn:outgoing>Flow_Invoice_Validate</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:task id="Task_ValidateInvoice" name="Validate Invoice">
+      <bpmn:incoming>Flow_Invoice_Validate</bpmn:incoming>
+      <bpmn:outgoing>Flow_Validate_Approve</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_ApprovePayment" name="Approve Payment">
+      <bpmn:incoming>Flow_Validate_Approve</bpmn:incoming>
+      <bpmn:outgoing>Flow_Approve_RecordPayment</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_RecordPayment" name="Record Payment">
+      <bpmn:incoming>Flow_Approve_RecordPayment</bpmn:incoming>
+      <bpmn:outgoing>Flow_Record_UpdateLedger</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:task id="Task_UpdateLedger" name="Update Ledger">
+      <bpmn:incoming>Flow_Record_UpdateLedger</bpmn:incoming>
+      <bpmn:outgoing>Flow_Ledger_QCRequired</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_QCRequired" name="Audit Required?">
+      <bpmn:incoming>Flow_Ledger_QCRequired</bpmn:incoming>
+      <bpmn:outgoing>Flow_QC_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_QC_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_RecheckInvoice" name="Recheck Invoice">
+      <bpmn:incoming>Flow_QC_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_Recheck_UpdateLedger</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="EndEvent_FinanceComplete" name="Finance Process Complete">
+      <bpmn:incoming>Flow_QC_No</bpmn:incoming>
+      <bpmn:incoming>Flow_Recheck_UpdateLedger</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_Invoice_Validate" sourceRef="StartEvent_Invoice" targetRef="Task_ValidateInvoice" />
+    <bpmn:sequenceFlow id="Flow_Validate_Approve" sourceRef="Task_ValidateInvoice" targetRef="Task_ApprovePayment" />
+    <bpmn:sequenceFlow id="Flow_Approve_RecordPayment" sourceRef="Task_ApprovePayment" targetRef="Task_RecordPayment" />
+    <bpmn:sequenceFlow id="Flow_Record_UpdateLedger" sourceRef="Task_RecordPayment" targetRef="Task_UpdateLedger" />
+    <bpmn:sequenceFlow id="Flow_Ledger_QCRequired" sourceRef="Task_UpdateLedger" targetRef="Gateway_QCRequired" />
+    <bpmn:sequenceFlow id="Flow_QC_Yes" sourceRef="Gateway_QCRequired" targetRef="Task_RecheckInvoice" />
+    <bpmn:sequenceFlow id="Flow_QC_No" sourceRef="Gateway_QCRequired" targetRef="EndEvent_FinanceComplete" />
+    <bpmn:sequenceFlow id="Flow_Recheck_UpdateLedger" sourceRef="Task_RecheckInvoice" targetRef="EndEvent_FinanceComplete" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_Finance">
+    <bpmndi:BPMNPlane id="BPMNPlane_Finance" bpmnElement="FinanceFlow">
+      <bpmndi:BPMNShape id="LaneShape_Audit" bpmnElement="Lane_Audit" isHorizontal="false" bioc:stroke="#0d4372" bioc:fill="#ffcdd2">
+        <dc:Bounds x="820" y="60" width="220" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="LaneShape_FinanceMgmt" bpmnElement="Lane_FinanceMgmt" isHorizontal="false" bioc:stroke="#0d4372" bioc:fill="#ffe0b2">
+        <dc:Bounds x="600" y="60" width="200" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="LaneShape_AR" bpmnElement="Lane_AR" isHorizontal="false" bioc:stroke="#0d4372" bioc:fill="#c8e6c9">
+        <dc:Bounds x="380" y="60" width="200" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="LaneShape_AP" bpmnElement="Lane_AP" isHorizontal="false" bioc:stroke="#0d4372" bioc:fill="#bbdefb">
+        <dc:Bounds x="120" y="60" width="240" height="420" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_StartEvent" bpmnElement="StartEvent_Invoice">
+        <dc:Bounds x="150" y="80" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ValidateInvoice" bpmnElement="Task_ValidateInvoice">
+        <dc:Bounds x="150" y="150" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_ApprovePayment" bpmnElement="Task_ApprovePayment">
+        <dc:Bounds x="150" y="240" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_RecordPayment" bpmnElement="Task_RecordPayment">
+        <dc:Bounds x="400" y="240" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_UpdateLedger" bpmnElement="Task_UpdateLedger">
+        <dc:Bounds x="620" y="240" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_QC" bpmnElement="Gateway_QCRequired" isMarkerVisible="true">
+        <dc:Bounds x="860" y="240" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_RecheckInvoice" bpmnElement="Task_RecheckInvoice">
+        <dc:Bounds x="860" y="320" width="170" height="60" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_EndEvent" bpmnElement="EndEvent_FinanceComplete">
+        <dc:Bounds x="860" y="150" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_Flow_Invoice_Validate" bpmnElement="Flow_Invoice_Validate">
+        <di:waypoint x="168" y="98" />
+        <di:waypoint x="168" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Validate_Approve" bpmnElement="Flow_Validate_Approve">
+        <di:waypoint x="168" y="210" />
+        <di:waypoint x="168" y="240" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Approve_RecordPayment" bpmnElement="Flow_Approve_RecordPayment">
+        <di:waypoint x="320" y="270" />
+        <di:waypoint x="400" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Record_UpdateLedger" bpmnElement="Flow_Record_UpdateLedger">
+        <di:waypoint x="570" y="270" />
+        <di:waypoint x="620" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Ledger_QCRequired" bpmnElement="Flow_Ledger_QCRequired">
+        <di:waypoint x="790" y="270" />
+        <di:waypoint x="860" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QC_Yes" bpmnElement="Flow_QC_Yes">
+        <di:waypoint x="885" y="270" />
+        <di:waypoint x="885" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_QC_No" bpmnElement="Flow_QC_No">
+        <di:waypoint x="885" y="270" />
+        <di:waypoint x="885" y="168" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_Flow_Recheck_UpdateLedger" bpmnElement="Flow_Recheck_UpdateLedger">
+        <di:waypoint x="885" y="320" />
+        <di:waypoint x="885" y="184" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
