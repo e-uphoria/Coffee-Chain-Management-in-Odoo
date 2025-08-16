@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_cafe_bom_form" model="ir.ui.view">
+    <field name="name">cafe.bom.form</field>
+    <field name="model">cafe.bom</field>
+    <field name="arch" type="xml">
+      <form string="Recipe BoM">
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="product_id"/>
+          </group>
+          <notebook>
+            <page string="Ingredients">
+              <field name="ingredient_line_ids">
+                <list editable="bottom">
+                  <field name="ingredient_id"/>
+                  <field name="quantity"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_cafe_bom_list" model="ir.ui.view">
+    <field name="name">cafe.bom.list</field>
+    <field name="model">cafe.bom</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="product_id"/>
+      </list>
+    </field>
+  </record>
+</odoo>

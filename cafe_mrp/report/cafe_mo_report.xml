@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <record id="action_report_cafe_mo_qc" model="ir.actions.report">
+      <field name="name">Cafe QC Report</field>
+      <field name="model">cafe.mo</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">cafe_mo.report_cafe_mo_qc_template</field>
+      <field name="print_report_name">'QC_Report_%s' % (object.name)</field>
+    </record>
+  </data>
+</odoo>

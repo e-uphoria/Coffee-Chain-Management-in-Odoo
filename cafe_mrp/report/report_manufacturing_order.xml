@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- Report Template inheriting web.external_layout -->
+    <template id="report_manufacturing_order_template">
+      <t t-call="web.external_layout">
+
+        <!-- Set doc to first record in docs -->
+        <t t-set="doc" t-value="docs and docs[0] or None"/>
+
+        <main class="page">
+
+          <!-- Header -->
+          <div style="border-bottom: 2px solid #346751; padding-bottom: 10px; margin-bottom: 20px; display: flex; align-items: center;">
+            <img t-att-src="'/cafe/static/src/img/cafe_logo.png'" alt="Cafe Logo" style="height: 60px; margin-right: 15px;"/>
+            <h1 style="color: #346751; font-family: 'Georgia', serif; margin: 0;">Manufacturing Order Report</h1>
+          </div>
+
+          <!-- Manufacturing Order Info -->
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+            <tbody>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; width: 150px;">MO Reference:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.name"/></td>
+                <td style="font-weight: bold; padding: 5px 10px; width: 150px;">Status:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.state"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px;">Product:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.product_id.name"/></td>
+                <td style="font-weight: bold; padding: 5px 10px;">Bill of Materials:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.bom_id.name"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px;">Quantity:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.quantity"/></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Quality Checks List -->
+          <h3 style="color: #346751; font-family: 'Georgia', serif; margin-bottom: 10px;">Quality Checks</h3>
+          <table style="width: 100%; border-collapse: collapse; border: 1px solid #b2d8b2; margin-bottom: 30px;">
+            <thead style="background-color: #d5e8d4; color: #255d25;">
+              <tr>
+                <th style="padding: 8px 12px; border: 1px solid #b2d8b2; text-align: left;">Check Date</th>
+                <th style="padding: 8px 12px; border: 1px solid #b2d8b2; text-align: left;">Checked By</th>
+                <th style="padding: 8px 12px; border: 1px solid #b2d8b2; text-align: left;">Result</th>
+                <th style="padding: 8px 12px; border: 1px solid #b2d8b2; text-align: left;">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-foreach="doc.qc_ids" t-as="qc">
+                <tr>
+                  <td style="padding: 6px 10px; border: 1px solid #b2d8b2;">
+                    <t t-esc="qc.check_date and qc.check_date.strftime('%Y-%m-%d %H:%M') or 'N/A'"/>
+                  </td>
+                  <td style="padding: 6px 10px; border: 1px solid #b2d8b2;"><t t-esc="qc.checked_by or 'N/A'"/></td>
+                  <td style="padding: 6px 10px; border: 1px solid #b2d8b2;">
+                    <t t-esc="qc.result and qc.result.capitalize() or 'N/A'"/>
+                  </td>
+                  <td style="padding: 6px 10px; border: 1px solid #b2d8b2;">
+                    <t t-esc="qc.notes or 'No notes'"/>
+                  </td>
+                </tr>
+              </t>
+              <t t-if="not doc.qc_ids">
+                <tr><td colspan="4" style="padding: 10px; text-align: center; font-style: italic; color: #888;">No quality checks recorded.</td></tr>
+              </t>
+            </tbody>
+          </table>
+
+        </main>
+      </t>
+    </template>
+
+    <!-- Report Action -->
+    <record id="action_report_manufacturing_order" model="ir.actions.report">
+      <field name="name">Manufacturing Order Report</field>
+      <field name="model">cafe.manufacturing.order</field>
+      <field name="report_type">qweb-pdf</field>
+      <field name="report_name">cafe.report_manufacturing_order_template</field>
+      <field name="print_report_name">'Manufacturing Order - %s' % (object.name)</field>
+    </record>
+
+  </data>
+</odoo>

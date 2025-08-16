@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <template id="report_cafe_mo_qc_template">
+      <t t-call="web.external_layout">
+
+        <!-- Use first record in docs -->
+        <t t-set="doc" t-value="docs and docs[0] or None"/>
+
+        <main class="page">
+
+          <!-- HEADER -->
+          <div style="display: flex; align-items: center; border-bottom: 2px solid #6f4e37; padding-bottom: 10px; margin-bottom: 20px;">
+            <img t-att-src="'/cafe_mo/static/src/img/cafe_logo.png'" alt="Cafe Logo" style="height: 60px; margin-right: 15px;"/>
+            <h1 style="color: #6f4e37; font-family: 'Georgia', serif; margin: 0;">Cafe QC Report</h1>
+          </div>
+
+          <!-- MO DETAILS -->
+          <table style="width: 100%; border-collapse: collapse; margin-bottom: 25px;">
+            <tbody>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">MO Name:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.name"/></td>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Product:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.product_id.display_name"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Quantity:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.product_qty"/></td>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Planned Date:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.date_planned_start"/></td>
+              </tr>
+              <tr>
+                <td style="font-weight: bold; padding: 5px 10px; color: #4b3b28;">Status:</td>
+                <td style="padding: 5px 10px;"><t t-esc="doc.state"/></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- QC CHECKLIST -->
+          <h3 style="color: #6f4e37; font-family: 'Georgia', serif; margin-bottom: 10px;">QC Checklist</h3>
+          <table style="width: 100%; border-collapse: collapse; border: 1px solid #d3c5a3; margin-bottom: 30px;">
+            <thead style="background-color: #f4e7d3; color: #5a402c;">
+              <tr>
+                <th style="padding: 8px 12px; border: 1px solid #d3c5a3; text-align: left;">Step</th>
+                <th style="padding: 8px 12px; border: 1px solid #d3c5a3; text-align: left;">Result</th>
+                <th style="padding: 8px 12px; border: 1px solid #d3c5a3; text-align: left;">Comments</th>
+              </tr>
+            </thead>
+            <tbody>
+              <t t-foreach="doc.qc_line_ids" t-as="line">
+                <tr>
+                  <td style="padding: 6px 10px; border: 1px solid #d3c5a3;"><t t-esc="line.step_name"/></td>
+                  <td style="padding: 6px 10px; border: 1px solid #d3c5a3;"><t t-esc="line.result"/></td>
+                  <td style="padding: 6px 10px; border: 1px solid #d3c5a3;"><t t-esc="line.comment"/></td>
+                </tr>
+              </t>
+            </tbody>
+          </table>
+
+          <!-- NOTES -->
+          <h3 style="color: #6f4e37; font-family: 'Georgia', serif; margin-bottom: 10px;">Notes</h3>
+          <div style="padding: 10px; border: 1px solid #d3c5a3; background-color: #faf5eb; min-height: 80px; font-style: italic; color: #4b3b28;">
+            <t t-esc="doc.qc_notes or 'No additional notes.'"/>
+          </div>
+
+        </main>
+      </t>
+    </template>
+
+  </data>
+</odoo>

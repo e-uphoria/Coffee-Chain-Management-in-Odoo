@@ -1,0 +1,36 @@
+<odoo>
+  <record id="view_cafe_qc_form" model="ir.ui.view">
+    <field name="name">cafe.qc.form</field>
+    <field name="model">cafe.qc</field>
+    <field name="arch" type="xml">
+      <form string="Quality Check">
+        <sheet>
+          <group>
+            <field name="manufacturing_order_id"/>
+            <field name="check_date"/>
+            <field name="checked_by"/>
+            <field name="result"/>
+            <field name="notes"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_cafe_qc_list" model="ir.ui.view">
+    <field name="name">cafe.qc.list</field>
+    <field name="model">cafe.qc</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="manufacturing_order_id"/>
+        <field name="check_date"/>
+        <field name="checked_by"/>
+        <field name="result"/>
+      </list>
+    </field>
+  </record>
+
+  <menuitem id="menu_cafe_qc" name="Quality Checks" parent="menu_cafe_mrp_root"/>
+  <act_window id="action_cafe_qc" name="Quality Checks" 
+      res_model="cafe.qc" view_mode="list,form" menu_id="menu_cafe_qc"/>
+</odoo>

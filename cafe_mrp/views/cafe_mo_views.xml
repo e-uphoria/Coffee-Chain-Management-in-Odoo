@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <record id="view_cafe_mo_form" model="ir.ui.view">
+    <field name="name">cafe.manufacturing.order.form</field>
+    <field name="model">cafe.manufacturing.order</field>
+    <field name="arch" type="xml">
+      <form string="Manufacturing Order">
+        <header>
+            <button name="action_start" string="Start" type="object" class="btn-primary"/>
+            <button name="action_done" string="Done" type="object" class="btn-success"/>
+            <button name="action_cancel" string="Cancel" type="object" class="btn-danger"/>
+        </header>
+        <sheet>
+          <group>
+            <field name="name" readonly="1"/>
+            <field name="product_id"/>
+            <field name="bom_id"/>
+            <field name="quantity"/>
+          </group>
+          <notebook>
+            <page string="Quality Checks">
+              <field name="qc_ids">
+                <list editable="bottom">
+                  <field name="check_date"/>
+                  <field name="checked_by"/>
+                  <field name="result"/>
+                  <field name="notes"/>
+                </list>
+              </field>
+            </page>
+          </notebook>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="view_cafe_mo_list" model="ir.ui.view">
+    <field name="name">cafe.manufacturing.order.list</field>
+    <field name="model">cafe.manufacturing.order</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="product_id"/>
+        <field name="bom_id"/>
+        <field name="quantity"/>
+        <field name="state"/>
+      </list>
+    </field>
+  </record>
+</odoo>

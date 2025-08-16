@@ -1,0 +1,6 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_cafe_bom,cafe.bom,model_cafe_bom,,1,1,1,1
+access_cafe_bom_ingredient,cafe.bom.ingredient,model_cafe_bom_ingredient,,1,1,1,1
+access_cafe_mo,cafe.manufacturing.order,model_cafe_manufacturing_order,,1,1,1,1
+access_cafe_product,cafe.product,model_cafe_product,,1,1,1,1
+access_cafe_qc,cafe.qc,model_cafe_qc,base.group_user,1,1,1,1
