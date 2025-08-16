@@ -1,4 +1,4 @@
-from odoo import models, fields
+from odoo import models, fields, api
 
 class CoffeeMenuItem(models.Model):
     _name = 'coffee.menu.item'
@@ -49,3 +49,34 @@ class CoffeeMenuItem(models.Model):
     ], string="Menu Status", default='draft')
 
     currency_id = fields.Many2one('res.currency', default=lambda self: self.env.company.currency_id)
+
+    # Bridge to Odoo Product
+    product_id = fields.Many2one('product.product', string="Linked Product", readonly=True, copy=False)
+
+    @api.model
+    def create(self, vals):
+        record = super().create(vals)
+        record._create_or_update_product()
+        return record
+
+    def write(self, vals):
+        res = super().write(vals)
+        for rec in self:
+            rec._create_or_update_product()
+        return res
+
+    def _create_or_update_product(self):
+        Product = self.env['product.product']
+        for item in self:
+            vals = {
+                'name': item.name,
+                'list_price': item.price,
+                'type': 'consu',
+                'sale_ok': True,
+                'purchase_ok': False,
+            }
+            if not item.product_id:
+                product = Product.create(vals)
+                super(CoffeeMenuItem, item).write({'product_id': product.id})
+            else:
+                item.product_id.write(vals)
