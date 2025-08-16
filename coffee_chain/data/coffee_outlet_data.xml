@@ -8,7 +8,7 @@
         <field name="phone">+977-9800000001</field>
         <field name="email">central@butwalcafe.com</field>
         <field name="state">active</field>
-        <field name="outlet_type">owned</field>
+        <field name="outlet_type">owned</field> 
     </record>
 
     <record id="coffee_outlet_butwal_2" model="coffee.outlet">
