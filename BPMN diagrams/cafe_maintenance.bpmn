@@ -1,110 +1,153 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<bpmn:definitions
-    xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
-    xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
-    xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
-    xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
-    id="Definitions_Maintenance"
-    targetNamespace="http://bpmn.io/schema/bpmn">
-
-  <bpmn:process id="Maintenance_Process" name="Maintenance Process" isExecutable="true">
-
-    <bpmn:startEvent id="StartEvent_ReportIssue" name="Issue Reported"/>
-    <bpmn:task id="Task_ReviewRequest" name="Review Maintenance Request"/>
-    <bpmn:exclusiveGateway id="Gateway_ApproveRequest" name="Approve Request?"/>
-    <bpmn:task id="Task_CreateWorkOrder" name="Create Work Order"/>
-    <bpmn:userTask id="UserTask_PerformRepair" name="Perform Repair"/>
-    <bpmn:task id="Task_RecordCosts" name="Record Costs & Spare Parts"/>
-    <bpmn:endEvent id="EndEvent_Completed" name="Maintenance Completed"/>
-    <bpmn:endEvent id="EndEvent_Rejected" name="Request Rejected"/>
-
-    <!-- Sequence Flows -->
-    <bpmn:sequenceFlow id="flow_1" sourceRef="StartEvent_ReportIssue" targetRef="Task_ReviewRequest"/>
-    <bpmn:sequenceFlow id="flow_2" sourceRef="Task_ReviewRequest" targetRef="Gateway_ApproveRequest"/>
-    <bpmn:sequenceFlow id="flow_3" sourceRef="Gateway_ApproveRequest" targetRef="Task_CreateWorkOrder">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[approved]]></bpmn:conditionExpression>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Web Modeler" exporterVersion="107b38b" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.7.0">
+  <bpmn:process id="Cafe_Manufacturing_Process" name="Cafe Manufacturing Process" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Start Manufacturing" />
+    <bpmn:exclusiveGateway id="Gateway_1" name="Ingredients Available?" />
+    <bpmn:task id="Task_RequestRestock" name="Request Restock" />
+    <bpmn:endEvent id="EndEvent_1" name="End" />
+    <bpmn:task id="Task_CreateMO" name="Create Manufacturing Order" />
+    <bpmn:task id="Task_ReserveIngredients" name="Reserve Ingredients" />
+    <bpmn:task id="Task_PrepareItem" name="Prepare Item" />
+    <bpmn:exclusiveGateway id="Gateway_2" name="Quality Check?" />
+    <bpmn:task id="Task_MarkMODone" name="Mark MO Done" />
+    <bpmn:task id="Task_PerformQC" name="Perform Quality Check" />
+    <bpmn:exclusiveGateway id="Gateway_3" name="QC Passed?" />
+    <bpmn:task id="Task_Rework" name="Log Issue &#38; Rework" />
+    <bpmn:task id="Task_UpdateStock" name="Update Finished Stock" />
+    <bpmn:endEvent id="EndEvent_2" name="Process Complete" />
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Gateway_1" />
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Gateway_1" targetRef="Task_RequestRestock">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">no</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="flow_4" sourceRef="Gateway_ApproveRequest" targetRef="EndEvent_Rejected">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression"><![CDATA[rejected]]></bpmn:conditionExpression>
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_1" targetRef="Task_CreateMO">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">yes</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
-    <bpmn:sequenceFlow id="flow_5" sourceRef="Task_CreateWorkOrder" targetRef="UserTask_PerformRepair"/>
-    <bpmn:sequenceFlow id="flow_6" sourceRef="UserTask_PerformRepair" targetRef="Task_RecordCosts"/>
-    <bpmn:sequenceFlow id="flow_7" sourceRef="Task_RecordCosts" targetRef="EndEvent_Completed"/>
-
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Task_RequestRestock" targetRef="EndEvent_1" />
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_CreateMO" targetRef="Task_ReserveIngredients" />
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_ReserveIngredients" targetRef="Task_PrepareItem" />
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_PrepareItem" targetRef="Gateway_2" />
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Gateway_2" targetRef="Task_MarkMODone">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">no</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Gateway_2" targetRef="Task_PerformQC">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">yes</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Task_PerformQC" targetRef="Gateway_3" />
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Gateway_3" targetRef="Task_Rework">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">fail</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_12" sourceRef="Task_Rework" targetRef="Task_PrepareItem" />
+    <bpmn:sequenceFlow id="Flow_13" sourceRef="Gateway_3" targetRef="Task_UpdateStock">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">pass</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="Flow_14" sourceRef="Task_MarkMODone" targetRef="Task_UpdateStock" />
+    <bpmn:sequenceFlow id="Flow_15" sourceRef="Task_UpdateStock" targetRef="EndEvent_2" />
   </bpmn:process>
-
-  <!-- Diagram Interchange -->
-  <bpmndi:BPMNDiagram id="BPMNDiagram_Maintenance">
-    <bpmndi:BPMNPlane id="BPMNPlane_Maintenance" bpmnElement="Maintenance_Process">
-
-      <bpmndi:BPMNShape id="StartEvent_ReportIssue_di" bpmnElement="StartEvent_ReportIssue">
-        <dc:Bounds x="100" y="150" width="36" height="36"/>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Cafe_Manufacturing_Process">
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="100" y="120" width="36" height="36" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="Task_ReviewRequest_di" bpmnElement="Task_ReviewRequest">
-        <dc:Bounds x="180" y="130" width="120" height="80"/>
+      <bpmndi:BPMNShape id="Gateway_1_di" bpmnElement="Gateway_1" isMarkerVisible="true">
+        <dc:Bounds x="200" y="107" width="50" height="50" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="Gateway_ApproveRequest_di" bpmnElement="Gateway_ApproveRequest" isMarkerVisible="true">
-        <dc:Bounds x="320" y="140" width="50" height="50"/>
+      <bpmndi:BPMNShape id="Task_RequestRestock_di" bpmnElement="Task_RequestRestock">
+        <dc:Bounds x="300" y="50" width="100" height="80" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="Task_CreateWorkOrder_di" bpmnElement="Task_CreateWorkOrder">
-        <dc:Bounds x="400" y="130" width="130" height="80"/>
+      <bpmndi:BPMNShape id="EndEvent_1_di" bpmnElement="EndEvent_1">
+        <dc:Bounds x="450" y="65" width="36" height="36" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="UserTask_PerformRepair_di" bpmnElement="UserTask_PerformRepair">
-        <dc:Bounds x="560" y="130" width="140" height="80"/>
+      <bpmndi:BPMNShape id="Task_CreateMO_di" bpmnElement="Task_CreateMO">
+        <dc:Bounds x="300" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="Task_RecordCosts_di" bpmnElement="Task_RecordCosts">
-        <dc:Bounds x="720" y="130" width="140" height="80"/>
+      <bpmndi:BPMNShape id="Task_ReserveIngredients_di" bpmnElement="Task_ReserveIngredients">
+        <dc:Bounds x="430" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="EndEvent_Completed_di" bpmnElement="EndEvent_Completed">
-        <dc:Bounds x="880" y="150" width="36" height="36"/>
+      <bpmndi:BPMNShape id="Task_PrepareItem_di" bpmnElement="Task_PrepareItem">
+        <dc:Bounds x="570" y="140" width="100" height="80" />
       </bpmndi:BPMNShape>
-
-      <bpmndi:BPMNShape id="EndEvent_Rejected_di" bpmnElement="EndEvent_Rejected">
-        <dc:Bounds x="400" y="220" width="36" height="36"/>
+      <bpmndi:BPMNShape id="Gateway_2_di" bpmnElement="Gateway_2" isMarkerVisible="true">
+        <dc:Bounds x="700" y="130" width="50" height="50" />
       </bpmndi:BPMNShape>
-
-      <!-- Flows -->
-      <bpmndi:BPMNEdge id="flow_1_di" bpmnElement="flow_1">
-        <di:waypoint x="136" y="168"/>
-        <di:waypoint x="180" y="170"/>
+      <bpmndi:BPMNShape id="Task_MarkMODone_di" bpmnElement="Task_MarkMODone">
+        <dc:Bounds x="770" y="50" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PerformQC_di" bpmnElement="Task_PerformQC">
+        <dc:Bounds x="770" y="210" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_3_di" bpmnElement="Gateway_3" isMarkerVisible="true">
+        <dc:Bounds x="900" y="210" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Rework_di" bpmnElement="Task_Rework">
+        <dc:Bounds x="1050" y="230" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_UpdateStock_di" bpmnElement="Task_UpdateStock">
+        <dc:Bounds x="1050" y="100" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="EndEvent_2_di" bpmnElement="EndEvent_2">
+        <dc:Bounds x="1200" y="130" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="136" y="138" />
+        <di:waypoint x="200" y="132" />
       </bpmndi:BPMNEdge>
-
-      <bpmndi:BPMNEdge id="flow_2_di" bpmnElement="flow_2">
-        <di:waypoint x="300" y="170"/>
-        <di:waypoint x="320" y="165"/>
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="250" y="132" />
+        <di:waypoint x="300" y="90" />
       </bpmndi:BPMNEdge>
-
-      <bpmndi:BPMNEdge id="flow_3_di" bpmnElement="flow_3">
-        <di:waypoint x="370" y="165"/>
-        <di:waypoint x="400" y="170"/>
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="250" y="132" />
+        <di:waypoint x="300" y="180" />
       </bpmndi:BPMNEdge>
-
-      <bpmndi:BPMNEdge id="flow_4_di" bpmnElement="flow_4">
-        <di:waypoint x="345" y="190"/>
-        <di:waypoint x="418" y="238"/>
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="400" y="90" />
+        <di:waypoint x="450" y="83" />
       </bpmndi:BPMNEdge>
-
-      <bpmndi:BPMNEdge id="flow_5_di" bpmnElement="flow_5">
-        <di:waypoint x="530" y="170"/>
-        <di:waypoint x="560" y="170"/>
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="400" y="180" />
+        <di:waypoint x="430" y="180" />
       </bpmndi:BPMNEdge>
-
-      <bpmndi:BPMNEdge id="flow_6_di" bpmnElement="flow_6">
-        <di:waypoint x="700" y="170"/>
-        <di:waypoint x="720" y="170"/>
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="530" y="180" />
+        <di:waypoint x="570" y="180" />
       </bpmndi:BPMNEdge>
-
-      <bpmndi:BPMNEdge id="flow_7_di" bpmnElement="flow_7">
-        <di:waypoint x="860" y="170"/>
-        <di:waypoint x="880" y="168"/>
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="670" y="180" />
+        <di:waypoint x="700" y="155" />
       </bpmndi:BPMNEdge>
-
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="725" y="130" />
+        <di:waypoint x="770" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="725" y="180" />
+        <di:waypoint x="770" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="870" y="250" />
+        <di:waypoint x="900" y="235" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="950" y="235" />
+        <di:waypoint x="1050" y="270" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_12_di" bpmnElement="Flow_12">
+        <di:waypoint x="1150" y="270" />
+        <di:waypoint x="1150" y="180" />
+        <di:waypoint x="670" y="180" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13_di" bpmnElement="Flow_13">
+        <di:waypoint x="950" y="235" />
+        <di:waypoint x="1100" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_14_di" bpmnElement="Flow_14">
+        <di:waypoint x="870" y="90" />
+        <di:waypoint x="1100" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_15_di" bpmnElement="Flow_15">
+        <di:waypoint x="1150" y="140" />
+        <di:waypoint x="1200" y="148" />
+      </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
