@@ -1,0 +1,55 @@
+<odoo>
+  <record id="view_cafe_batch_list" model="ir.ui.view">
+    <field name="name">cafe.batch.list</field>
+    <field name="model">cafe.batch</field>
+    <field name="arch" type="xml">
+      <list>
+        <field name="name"/>
+        <field name="product_id"/>
+        <field name="qty"/>
+        <!-- <field name="uom_id"/> -->
+        <field name="outlet_id"/>
+        <field name="expiry_date"/>
+        <field name="is_expired"/>
+      </list>
+    </field>
+  </record>
+
+  <record id="view_cafe_batch_form" model="ir.ui.view">
+    <field name="name">cafe.batch.form</field>
+    <field name="model">cafe.batch</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="product_id"/>
+            <field name="qty"/>
+            <!-- <field name="uom_id" readonly="1"/> -->
+            <field name="outlet_id"/>
+            <field name="expiry_date"/>
+            <field name="is_expired" readonly="1"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <!-- Action -->
+  <record id="action_cafe_batch" model="ir.actions.act_window">
+    <field name="name">Batches</field>
+    <field name="res_model">cafe.batch</field>
+    <field name="view_mode">list,form</field>
+    <!-- <field name="view_id" ref="view_cafe_batch_list"/> -->
+  </record>
+
+  <!-- Menus -->
+  <menuitem id="menu_cafe_inventory"
+            name="Inventory"
+            sequence="2"/>
+
+  <menuitem id="menu_cafe_batch"
+            name="Batches"
+            parent="menu_cafe_inventory"
+            action="action_cafe_batch"/>
+</odoo>
