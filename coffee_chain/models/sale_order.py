@@ -1,8 +1,10 @@
 from odoo import models, fields, api
 
+
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
-
+   
+    
     outlet_id = fields.Many2one('coffee.outlet', string='Outlet', required=True)
     service_type = fields.Selection([
         ('dine_in', 'Dine-in'),
@@ -93,4 +95,4 @@ class SaleOrder(models.Model):
             vals['order_line'] = order_lines
         return super(SaleOrder, self).create(vals)
 
-
+    

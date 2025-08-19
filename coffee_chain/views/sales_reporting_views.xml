@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- Graph: Sales by Day / Outlet / Payment / Service -->
+    <record id="view_so_graph_coffee_sales" model="ir.ui.view">
+        <field name="name">sale.order.graph.coffee.sales</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <graph string="Coffee Sales Overview" type="bar" stacked="True">
+                <field name="amount_untaxed" type="measure"/>
+                <field name="amount_total" type="measure"/>
+                <field name="date_order" interval="day"/>
+                <field name="outlet_id" type="row"/>
+                <field name="payment_method_id" type="col"/>
+                <field name="service_type" type="col"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Pivot: Sales Cube -->
+    <record id="view_so_pivot_coffee_sales" model="ir.ui.view">
+        <field name="name">sale.order.pivot.coffee.sales</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Coffee Sales Pivot">
+                <field name="date_order" type="row" interval="month"/>
+                <field name="outlet_id" type="row"/>
+                <field name="service_type" type="col"/>
+                <field name="payment_method_id" type="col"/>
+                <field name="amount_untaxed" type="measure"/>
+                <field name="amount_total" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Pivot: Sales by Outlet + Payment Method -->
+    <record id="view_so_pivot_sales_outlet_payment" model="ir.ui.view">
+        <field name="name">sale.order.pivot.sales.outlet.payment</field>
+        <field name="model">sale.order</field>
+        <field name="arch" type="xml">
+            <pivot string="Sales by Outlet &amp; Payment Method">
+                <field name="outlet_id" type="row"/>
+                <field name="payment_method_id" type="col"/>
+                <field name="amount_total" type="measure"/>
+                <field name="amount_untaxed" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph: Top Products -->
+    <record id="view_sol_graph_top_products" model="ir.ui.view">
+        <field name="name">sale.order.line.graph.top.products</field>
+        <field name="model">sale.order.line</field>
+        <field name="arch" type="xml">
+            <graph string="Top Products" type="bar">
+                <field name="price_subtotal" type="measure"/>
+                <field name="product_uom_qty" type="measure"/>
+                <field name="product_id" type="row"/>
+                <field name="order_id" type="col"/>
+                <field name="create_date" interval="month"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Actions with default filters -->
+    <record id="action_coffee_sales_report" model="ir.actions.act_window">
+        <field name="name">Coffee Sales</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_id" ref="view_so_graph_coffee_sales"/>
+        <field name="context">{'search_default_confirmed_done': 1,
+                                'search_default_filter_this_month': 1}</field>
+        <field name="domain">[('state','in',('sale','done'))]</field>
+    </record>
+
+
+    <record id="action_coffee_top_products" model="ir.actions.act_window">
+        <field name="name">Top Products</field>
+        <field name="res_model">sale.order.line</field>
+        <field name="view_mode">graph,pivot,list</field>
+        <field name="view_id" ref="view_sol_graph_top_products"/>
+        <field name="context">{'search_default_filter_this_month': 1}</field>
+    </record>
+
+    <record id="action_sales_by_outlet_payment" model="ir.actions.act_window">
+        <field name="name">Sales by Outlet &amp; Payment Method</field>
+        <field name="res_model">sale.order</field>
+        <field name="view_mode">pivot,list</field>
+        <field name="view_id" ref="view_so_pivot_sales_outlet_payment"/>
+        <field name="context">{'search_default_confirmed_done': 1,
+                                'search_default_filter_last_30_days': 1}</field>
+        <field name="domain">[('state','in',('sale','done'))]</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="menu_coffee_reporting_root" name="Coffee Reporting" parent="sale.sale_menu_root"/>
+    <menuitem id="menu_coffee_sales" name="Sales Overview"
+              parent="menu_coffee_reporting_root" action="action_coffee_sales_report"/>
+    <menuitem id="menu_coffee_top_products" name="Top Products"
+              parent="menu_coffee_reporting_root" action="action_coffee_top_products"/>
+    <menuitem id="menu_sales_by_outlet_payment" name="Sales by Outlet/Payment"
+              parent="menu_coffee_reporting_root"
+              action="action_sales_by_outlet_payment"/>
+
+</odoo>

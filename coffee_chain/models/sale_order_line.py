@@ -2,7 +2,7 @@ from odoo import models, fields, api
 
 class SaleOrderLine(models.Model):
     _inherit = 'sale.order.line'
-
+    
     # Computed field containing only active/seasonal coffee products for this order
     coffee_product_ids = fields.Many2many(
         'product.product',
