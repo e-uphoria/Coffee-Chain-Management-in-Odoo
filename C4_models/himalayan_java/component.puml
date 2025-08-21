@@ -1,0 +1,25 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container(webApp, "Web Application", "Odoo Web UI")
+Container(db, "Database", "PostgreSQL")
+
+Container_Boundary(webApp, "Supply Chain Module") {
+    Component(requisition, "Requisition Component", "Manages outlet requests and approvals")
+    Component(purchaseOrder, "Purchase Order Component", "Handles vendor POs and receipts")
+    Component(inventory, "Inventory Component", "Tracks stock levels, internal transfers, batch/expiry")
+    Component(forecasting, "Demand Forecasting Component", "Predicts future supply needs")
+}
+
+Rel(requisition, inventory, "Checks & updates outlet stock")
+Rel(purchaseOrder, inventory, "Updates stock on delivery")
+Rel(forecasting, purchaseOrder, "Recommends PO quantities")
+Rel(webApp, requisition, "User interacts")
+Rel(webApp, purchaseOrder, "User interacts")
+Rel(webApp, inventory, "User interacts")
+Rel(webApp, forecasting, "User interacts")
+Rel(inventory, db, "Reads/Writes stock data")
+Rel(requisition, db, "Reads/Writes requisition data")
+Rel(purchaseOrder, db, "Reads/Writes PO data")
+Rel(forecasting, db, "Reads historical sales & stock data")
+@enduml

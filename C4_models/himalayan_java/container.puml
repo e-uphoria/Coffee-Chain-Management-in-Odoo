@@ -1,0 +1,101 @@
+' @startuml
+' !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+' Person(outletManager, "Outlet Manager")
+' Person(hqSupplyManager, "HQ Supply Chain Manager")
+' Person(accounting, "Accounting Staff")
+
+' System_Boundary(erp, "Himalayan Java ERP") {
+'     Container(webApp, "Web Application", "Odoo Web Interface", "For HQ and outlet managers")
+'     Container(mobileApp, "Mobile App", "Flutter/Native App", "Outlet POS & requisition entry")
+'     Container(db, "Database", "PostgreSQL", "Stores inventory, purchase orders, recipes, outlets, vendors")
+'     Container(inventoryService, "Inventory Service", "Odoo module", "Manages stock levels, internal transfers")
+'     Container(purchaseService, "Purchase Service", "Odoo module", "Manages POs, vendor contracts, receipts")
+'     Container(accountingService, "Accounting Service", "Odoo module", "Tracks invoices, payments, COGS")
+' }
+
+' Rel(outletManager, mobileApp, "Updates POS sales & requests stock")
+' Rel(hqSupplyManager, webApp, "Approves requisitions and monitors inventory")
+' Rel(accounting, webApp, "Processes invoices and tracks costs")
+' Rel(webApp, db, "Reads/writes data")
+' Rel(mobileApp, db, "Syncs POS & inventory data")
+' Rel(purchaseService, vendors, "Sends POs & receives goods")
+' Rel(inventoryService, db, "Updates stock, transfer orders")
+' Rel(purchaseService, inventoryService, "Updates stock upon delivery")
+' Rel(accountingService, db, "Reads cost & stock data")
+' @enduml
+
+@startuml
+!define RECTANGLE class
+
+'=========================
+' Pools / Modules
+'=========================
+package "Purchase / Suppliers" as Purchase {
+    RECTANGLE Supplier
+    RECTANGLE PurchaseOrder
+    RECTANGLE PurchaseOrderLine
+}
+
+package "Inventory" as Inventory {
+    RECTANGLE StockLocation
+    RECTANGLE StockPicking
+    RECTANGLE StockMove
+    RECTANGLE Product
+}
+
+package "Requisition" as Requisition {
+    RECTANGLE CafeRequisition
+    RECTANGLE CafeRequisitionLine
+}
+
+package "Manufacturing" as Manufacturing {
+    RECTANGLE ManufacturingOrder
+    RECTANGLE WorkOrder
+}
+
+package "Quality" as Quality {
+    RECTANGLE QualityCheck
+    RECTANGLE QualityAlert
+}
+
+package "Maintenance" as Maintenance {
+    RECTANGLE Equipment
+    RECTANGLE MaintenanceRequest
+    RECTANGLE SpareParts
+}
+
+'=========================
+' Flows / Relationships
+'=========================
+' Purchase → Inventory
+PurchaseOrder --> StockLocation : Receive Raw Materials
+PurchaseOrderLine --> Product : Items
+
+' Inventory ↔ Manufacturing
+StockLocation --> ManufacturingOrder : Provide Raw Materials
+ManufacturingOrder --> StockMove : Consume/Produce
+
+' Manufacturing → Quality
+ManufacturingOrder --> QualityCheck : QC at production
+WorkOrder --> QualityCheck : Optional work step QC
+
+' Inventory ↔ Requisition
+StockLocation --> CafeRequisition : HQ Stock
+CafeRequisition --> StockMove : Generate Transfers
+CafeRequisitionLine --> Product : Line Items
+
+' Quality ↔ Inventory
+QualityCheck --> StockLocation : Approve / Reject Stock
+QualityAlert --> Supplier : Report Defects
+
+' Maintenance ↔ Inventory
+MaintenanceRequest --> SpareParts : Consume Spare Parts
+SpareParts --> StockLocation : From Inventory
+Equipment --> MaintenanceRequest : Track Repairs
+
+' Outlet / Requisition flow
+CafeRequisition --> StockLocation : Move Stock to Outlets
+StockLocation --> QualityCheck : Outlet QC
+
+@enduml

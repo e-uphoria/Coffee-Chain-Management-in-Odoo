@@ -1,0 +1,19 @@
+@startuml
+!define C4P https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!includeurl C4P
+
+Person(outletManager, "Outlet Manager", "Manages cafe outlet stock and requisitions")
+Person(hqSupplyManager, "HQ Supply Chain Manager", "Approves requisitions, monitors inventory, manages vendors")
+Person(accounting, "Accounting Staff", "Handles vendor invoices and outlet cost tracking")
+Person(customer, "Customer", "Buys coffee via POS or mobile ordering")
+
+System(himalayanJavaERP, "Himalayan Java ERP", "Cafe management ERP for multi-outlet operations")
+
+System_Ext(vendors, "Suppliers/Vendors", "Coffee beans, milk, bakery, packaging suppliers")
+
+Rel(customer, himalayanJavaERP, "Places orders via POS")
+Rel(outletManager, himalayanJavaERP, "Raises requisitions and views outlet stock")
+Rel(hqSupplyManager, himalayanJavaERP, "Approves requisitions, manages inventory, monitors outlets")
+Rel(accounting, himalayanJavaERP, "Processes invoices and tracks costs")
+Rel(himalayanJavaERP, vendors, "Sends purchase orders and receives stock")
+@enduml

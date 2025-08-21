@@ -1,0 +1,46 @@
+@startuml
+!define BPMN https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+' ==== Supply Chain BPMN ====
+
+|Inventory|
+start
+:Check Stock Levels;
+if (Stock Low?) then (yes)
+  :Generate Stock Request;
+  ->Purchase
+else (no)
+  ->Manufacturing
+endif
+
+|Purchase|
+:Create Purchase Requisition;
+:Approve Requisition;
+:Send Purchase Order to Vendor;
+:Receive Goods;
+:Update Inventory;
+->Inventory
+
+|Manufacturing|
+:Check Recipe / BOM;
+:Schedule Production;
+:Manufacture Item;
+->Quality
+
+|Quality|
+:Perform Quality Check;
+if (QC Pass?) then (yes)
+  ->Inventory
+else (no)
+  :Reject Item;
+  ->Purchase
+endif
+
+|Maintenance|
+:Equipment Check;
+:Schedule Maintenance;
+:Complete Maintenance;
+
+stop
+@enduml
