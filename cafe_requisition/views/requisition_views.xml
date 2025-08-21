@@ -31,6 +31,7 @@
                     <button name="action_submit" type="object" string="Submit" class="oe_highlight"/>
                     <button name="action_approve" type="object" string="Approve"/>
                     <button name="action_generate_transfer" type="object" string="Generate Transfer"/>
+                    <button name="action_create_purchase_order" type="object" string="Create Purchase Order" class="oe_highlight"/>
                     <button name="action_cancel" type="object" string="Cancel"/>
                 </header>
             </form>

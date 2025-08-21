@@ -44,9 +44,10 @@ class CafeRequisition(models.Model):
         for req in self:
             req.state = 'cancel'
 
+     # Stock transfer
     def action_generate_transfer(self):
         StockMove = self.env["stock.move"]
-        StockPicking = self.env["stock.picking"]
+        StockPicking = self.env["stock.picking"]    
         PickingType = self.env["stock.picking.type"]
         Param = self.env["ir.config_parameter"].sudo()
 
@@ -95,6 +96,18 @@ class CafeRequisition(models.Model):
             req.state = "done"
         return True
 
+    # Purchase integration
+    def action_create_purchase_order(self):
+        self.ensure_one()
+        po = self.env["purchase.order"].create_from_requisition(self)
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "purchase.order",
+            "view_mode": "form",
+            "res_id": po.id,
+            "target": "current",
+        }
+    
 
 class CafeRequisitionLine(models.Model):
     _name = "cafe.requisition.line"
