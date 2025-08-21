@@ -1,3 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_cafe_requisition_user,cafe.requisition user,model_cafe_requisition,base.group_user,1,1,1,0
-access_cafe_requisition_line_user,cafe.requisition.line user,model_cafe_requisition_line,base.group_user,1,1,1,0
+access_cafe_requisition_user,Cafe Requisition User,model_cafe_requisition,base.group_user,1,1,1,1
+access_cafe_requisition_line,cafe.requisition.line,model_cafe_requisition_line,base.group_user,1,1,1,1

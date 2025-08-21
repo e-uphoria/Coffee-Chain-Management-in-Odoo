@@ -4,7 +4,7 @@
 "summary": "Outlet→HQ requisition with approval and internal transfer generation",
 "author": "Cafe ERP",
 "license": "LGPL-3",
-"depends": ["stock", "product"],
+"depends": ["stock", "product", "coffee_chain"],
 "data": [
 "security/ir.model.access.csv",
 "data/sequence.xml",

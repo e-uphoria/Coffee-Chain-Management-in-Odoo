@@ -8,7 +8,7 @@
                 <sheet>
                     <group>
                         <field name="name" readonly="1"/>
-                        <field name="outlet_location_id"/>
+                        <field name="outlet_id"/>
                         <field name="schedule_date"/>
                         <field name="state" readonly="1"/>
                     </group>
@@ -45,7 +45,7 @@
         <field name="arch" type="xml">
             <list>
                 <field name="name"/>
-                <field name="outlet_location_id"/>
+                <field name="outlet_id"/>
                 <field name="schedule_date"/>
                 <field name="state"/>
             </list>

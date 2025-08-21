@@ -8,7 +8,7 @@ class CafeRequisition(models.Model):
 
     # Fields
     name = fields.Char(string="Requisition Reference", required=True, copy=False, readonly=True, default="New")
-    outlet_location_id = fields.Many2one("stock.location", string="Outlet Location", required=True)
+    outlet_id = fields.Many2one("coffee.outlet", string="Outlet", required=True)
     schedule_date = fields.Datetime(string="Scheduled Date", default=fields.Datetime.now)
     state = fields.Selection([
         ("draft", "Draft"),
@@ -99,7 +99,25 @@ class CafeRequisition(models.Model):
     # Purchase integration
     def action_create_purchase_order(self):
         self.ensure_one()
-        po = self.env["purchase.order"].create_from_requisition(self)
+        PurchaseOrder = self.env["purchase.order"]
+
+        # Default Supplier from system parameter
+        supplier_id = int(self.env["ir.config_parameter"].sudo().get_param("cafe.default_supplier_id") or 0)
+        if not supplier_id:
+            raise UserError(_("Configure default supplier: system parameter 'cafe.default_supplier_id'."))
+
+        po_vals = {
+            "partner_id": supplier_id,
+            "origin": self.name,
+            "order_line": [(0, 0, {
+                "product_id": line.product_id.id,
+                "name": line.product_id.display_name,
+                "product_qty": line.requested_qty,
+                "product_uom": line.product_id.uom_id.id,
+                "price_unit": line.product_id.standard_price,
+            }) for line in self.line_ids],
+        }
+        po = PurchaseOrder.create(po_vals)
         return {
             "type": "ir.actions.act_window",
             "res_model": "purchase.order",
