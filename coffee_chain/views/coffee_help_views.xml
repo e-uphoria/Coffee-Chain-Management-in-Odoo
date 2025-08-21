@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- Form view for Coffee Help -->
+    <record id="view_coffee_help_form" model="ir.ui.view">
+        <field name="name">coffee.help.form</field>
+        <field name="model">coffee.help</field>
+        <field name="arch" type="xml">
+            <form string="Coffee Help" create="false" edit="false" delete="false">
+                <sheet>
+                    <group>
+                        <field name="title" readonly="1" widget="char" style="font-size:28px; font-weight:bold; margin-bottom:20px;"/>
+                        <field name="description" readonly="1" widget="html" style="font-size:16px; line-height:1.6;"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Records for Help Content -->
+
+    <!-- About the Module -->
+    <record id="coffee_help_record_about" model="coffee.help">
+        <field name="title">About Coffee Outlet Module</field>
+        <field name="description">
+            <![CDATA[
+                <p><strong>Purpose:</strong> The Coffee Outlet module allows an organization to manage multiple coffee outlets efficiently. 
+                Each outlet has details such as <strong>Outlet Name</strong>, <strong>Location</strong>, <strong>Manager</strong>, and <strong>Regional Manager</strong>.</p>
+                <p><strong>Key Features:</strong></p>
+                <ul>
+                    <li>Track each coffee outlet separately.</li>
+                    <li>Link outlets to a Customer (the owning organization).</li>
+                    <li>Automatic creation of a CRM Lead opportunity for each outlet.</li>
+                </ul>
+                <p>This module focuses solely on the management of outlets. Other features like Sales and CRM integration are automated but not directly managed here.</p>
+            ]]>
+        </field>
+    </record>
+
+    <!-- How to Use -->
+    <record id="coffee_help_record_how_to_use" model="coffee.help">
+        <field name="title">How to Use Coffee Outlet Module</field>
+        <field name="description">
+            <![CDATA[
+                <p><strong>Step 1: Create a Customer (Organization)</strong></p>
+                <p>The Customer linked to outlets should be the organization that owns multiple outlets. All outlets will be associated with this customer.</p>
+                <p><strong>Step 2: Create Coffee Outlets</strong></p>
+                <ul>
+                    <li>Go to the <strong>Outlets</strong> menu.</li>
+                    <li>Click <em>Create</em> to add a new outlet.</li>
+                    <li>Fill in the <strong>Outlet Name</strong>, <strong>Location</strong>, <strong>Manager</strong>, and <strong>Regional Manager</strong>.</li>
+                    <li>Select the <strong>Customer</strong> (the owning organization) from the dropdown.</li>
+                    <li>Save the outlet. A CRM Lead opportunity will be automatically generated for this outlet.</li>
+                </ul>
+                <p><strong>Step 3: Verify Outlets for Customer</strong></p>
+                <p>Open the Customer form view to see a list of all coffee outlets owned by the organization in the <strong>Coffee Outlets</strong> tab.</p>
+                <p><strong>Screenshot Example:</strong></p>
+                <p><img src="/coffee_chain/static/src/img/coffee_outlet_form.png" style="max-width:80%; border:1px solid #ccc; border-radius:5px;"/></p>
+            ]]>
+        </field>
+    </record>
+
+    <!-- C4 Diagram -->
+    <record id="coffee_help_record_c4" model="coffee.help">
+        <field name="title">C4 Diagram - Coffee Outlet Module</field>
+        <field name="description">
+            <![CDATA[
+                <p>The C4 Diagram illustrates the architecture of the Coffee Outlet module:</p>
+                <ul>
+                    <li>Customer (Organization) owns multiple Coffee Outlets.</li>
+                    <li>Each Outlet is linked to the owning Customer and automatically generates a CRM Lead.</li>
+                    <li>The module focuses on managing outlets efficiently without manual CRM or Sales operations.</li>
+                </ul>
+                <p><strong>C4 Diagram:</strong></p>
+                <p><img src="/coffee_chain/static/src/img/coffee_outlet_c4.png" style="max-width:90%; border:1px solid #ccc; border-radius:5px;"/></p>
+            ]]>
+        </field>
+    </record>
+
+    <!-- Actions for menu -->
+    <record id="action_coffee_help_about" model="ir.actions.act_window">
+      <field name="name">About Coffee Outlet Module</field>
+      <field name="res_model">coffee.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_help_form"/>
+      <field name="target">current</field>
+    </record>
+
+    <record id="action_coffee_help_how_to_use" model="ir.actions.act_window">
+      <field name="name">How to Use Coffee Outlet Module</field>
+      <field name="res_model">coffee.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_help_form"/>
+      <field name="target">current</field>
+    </record>
+
+    <record id="action_coffee_help_c4" model="ir.actions.act_window">
+      <field name="name">Coffee Outlet C4 Diagram</field>
+      <field name="res_model">coffee.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_help_form"/>
+      <field name="target">current</field>
+    </record>
+
+    <!-- Menu -->
+    <menuitem id="coffee_chain_help_root"
+              name="Help"
+              parent="coffee_chain_root"
+              sequence="10"/>
+    <menuitem id="coffee_help_about_module"
+              name="About the Module"
+              parent="coffee_chain_help_root"
+              action="action_coffee_help_about"
+              sequence="1"/>
+    <menuitem id="coffee_help_how_to_use"
+              name="How to Use"
+              parent="coffee_chain_help_root"
+              action="action_coffee_help_how_to_use"
+              sequence="2"/>
+    <menuitem id="coffee_help_c4_diagrams"
+              name="C4 Diagram"
+              parent="coffee_chain_help_root"
+              action="action_coffee_help_c4"
+              sequence="3"/>
+
+  </data>
+</odoo>

@@ -4,3 +4,8 @@ from . import sale_order
 from . import account_move
 from . import account_payment
 from . import sale_order_line
+from . import pos_config
+from . import pos_order
+from . import pos_order_line
+from . import pos_payment
+from . import coffee_help

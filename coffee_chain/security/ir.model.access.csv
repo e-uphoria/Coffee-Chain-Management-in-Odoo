@@ -2,3 +2,4 @@ id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_coffee_outlet_user,access.coffee.outlet.user,model_coffee_outlet,base.group_user,1,1,1,1
 access_crm_lead_inherit_user,access.crm.lead.inherit.user,crm.model_crm_lead,base.group_user,1,1,1,1
 access_res_partner_inherit_user,access.res.partner.inherit.user,base.model_res_partner,base.group_user,1,1,1,1
+access_coffee_help_user,access.coffee.help.user,model_coffee_help,,1,0,0,0
