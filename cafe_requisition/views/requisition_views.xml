@@ -1,0 +1,62 @@
+<odoo>
+    <!-- Form View -->
+    <record id="view_cafe_requisition_form" model="ir.ui.view">
+        <field name="name">cafe.requisition.form</field>
+        <field name="model">cafe.requisition</field>
+        <field name="arch" type="xml">
+            <form string="Outlet Requisition">
+                <sheet>
+                    <group>
+                        <field name="name" readonly="1"/>
+                        <field name="outlet_location_id"/>
+                        <field name="schedule_date"/>
+                        <field name="state" readonly="1"/>
+                    </group>
+                    <notebook>
+                        <page string="Lines">
+                            <field name="line_ids">
+                                <list editable="bottom">
+                                    <field name="product_id"/>
+                                    <field name="requested_qty"/>
+                                    <field name="uom_id" readonly="1"/>
+                                </list>
+                            </field>
+                        </page>
+                        <page string="Notes">
+                            <field name="note" placeholder="Special instructions"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <header>
+                    <button name="action_submit" type="object" string="Submit" class="oe_highlight"/>
+                    <button name="action_approve" type="object" string="Approve"/>
+                    <button name="action_generate_transfer" type="object" string="Generate Transfer"/>
+                    <button name="action_cancel" type="object" string="Cancel"/>
+                </header>
+            </form>
+        </field>
+    </record>
+
+    <!-- List View -->
+    <record id="view_cafe_requisition_list" model="ir.ui.view">
+        <field name="name">cafe.requisition.list</field>
+        <field name="model">cafe.requisition</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="name"/>
+                <field name="outlet_location_id"/>
+                <field name="schedule_date"/>
+                <field name="state"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Menu and Actions -->
+    <menuitem id="menu_cafe_root" name="Cafe" sequence="10"/>
+    <record id="action_cafe_requisition" model="ir.actions.act_window">
+        <field name="name">Requisitions</field>
+        <field name="res_model">cafe.requisition</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <menuitem id="menu_cafe_requisition" name="Requisitions" parent="coffee_chain.coffee_chain_root" action="action_cafe_requisition"/>
+</odoo>
