@@ -1,0 +1,25 @@
+    <odoo>
+        <record id="view_mrp_production_form_inherit_google" model="ir.ui.view">
+            <field name="name">mrp.production.form.google.inherit</field>
+            <field name="model">mrp.production</field>
+            <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
+            <field name="arch" type="xml">
+
+                <!-- Add custom fields to the Components page -->
+                <xpath expr="//sheet/notebook/page[@name='components']" position="inside">
+                    <group>
+                        <field name="cafe_outlet_id"/>
+                        <field name="shift" optional="hide"/>
+                        <field name="google_event_id" readonly="1"/>
+                    </group>
+                </xpath>
+
+            <!-- Add the Confirm & Sync button before the existing Mark Done button -->
+            <xpath expr="//header/button[@name='button_mark_done']" position="before">
+                <button name="button_confirm_and_sync" type="object"
+                        string="Confirm &amp; Sync Google Calendar"
+                        class="btn-primary"/>
+            </xpath>
+            </field>
+        </record>
+    </odoo>
