@@ -1,0 +1,60 @@
+@startuml ComponentDiagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_TOP_DOWN()
+
+' --- System Boundary for Coffee Chain ---
+System_Boundary(coffeeChain, "Coffee Chain Odoo System") {
+
+    ' --- Outlet Module ---
+    Container_Boundary(outletModule, "Outlet Module") {
+        Component(coffeeOutlet, "CoffeeOutlet", "Odoo Model", "Manages outlets, location, manager, and link to customers/leads")
+    }
+
+    ' --- CRM Module ---
+    Container_Boundary(crmModule, "CRM Module") {
+        Component(resPartner, "ResPartner", "Odoo Model", "Stores customer details and linked outlets")
+        Component(crmLead, "CrmLead", "Odoo Model", "Stores sales leads and linked outlets")
+    }
+
+    ' --- Sales Module ---
+    Container_Boundary(salesModule, "Sales Module") {
+        Component(saleOrder, "SaleOrder", "Odoo Model", "Handles orders, payment, coffee menu items")
+        Component(saleOrderLine, "SaleOrderLine", "Odoo Model", "Handles individual items in an order with customization")
+    }
+
+    ' --- Accounting Module ---
+    Container_Boundary(accountingModule, "Accounting Module") {
+        Component(accountMove, "AccountMove", "Odoo Model", "Manages invoices for outlets")
+        Component(accountPayment, "AccountPayment", "Odoo Model", "Handles payments")
+        Component(paymentMethod, "PaymentMethod", "Odoo Reference", "Reference for payment methods")
+    }
+
+    ' --- Product / Inventory Module ---
+    Container_Boundary(productModule, "Products/Inventory") {
+        Component(coffeeMenuItem, "CoffeeMenuItem", "Odoo Model", "Coffee menu items for orders")
+        Component(product, "Product", "Odoo Reference", "Base product catalog")
+    }
+}
+
+' --- Relationships ---
+coffeeOutlet --> resPartner : "customer_id"
+coffeeOutlet --> crmLead : "lead_id"
+resPartner --> coffeeOutlet : "coffee_outlet_ids"
+crmLead --> coffeeOutlet : "coffee_outlet_id"
+
+saleOrder --> coffeeOutlet : "outlet_id"
+saleOrder --> paymentMethod : "payment_method_id"
+saleOrder --> coffeeMenuItem : "coffee_menu_item_ids"
+saleOrder --> accountMove : "_prepare_invoice()"
+
+saleOrderLine --> product : "product_id"
+saleOrderLine --> saleOrder : "belongs to"
+
+accountMove --> coffeeOutlet : "outlet_id"
+accountMove --> paymentMethod : "payment_method_id"
+accountPayment --> coffeeOutlet : "outlet_id"
+
+coffeeMenuItem --> product : "create/update product if missing"
+
+@enduml

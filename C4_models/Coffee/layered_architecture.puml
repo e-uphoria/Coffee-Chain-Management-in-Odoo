@@ -1,0 +1,44 @@
+@startuml LayeredArchitecture
+title Layered Architecture — Coffee Chain (Generic)
+
+skinparam componentStyle rectangle
+
+rectangle "Presentation Layer" {
+  component "POS UI (Counter/Web)"
+  component "Back-Office UI (Odoo Web)"
+  component "CRM Dashboard"
+}
+
+rectangle "Business/Domain Layer" {
+  component "Sales Logic (sale.order / line)"
+  component "CRM Logic (crm.lead / res.partner)"
+  component "Outlet Logic (coffee.outlet)"
+  component "Menu Logic (coffee.menu.item)"
+  component "Accounting Logic (account.move / payment)"
+  component "Inventory Logic (product/stock)"
+}
+
+rectangle "Data/Integration Layer" {
+  database "PostgreSQL"
+  queue "Message Bus (optional)"
+  component "Payment Gateway API"
+}
+
+"POS UI (Counter/Web)" --> "Sales Logic (sale.order / line)"
+"CRM Dashboard" --> "CRM Logic (crm.lead / res.partner)"
+"Back-Office UI (Odoo Web)" --> "Accounting Logic (account.move / payment)"
+
+"Sales Logic (sale.order / line)" --> "CRM Logic (crm.lead / res.partner)"
+"Sales Logic (sale.order / line)" --> "Accounting Logic (account.move / payment)"
+"Sales Logic (sale.order / line)" --> "Inventory Logic (product/stock)"
+"Sales Logic (sale.order / line)" --> "Outlet Logic (coffee.outlet)"
+"Sales Logic (sale.order / line)" --> "Menu Logic (coffee.menu.item)"
+
+"Accounting Logic (account.move / payment)" ..> "Payment Gateway API" : capture/confirm
+"Sales Logic (sale.order / line)" --> "PostgreSQL"
+"CRM Logic (crm.lead / res.partner)" --> "PostgreSQL"
+"Outlet Logic (coffee.outlet)" --> "PostgreSQL"
+"Menu Logic (coffee.menu.item)" --> "PostgreSQL"
+"Inventory Logic (product/stock)" --> "PostgreSQL"
+
+@enduml

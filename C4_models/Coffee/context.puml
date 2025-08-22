@@ -1,0 +1,28 @@
+@startuml ContextDiagram
+title C1: System Context — Coffee Chain Sales
+
+actor Customer
+actor Barista as CounterStaff
+actor "Back-Office Staff" as BackOffice
+
+rectangle "Coffee Chain Platform" as Platform {
+  rectangle "POS (Counter & Online)" as POS
+  rectangle "CRM" as CRM
+  rectangle "Accounting/Invoicing" as ACC
+  rectangle "Inventory/Warehouse" as INV
+}
+
+Customer --> POS : place orders, pay
+CounterStaff --> POS : take orders, prepare, handover
+BackOffice --> CRM : manage customers, leads
+BackOffice --> ACC : reconcile, reports
+BackOffice --> INV : replenish, stock ops
+
+POS --> CRM : customer data, loyalty context
+POS --> ACC : sale → invoice/payment
+POS --> INV : decrement stock per line
+
+CRM --> ACC : account/partner info
+INV --> ACC : COGS, valuation (summary)
+
+@enduml

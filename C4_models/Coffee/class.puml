@@ -1,0 +1,56 @@
+@startuml ClassDiagram
+title Coffee Chain - Sales Domain Class Diagram
+
+class SaleOrder {
+    +id: int
+    +name: string
+    +date_order: datetime
+    +state: string
+    +amount_total: float
+    +confirm()
+    +cancel()
+}
+
+class SaleOrderLine {
+    +id: int
+    +quantity: float
+    +price_unit: float
+    +subtotal: float
+}
+
+class CoffeeOutlet {
+    +id: int
+    +name: string
+    +location: string
+}
+
+class CoffeeMenuItem {
+    +id: int
+    +name: string
+    +price: float
+    +category: string
+}
+
+class ResPartner {
+    +id: int
+    +name: string
+    +email: string
+    +phone: string
+}
+
+class AccountMove {
+    +id: int
+    +name: string
+    +invoice_date: datetime
+    +amount_total: float
+    +state: string
+}
+
+' Relationships
+SaleOrder "1" o-- "*" SaleOrderLine : contains >
+SaleOrder "*" --> "1" ResPartner : customer
+SaleOrder "*" --> "1" CoffeeOutlet : placed at >
+SaleOrderLine "*" --> "1" CoffeeMenuItem : refers >
+SaleOrder "1" --> "1" AccountMove : generates >
+
+@enduml

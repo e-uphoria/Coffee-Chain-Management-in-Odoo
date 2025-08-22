@@ -1,0 +1,56 @@
+@startuml ContainerDiagram
+title C2: Containers — Coffee Chain Platform
+
+actor Customer
+actor Barista as CounterStaff
+actor "Back-Office Staff" as BackOffice
+cloud "Payment Gateway" as PayGW
+
+node "POS Application" as POS {
+  component "Order UI"
+  component "Payment UI"
+  component "POS API Client"
+}
+
+node "Odoo Backend (Core Services)" as Odoo {
+  node "Sales Service" as Sales {
+    component "sale.order API"
+    component "sale.order.line API"
+  }
+  node "CRM Service" as CRM {
+    component "crm.lead API"
+    component "res.partner API"
+  }
+  node "Accounting Service" as ACC {
+    component "account.move API"
+    component "account.payment API"
+  }
+  node "Inventory Service" as INV {
+    component "product.product API"
+    component "stock ops API"
+  }
+  node "Custom Coffee Module" as CoffeeMod {
+    component "coffee.outlet API"
+    component "coffee.menu.item API"
+  }
+  database "PostgreSQL" as DB
+}
+
+Customer --> POS : Orders & Payments
+CounterStaff --> POS : Operate counter
+BackOffice --> Odoo : Back-office ops (web UI)
+
+POS ..> PayGW : card/wallet authorization
+POS --> Sales : create/confirm orders
+POS --> CoffeeMod : select menu items
+Sales --> ACC : create invoice/payment
+Sales --> INV : reserve/deduct stock
+Sales --> CRM : link to leads/partner
+CoffeeMod --> CRM : link outlet ↔ lead
+ACC --> DB
+CRM --> DB
+INV --> DB
+Sales --> DB
+CoffeeMod --> DB
+
+@enduml
