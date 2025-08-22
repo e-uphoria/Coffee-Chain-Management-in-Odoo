@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_CompanySales_v2" targetNamespace="http://example.com/bpmn" exporter="Camunda Modeler" exporterVersion="5.37.0">
+  <bpmn:collaboration id="Collab_Sales">
+    <bpmn:participant id="Participant_Customer" name="Customer" processRef="Process_Customer" />
+    <bpmn:participant id="Participant_Company" name="Company" processRef="Process_Company" />
+    <bpmn:messageFlow id="MF_Order" sourceRef="Task_PlaceOrder" targetRef="Task_ReceiveOrder" />
+    <bpmn:messageFlow id="MF_Payment" sourceRef="Task_MakePayment" targetRef="Task_RecordPayment" />
+    <bpmn:messageFlow id="MF_OrderReady" sourceRef="Task_HandOverOrder" targetRef="Task_ReceiveOrderCustomer" />
+    <bpmn:messageFlow id="MF_QuoteReq" sourceRef="Task_GenerateQuotation" targetRef="Task_ApproveQuotation" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Customer" name="Customer Journey" isExecutable="false">
+    <bpmn:startEvent id="Start_Customer" name="Start Order" />
+    <bpmn:sendTask id="Task_PlaceOrder" name="Place Order (Online/Outlet)" />
+    <bpmn:userTask id="Task_ApproveQuotation" name="Approve Quotation?" />
+    <bpmn:userTask id="Task_MakePayment" name="Make Payment" />
+    <bpmn:receiveTask id="Task_ReceiveOrderCustomer" name="Receive Order / Delivery" />
+    <bpmn:endEvent id="End_Customer" name="Order Completed" />
+    <bpmn:sequenceFlow id="SF_C1" sourceRef="Start_Customer" targetRef="Task_PlaceOrder" />
+    <bpmn:sequenceFlow id="SF_C2" sourceRef="Task_PlaceOrder" targetRef="Task_ApproveQuotation" />
+    <bpmn:sequenceFlow id="SF_C2a" sourceRef="Task_ApproveQuotation" targetRef="Task_MakePayment" />
+    <bpmn:sequenceFlow id="SF_C3" sourceRef="Task_MakePayment" targetRef="Task_ReceiveOrderCustomer" />
+    <bpmn:sequenceFlow id="SF_C4" sourceRef="Task_ReceiveOrderCustomer" targetRef="End_Customer" />
+  </bpmn:process>
+  <bpmn:process id="Process_Company" name="Company Sales Process" isExecutable="true">
+    <bpmn:laneSet id="LaneSet_Company">
+      <bpmn:lane id="Lane_Warehouse" name="Warehouse / Inventory">
+        <bpmn:flowNodeRef>Task_UpdateInventory</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_Company</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_TriggerRestock</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_StockLow</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Accounting" name="Accounting / Finance">
+        <bpmn:flowNodeRef>Task_RecordPayment</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_GenerateInvoice</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_PaymentFailed</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_HandOverOrder</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_PaymentSuccess</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_CRM" name="Sales &#38; CRM">
+        <bpmn:flowNodeRef>Task_IdentifyCustomer</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CheckLoyalty</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ApplyDiscounts</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_GenerateQuotation</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_QuotationNeeded</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Outlet" name="Outlet / Barista">
+        <bpmn:flowNodeRef>Start_Company</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReceiveOrder</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CheckAvailability</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Available</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SuggestAlternatives</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PrepareOrder</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PackageOrder</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_Company" name="Order Received">
+      <bpmn:messageEventDefinition />
+    </bpmn:startEvent>
+    <bpmn:task id="Task_ReceiveOrder" name="Receive Order" />
+    <bpmn:task id="Task_CheckAvailability" name="Check Menu Availability" />
+    <bpmn:exclusiveGateway id="Gateway_Available" name="Item Available?" />
+    <bpmn:task id="Task_SuggestAlternatives" name="Suggest Alternatives" />
+    <bpmn:task id="Task_IdentifyCustomer" name="Identify Customer" />
+    <bpmn:task id="Task_CheckLoyalty" name="Check Loyalty / Membership" />
+    <bpmn:task id="Task_ApplyDiscounts" name="Apply Discounts / Promotions" />
+    <bpmn:task id="Task_RecordPayment" name="Record Payment" />
+    <bpmn:task id="Task_PrepareOrder" name="Prepare Coffee / Food" />
+    <bpmn:task id="Task_PackageOrder" name="Package Order" />
+    <bpmn:task id="Task_UpdateInventory" name="Update Inventory" />
+    <bpmn:task id="Task_GenerateQuotation" name="Generate Quotation" />
+    <bpmn:exclusiveGateway id="Gateway_QuotationNeeded" name="Quotation Needed?" />
+    <bpmn:endEvent id="End_Company" name="Order Completed">
+      <bpmn:incoming>SF_15b</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:task id="Task_TriggerRestock" name="Trigger Restock Order">
+      <bpmn:incoming>SF_15a</bpmn:incoming>
+    </bpmn:task>
+    <bpmn:exclusiveGateway id="Gateway_StockLow" name="Stock Low?">
+      <bpmn:outgoing>SF_15a</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:task id="Task_GenerateInvoice" name="Generate Invoice / Receipt" />
+    <bpmn:endEvent id="End_PaymentFailed" name="Payment Failed">
+      <bpmn:terminateEventDefinition />
+    </bpmn:endEvent>
+    <bpmn:task id="Task_HandOverOrder" name="Hand Over / Deliver Order" />
+    <bpmn:exclusiveGateway id="Gateway_PaymentSuccess" name="Payment Successful?" />
+    <bpmn:sequenceFlow id="SF_01" sourceRef="Start_Company" targetRef="Task_ReceiveOrder" />
+    <bpmn:sequenceFlow id="SF_02" sourceRef="Task_ReceiveOrder" targetRef="Task_CheckAvailability" />
+    <bpmn:sequenceFlow id="SF_03" sourceRef="Task_CheckAvailability" targetRef="Gateway_Available" />
+    <bpmn:sequenceFlow id="SF_03a" sourceRef="Gateway_Available" targetRef="Task_SuggestAlternatives">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!available}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SF_03b" sourceRef="Gateway_Available" targetRef="Task_IdentifyCustomer">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${available}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SF_03c" sourceRef="Task_SuggestAlternatives" targetRef="Task_IdentifyCustomer" />
+    <bpmn:sequenceFlow id="SF_04" sourceRef="Task_IdentifyCustomer" targetRef="Task_CheckLoyalty" />
+    <bpmn:sequenceFlow id="SF_05" sourceRef="Task_CheckLoyalty" targetRef="Task_ApplyDiscounts" />
+    <bpmn:sequenceFlow id="SF_06" sourceRef="Task_ApplyDiscounts" targetRef="Gateway_QuotationNeeded" />
+    <bpmn:sequenceFlow id="SF_06b" sourceRef="Gateway_QuotationNeeded" targetRef="Task_RecordPayment">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!quotationRequired}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SF_07" sourceRef="Task_GenerateQuotation" targetRef="Task_RecordPayment" />
+    <bpmn:sequenceFlow id="SF_08" sourceRef="Task_RecordPayment" targetRef="Gateway_PaymentSuccess" />
+    <bpmn:sequenceFlow id="SF_10" sourceRef="Task_GenerateInvoice" targetRef="Task_PrepareOrder" />
+    <bpmn:sequenceFlow id="SF_11" sourceRef="Task_PrepareOrder" targetRef="Task_PackageOrder" />
+    <bpmn:sequenceFlow id="SF_12" sourceRef="Task_PackageOrder" targetRef="Task_HandOverOrder" />
+    <bpmn:sequenceFlow id="SF_13" sourceRef="Task_HandOverOrder" targetRef="Task_UpdateInventory" />
+    <bpmn:sequenceFlow id="SF_14" sourceRef="Task_UpdateInventory" targetRef="Gateway_StockLow" />
+    <bpmn:sequenceFlow id="SF_06a" sourceRef="Gateway_QuotationNeeded" targetRef="Task_GenerateQuotation">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${quotationRequired}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SF_15b" sourceRef="Gateway_StockLow" targetRef="End_Company">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!stockLow}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SF_15a" sourceRef="Gateway_StockLow" targetRef="Task_TriggerRestock">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${stockLow}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SF_09" sourceRef="Gateway_PaymentSuccess" targetRef="Task_GenerateInvoice">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${paymentSuccess}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:sequenceFlow id="SF_09b" sourceRef="Gateway_PaymentSuccess" targetRef="End_PaymentFailed">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${!paymentSuccess}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collab_Sales">
+      <bpmndi:BPMNShape id="Shape_Pool_Customer" bpmnElement="Participant_Customer" isHorizontal="true">
+        <dc:Bounds x="160" y="60" width="1240" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_Customer" bpmnElement="Start_Customer">
+        <dc:Bounds x="220" y="120" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="211" y="156" width="55" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_PlaceOrder" bpmnElement="Task_PlaceOrder">
+        <dc:Bounds x="280" y="105" width="170" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ApproveQuotation" bpmnElement="Task_ApproveQuotation">
+        <dc:Bounds x="480" y="105" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_MakePayment" bpmnElement="Task_MakePayment">
+        <dc:Bounds x="700" y="105" width="170" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ReceiveOrderCustomer" bpmnElement="Task_ReceiveOrderCustomer">
+        <dc:Bounds x="900" y="105" width="210" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_Customer" bpmnElement="End_Customer">
+        <dc:Bounds x="1140" y="122" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1116" y="158" width="85" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_SF_C1" bpmnElement="SF_C1">
+        <di:waypoint x="256" y="138" />
+        <di:waypoint x="280" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_C2" bpmnElement="SF_C2">
+        <di:waypoint x="450" y="138" />
+        <di:waypoint x="480" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_C2a" bpmnElement="SF_C2a">
+        <di:waypoint x="670" y="138" />
+        <di:waypoint x="700" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_C3" bpmnElement="SF_C3">
+        <di:waypoint x="870" y="138" />
+        <di:waypoint x="900" y="138" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_C4" bpmnElement="SF_C4">
+        <di:waypoint x="1110" y="140" />
+        <di:waypoint x="1140" y="140" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Shape_Pool_Company" bpmnElement="Participant_Company" isHorizontal="true">
+        <dc:Bounds x="160" y="260" width="1240" height="620" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="LaneShape_Warehouse" bpmnElement="Lane_Warehouse" isHorizontal="true">
+        <dc:Bounds x="190" y="750" width="1210" height="110" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="LaneShape_Accounting" bpmnElement="Lane_Accounting" isHorizontal="true">
+        <dc:Bounds x="190" y="620" width="1210" height="130" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="LaneShape_CRM" bpmnElement="Lane_CRM" isHorizontal="true">
+        <dc:Bounds x="190" y="470" width="1210" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="LaneShape_Outlet" bpmnElement="Lane_Outlet" isHorizontal="true">
+        <dc:Bounds x="190" y="290" width="1210" height="180" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Start_Company" bpmnElement="Start_Company">
+        <dc:Bounds x="230" y="340" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="209" y="376" width="78" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ReceiveOrder" bpmnElement="Task_ReceiveOrder">
+        <dc:Bounds x="290" y="325" width="180" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CheckAvailability" bpmnElement="Task_CheckAvailability">
+        <dc:Bounds x="500" y="325" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_Available" bpmnElement="Gateway_Available" isMarkerVisible="true">
+        <dc:Bounds x="720" y="337" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="662" y="413" width="75" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_SuggestAlternatives" bpmnElement="Task_SuggestAlternatives">
+        <dc:Bounds x="790" y="325" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_IdentifyCustomer" bpmnElement="Task_IdentifyCustomer">
+        <dc:Bounds x="290" y="500" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_CheckLoyalty" bpmnElement="Task_CheckLoyalty">
+        <dc:Bounds x="500" y="500" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_ApplyDiscounts" bpmnElement="Task_ApplyDiscounts">
+        <dc:Bounds x="710" y="500" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_RecordPayment" bpmnElement="Task_RecordPayment">
+        <dc:Bounds x="290" y="645" width="200" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_PrepareOrder" bpmnElement="Task_PrepareOrder">
+        <dc:Bounds x="1000" y="325" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_PackageOrder" bpmnElement="Task_PackageOrder">
+        <dc:Bounds x="1210" y="325" width="170" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_UpdateInventory" bpmnElement="Task_UpdateInventory">
+        <dc:Bounds x="290" y="775" width="210" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_GenerateQuotation" bpmnElement="Task_GenerateQuotation">
+        <dc:Bounds x="1075" y="500" width="190" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_QuotationNeeded" bpmnElement="Gateway_QuotationNeeded" isMarkerVisible="true">
+        <dc:Bounds x="965" y="508" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="956" y="476.5" width="48" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_Company" bpmnElement="End_Company">
+        <dc:Bounds x="992" y="790" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="968" y="826" width="85" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_TriggerRestock" bpmnElement="Task_TriggerRestock">
+        <dc:Bounds x="655" y="775" width="210" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_StockLow" bpmnElement="Gateway_StockLow" isMarkerVisible="true">
+        <dc:Bounds x="535" y="783" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="501" y="826" width="57" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_GenerateInvoice" bpmnElement="Task_GenerateInvoice">
+        <dc:Bounds x="615" y="645" width="210" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_End_PaymentFailed" bpmnElement="End_PaymentFailed">
+        <dc:Bounds x="570" y="702" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="550" y="738" width="77" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Task_HandOverOrder" bpmnElement="Task_HandOverOrder">
+        <dc:Bounds x="935" y="645" width="210" height="66" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Shape_Gateway_PaymentSuccess" bpmnElement="Gateway_PaymentSuccess" isMarkerVisible="true">
+        <dc:Bounds x="525" y="653" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="490" y="696.5" width="60" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_SF_01" bpmnElement="SF_01">
+        <di:waypoint x="266" y="358" />
+        <di:waypoint x="290" y="358" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_02" bpmnElement="SF_02">
+        <di:waypoint x="470" y="358" />
+        <di:waypoint x="500" y="358" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_03" bpmnElement="SF_03">
+        <di:waypoint x="690" y="362" />
+        <di:waypoint x="720" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_03a" bpmnElement="SF_03a">
+        <di:waypoint x="770" y="362" />
+        <di:waypoint x="790" y="362" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_03b" bpmnElement="SF_03b">
+        <di:waypoint x="745" y="387" />
+        <di:waypoint x="745" y="450" />
+        <di:waypoint x="385" y="450" />
+        <di:waypoint x="385" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_03c" bpmnElement="SF_03c">
+        <di:waypoint x="830" y="391" />
+        <di:waypoint x="830" y="460" />
+        <di:waypoint x="440" y="460" />
+        <di:waypoint x="440" y="500" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_04" bpmnElement="SF_04">
+        <di:waypoint x="480" y="533" />
+        <di:waypoint x="500" y="533" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_05" bpmnElement="SF_05">
+        <di:waypoint x="690" y="533" />
+        <di:waypoint x="710" y="533" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_06" bpmnElement="SF_06">
+        <di:waypoint x="900" y="533" />
+        <di:waypoint x="965" y="533" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_06b" bpmnElement="SF_06b">
+        <di:waypoint x="990" y="558" />
+        <di:waypoint x="990" y="630" />
+        <di:waypoint x="390" y="630" />
+        <di:waypoint x="390" y="645" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_07" bpmnElement="SF_07">
+        <di:waypoint x="1075" y="560" />
+        <di:waypoint x="1075" y="600" />
+        <di:waypoint x="360" y="600" />
+        <di:waypoint x="360" y="645" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_08" bpmnElement="SF_08">
+        <di:waypoint x="490" y="678" />
+        <di:waypoint x="525" y="678" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_10" bpmnElement="SF_10">
+        <di:waypoint x="825" y="678" />
+        <di:waypoint x="913" y="678" />
+        <di:waypoint x="913" y="410" />
+        <di:waypoint x="1010" y="410" />
+        <di:waypoint x="1010" y="391" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_11" bpmnElement="SF_11">
+        <di:waypoint x="1190" y="358" />
+        <di:waypoint x="1210" y="358" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_12" bpmnElement="SF_12">
+        <di:waypoint x="1295" y="391" />
+        <di:waypoint x="1295" y="678" />
+        <di:waypoint x="1145" y="678" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_13" bpmnElement="SF_13">
+        <di:waypoint x="1005" y="711" />
+        <di:waypoint x="1005" y="730" />
+        <di:waypoint x="640" y="730" />
+        <di:waypoint x="640" y="780" />
+        <di:waypoint x="499" y="780" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_14" bpmnElement="SF_14">
+        <di:waypoint x="500" y="808" />
+        <di:waypoint x="535" y="808" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_06a" bpmnElement="SF_06a">
+        <di:waypoint x="1015" y="533" />
+        <di:waypoint x="1075" y="533" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_15b" bpmnElement="SF_15b">
+        <di:waypoint x="560" y="833" />
+        <di:waypoint x="560" y="850" />
+        <di:waypoint x="940" y="850" />
+        <di:waypoint x="940" y="808" />
+        <di:waypoint x="992" y="808" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_15a" bpmnElement="SF_15a">
+        <di:waypoint x="585" y="808" />
+        <di:waypoint x="655" y="808" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_09" bpmnElement="SF_09">
+        <di:waypoint x="575" y="678" />
+        <di:waypoint x="615" y="678" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_SF_09b" bpmnElement="SF_09b">
+        <di:waypoint x="550" y="703" />
+        <di:waypoint x="550" y="720" />
+        <di:waypoint x="570" y="720" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_Order" bpmnElement="MF_Order">
+        <di:waypoint x="362" y="171" />
+        <di:waypoint x="362" y="325" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_QuoteReq" bpmnElement="MF_QuoteReq">
+        <di:waypoint x="1200" y="500" />
+        <di:waypoint x="1200" y="310" />
+        <di:waypoint x="575" y="310" />
+        <di:waypoint x="575" y="171" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_Payment" bpmnElement="MF_Payment">
+        <di:waypoint x="770" y="171" />
+        <di:waypoint x="770" y="408" />
+        <di:waypoint x="260" y="408" />
+        <di:waypoint x="260" y="670" />
+        <di:waypoint x="290" y="670" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_MF_OrderReady" bpmnElement="MF_OrderReady">
+        <di:waypoint x="1144" y="650" />
+        <di:waypoint x="1390" y="650" />
+        <di:waypoint x="1390" y="200" />
+        <di:waypoint x="1050" y="200" />
+        <di:waypoint x="1050" y="171" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
