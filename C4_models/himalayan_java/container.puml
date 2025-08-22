@@ -1,101 +1,30 @@
-' @startuml
-' !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+@startuml CafeERP_Container
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
 
-' Person(outletManager, "Outlet Manager")
-' Person(hqSupplyManager, "HQ Supply Chain Manager")
-' Person(accounting, "Accounting Staff")
 
-' System_Boundary(erp, "Himalayan Java ERP") {
-'     Container(webApp, "Web Application", "Odoo Web Interface", "For HQ and outlet managers")
-'     Container(mobileApp, "Mobile App", "Flutter/Native App", "Outlet POS & requisition entry")
-'     Container(db, "Database", "PostgreSQL", "Stores inventory, purchase orders, recipes, outlets, vendors")
-'     Container(inventoryService, "Inventory Service", "Odoo module", "Manages stock levels, internal transfers")
-'     Container(purchaseService, "Purchase Service", "Odoo module", "Manages POs, vendor contracts, receipts")
-'     Container(accountingService, "Accounting Service", "Odoo module", "Tracks invoices, payments, COGS")
-' }
+Person(user_hq, "HQ Manager / Warehouse", "Uses Odoo Web UI")
+Person(user_outlet, "Outlet Manager", "Uses Odoo Web UI or mobile POS")
 
-' Rel(outletManager, mobileApp, "Updates POS sales & requests stock")
-' Rel(hqSupplyManager, webApp, "Approves requisitions and monitors inventory")
-' Rel(accounting, webApp, "Processes invoices and tracks costs")
-' Rel(webApp, db, "Reads/writes data")
-' Rel(mobileApp, db, "Syncs POS & inventory data")
-' Rel(purchaseService, vendors, "Sends POs & receives goods")
-' Rel(inventoryService, db, "Updates stock, transfer orders")
-' Rel(purchaseService, inventoryService, "Updates stock upon delivery")
-' Rel(accountingService, db, "Reads cost & stock data")
-' @enduml
 
-@startuml
-!define RECTANGLE class
-
-'=========================
-' Pools / Modules
-'=========================
-package "Purchase / Suppliers" as Purchase {
-    RECTANGLE Supplier
-    RECTANGLE PurchaseOrder
-    RECTANGLE PurchaseOrderLine
+System_Boundary(cafe_erp, "Cafe ERP (Supply Chain)"){
+Container(web_ui, "Odoo Web UI", "React/HTML (browser)", "User interface for managers and staff")
+Container(app_server, "Odoo Server", "Python (Odoo)", "Business logic: stock, purchase, mrp, quality, maintenance, custom modules")
+ContainerDb(db, "PostgreSQL", "Relational DB", "Persistent storage for Odoo")
+Container(scheduler, "Scheduler / Cron", "Odoo scheduled actions", "Automated reorder, MO planning")
 }
 
-package "Inventory" as Inventory {
-    RECTANGLE StockLocation
-    RECTANGLE StockPicking
-    RECTANGLE StockMove
-    RECTANGLE Product
-}
 
-package "Requisition" as Requisition {
-    RECTANGLE CafeRequisition
-    RECTANGLE CafeRequisitionLine
-}
+Container_Ext(supplier_portal, "Supplier Portal / Email", "External", "Receives POs and sends ASF/ASN")
+Container_Ext(bi_tool, "Reporting / BI", "Business Intelligence", "Optional: advanced analytics")
 
-package "Manufacturing" as Manufacturing {
-    RECTANGLE ManufacturingOrder
-    RECTANGLE WorkOrder
-}
 
-package "Quality" as Quality {
-    RECTANGLE QualityCheck
-    RECTANGLE QualityAlert
-}
+Rel(user_hq, web_ui, "Use")
+Rel(user_outlet, web_ui, "Use")
+Rel(web_ui, app_server, "JSON / XML RPC (HTTP)")
+Rel(app_server, db, "SQL")
+Rel(app_server, scheduler, "Schedule tasks & cron jobs")
+Rel(app_server, supplier_portal, "Send POs / Receive confirmations")
+Rel(app_server, bi_tool, "Export data / push reports")
 
-package "Maintenance" as Maintenance {
-    RECTANGLE Equipment
-    RECTANGLE MaintenanceRequest
-    RECTANGLE SpareParts
-}
-
-'=========================
-' Flows / Relationships
-'=========================
-' Purchase → Inventory
-PurchaseOrder --> StockLocation : Receive Raw Materials
-PurchaseOrderLine --> Product : Items
-
-' Inventory ↔ Manufacturing
-StockLocation --> ManufacturingOrder : Provide Raw Materials
-ManufacturingOrder --> StockMove : Consume/Produce
-
-' Manufacturing → Quality
-ManufacturingOrder --> QualityCheck : QC at production
-WorkOrder --> QualityCheck : Optional work step QC
-
-' Inventory ↔ Requisition
-StockLocation --> CafeRequisition : HQ Stock
-CafeRequisition --> StockMove : Generate Transfers
-CafeRequisitionLine --> Product : Line Items
-
-' Quality ↔ Inventory
-QualityCheck --> StockLocation : Approve / Reject Stock
-QualityAlert --> Supplier : Report Defects
-
-' Maintenance ↔ Inventory
-MaintenanceRequest --> SpareParts : Consume Spare Parts
-SpareParts --> StockLocation : From Inventory
-Equipment --> MaintenanceRequest : Track Repairs
-
-' Outlet / Requisition flow
-CafeRequisition --> StockLocation : Move Stock to Outlets
-StockLocation --> QualityCheck : Outlet QC
 
 @enduml

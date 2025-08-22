@@ -1,19 +1,42 @@
-@startuml
-!define C4P https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
-!includeurl C4P
+@startuml CafeERP_Context
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
 
-Person(outletManager, "Outlet Manager", "Manages cafe outlet stock and requisitions")
-Person(hqSupplyManager, "HQ Supply Chain Manager", "Approves requisitions, monitors inventory, manages vendors")
-Person(accounting, "Accounting Staff", "Handles vendor invoices and outlet cost tracking")
-Person(customer, "Customer", "Buys coffee via POS or mobile ordering")
 
-System(himalayanJavaERP, "Himalayan Java ERP", "Cafe management ERP for multi-outlet operations")
+' Tags for styling
+AddElementTag("internal", $bgColor="#e6f7ff", $borderColor="#1890ff", $fontColor="#000000")
+AddElementTag("external", $bgColor="#fff7e6", $borderColor="#fa8c16", $fontColor="#000000")
+AddRelTag("sync", $textColor="#333333")
+AddRelTag("async", $textColor="#333333", $lineStyle=DashedLine())
 
-System_Ext(vendors, "Suppliers/Vendors", "Coffee beans, milk, bakery, packaging suppliers")
 
-Rel(customer, himalayanJavaERP, "Places orders via POS")
-Rel(outletManager, himalayanJavaERP, "Raises requisitions and views outlet stock")
-Rel(hqSupplyManager, himalayanJavaERP, "Approves requisitions, manages inventory, monitors outlets")
-Rel(accounting, himalayanJavaERP, "Processes invoices and tracks costs")
-Rel(himalayanJavaERP, vendors, "Sends purchase orders and receives stock")
+Person(outlet_mgr, "Outlet Manager", "Creates requisitions, receives goods", "internal")
+Person(hq_planner, "HQ Supply Planner", "Approves requisitions, plans supply", "internal")
+Person(warehouse_op, "Warehouse Operator", "Picks, packs, ships", "internal")
+Person(quality_lead, "Quality Lead", "Runs QC at incoming/production/dispatch", "internal")
+Person(maint_tech, "Maintenance Tech", "Executes PM/CM tasks", "internal")
+
+
+System_Boundary(cafe_erp, "Cafe ERP – Supply Chain on Odoo") {
+System(cafe_odoo, "Odoo Supply Chain Suite", "Inventory, Purchase, Manufacturing, PLM, Quality, Maintenance + custom cafe modules", "internal")
+}
+
+
+System_Ext(email_gateway, "Email/SMS Gateway", "Notifications, approvals", "external")
+System_Ext(vendors, "Supplier Systems", "Receive POs, send ASNs/invoices", "external")
+System_Ext(doc_store, "Document Store (S3/Drive)", "Spec sheets, SOPs, QC docs", "external")
+
+
+Rel(outlet_mgr, cafe_odoo, "Submit requisitions, confirm receipts", "Web/Mobile UI", "sync")
+Rel(hq_planner, cafe_odoo, "Approve, plan, monitor", "Web UI", "sync")
+Rel(warehouse_op, cafe_odoo, "Pick/Pack/Ship", "Barcode App", "sync")
+Rel(quality_lead, cafe_odoo, "Quality checks & CAPA", "QC UI", "sync")
+Rel(maint_tech, cafe_odoo, "PM/CM work orders", "Maintenance UI", "sync")
+
+
+Rel(cafe_odoo, email_gateway, "Send notifications/approvals", "SMTP/HTTP", "async")
+Rel(cafe_odoo, vendors, "Send POs / receive ASNs", "Email/EDI/API", "async")
+Rel(cafe_odoo, doc_store, "Store attachments", "API", "sync")
+
+
+SHOW_LEGEND()
 @enduml

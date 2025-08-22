@@ -1,47 +1,79 @@
-@startuml CafeSupplyChain_BPMN
-!pragma layout smetana
+@startuml
+' Café ERP — Supply Chain (Activity diagram with swimlanes)
+' Render with PlantUML (VS Code PlantUML extension or plantuml.com server)
 
+|Outlet Staff|
 start
+:Check stock levels;
+if (Stock low?) then (yes)
+  :Create requisition;
+else (no)
+  stop
+endif
 
-partition "Procurement Officer" {
-    :Identify Need for Ingredient/Equipment;
-    :Create Purchase Requisition;
-    :Approve & Send Purchase Order;
-}
+|Inventory Officer|
+:Receive requisition;
+if (Stock available?) then (yes)
+  :Reserve items;
+  :Prepare dispatch order;
+  :Update inventory records;
+else (no)
+  :Generate purchase request;
+endif
 
-partition "Warehouse Manager" {
-    :Receive Goods from Vendor;
-    :Update Inventory Module;
-    if (Quality Check Required?) then (Yes)
-        :Send Stock to Quality Inspector;
-    else (No)
-        :Stock Updated in Inventory Module;
-    endif
-}
+|Procurement Officer|
+:Receive purchase request;
+:Review & approve request;
+:Select supplier;
+:Create purchase order (PO);
+:Send PO to supplier;
+:Await shipment / monitor ETA;
+if (Supplier delay?) then (yes)
+  :Escalate to supplier / find alternative supplier;
+endif
+:Receive shipment;
+:Perform quality inspection;
+if (Quality OK?) then (yes)
+  :Accept goods and update inventory;
+else (no)
+  :Reject goods; 
+  :Create return / claim to supplier;
+  :Record supplier penalty / note;
+endif
 
-partition "Quality Inspector" {
-    :Inspect Incoming Stock;
-    if (Stock Passed QC?) then (Yes)
-        :Send Stock to Warehouse Manager to Store;
-    else (No)
-        :Return / Reject Stock to Procurement;
-    endif
-}
+|Inventory Officer|
+note right
+ After procurement updates inventory,
+ inventory re-attempts dispatch flow.
+end note
+:Check inventory again;
+if (Items now available?) then (yes)
+  :Prepare dispatch order;
+  :Update inventory records;
+else (no)
+  stop
+endif
 
-partition "Maintenance Technician" {
-    :Maintenance Triggered (Scheduled / Issue Reported);
-    :Perform Maintenance;
-    :Log Maintenance in Maintenance Module;
-}
+|Logistics Team|
+:Receive dispatch order;
+:Arrange transport (vehicle / courier);
+:Load goods & create waybill;
+:Dispatch goods to outlet;
+if (Damaged in transit?) then (yes)
+  :Record damage report;
+  :Initiate claim & return to inventory;
+  stop
+else (no)
+  :Confirm delivery to outlet (POD);
+endif
 
-partition "Production Manager" {
-    :Create Production Order;
-    :Plan Production using BoM (PLM Module);
-    :Allocate Materials from Inventory Module;
-    :Execute Production Order;
-    :Record Production Completion in Manufacturing Module;
-}
-
-stop
+|Outlet Staff|
+:Receive goods & verify (POD);
+if (Shortage / Quality issues?) then (yes)
+  :Raise discrepancy report to Inventory/Procurement;
+else (no)
+  :Confirm receipt & close requisition;
+  stop
+endif
 
 @enduml

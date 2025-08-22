@@ -1,0 +1,24 @@
+@startuml ERD_cafe_requisition
+entity cafe_requisition {
+* id : integer
+* name : char
+* outlet_id : many2one -> cafe_outlet
+* requested_date : date
+* state : char
+}
+
+
+entity cafe_requisition_line {
+* id : integer
+* requisition_id : many2one -> cafe_requisition
+* product_id : many2one -> product_product
+* quantity : float
+* uom_id : many2one -> uom_uom
+* fulfilled_picking_id : many2one -> stock_picking
+}
+
+
+cafe_requisition ||--o{ cafe_requisition_line : contains
+
+
+@enduml

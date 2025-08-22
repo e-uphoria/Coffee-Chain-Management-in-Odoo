@@ -1,25 +1,46 @@
-@startuml
+@startuml CafeERP_Component_Odoo
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
 
-Container(webApp, "Web Application", "Odoo Web UI")
-Container(db, "Database", "PostgreSQL")
 
-Container_Boundary(webApp, "Supply Chain Module") {
-    Component(requisition, "Requisition Component", "Manages outlet requests and approvals")
-    Component(purchaseOrder, "Purchase Order Component", "Handles vendor POs and receipts")
-    Component(inventory, "Inventory Component", "Tracks stock levels, internal transfers, batch/expiry")
-    Component(forecasting, "Demand Forecasting Component", "Predicts future supply needs")
+AddElementTag("std", $bgColor="#f6ffed", $borderColor="#389e0d")
+AddElementTag("custom", $bgColor="#e6f7ff", $borderColor="#1890ff")
+AddElementTag("opt", $bgColor="#fff7e6", $borderColor="#fa8c16")
+
+
+Container_Boundary(odoo, "Odoo Server") {
+Component(inv, "Inventory", "stock", "Warehouses, routes, lots/expiry, pick/pack/ship", "std")
+Component(pur, "Purchase", "purchase", "Vendors, RFQ/PO, reordering rules", "std")
+Component(mrp, "Manufacturing", "mrp", "BOM, MO, work orders, backflush", "std")
+Component(plm, "PLM", "mrp_plm", "ECOs, doc control, BOM versions", "std")
+Component(qc, "Quality", "quality", "Control points, checks, NC/CAPA", "std")
+Component(maint, "Maintenance", "maintenance", "Assets, PM/CM, meters, parts", "std")
+
+
+Component(c_outlet, "Cafe Outlet", "cafe_outlet", "Outlet master, locations, managers", "custom")
+Component(c_req, "Cafe Requisition", "cafe_requisition", "Outlet request → approval → supply (Transfer/PO/MO)", "custom")
+Component(c_fore, "Cafe Forecast", "cafe_forecast", "Consumption‑based suggestions", "opt")
+Component(c_perish, "Cafe Perishables", "cafe_perishables", "FEFO+, near‑expiry, splits", "opt")
+Component(c_qms, "Cafe QMS Ext", "cafe_qms_ext", "Templates, taste scorecards", "opt")
 }
 
-Rel(requisition, inventory, "Checks & updates outlet stock")
-Rel(purchaseOrder, inventory, "Updates stock on delivery")
-Rel(forecasting, purchaseOrder, "Recommends PO quantities")
-Rel(webApp, requisition, "User interacts")
-Rel(webApp, purchaseOrder, "User interacts")
-Rel(webApp, inventory, "User interacts")
-Rel(webApp, forecasting, "User interacts")
-Rel(inventory, db, "Reads/Writes stock data")
-Rel(requisition, db, "Reads/Writes requisition data")
-Rel(purchaseOrder, db, "Reads/Writes PO data")
-Rel(forecasting, db, "Reads historical sales & stock data")
+
+Rel(c_req, inv, "Create internal transfers (pickings)")
+Rel(c_req, pur, "Create RFQs/POs for shortages")
+Rel(c_req, mrp, "Create MOs for manufacturable items")
+Rel(c_req, qc, "Link QC checks pre‑dispatch")
+Rel(c_req, c_outlet, "Link outlet & locations")
+
+
+Rel(c_fore, c_req, "Suggest quantities per outlet")
+Rel(c_perish, inv, "FEFO tuning, expiry alerts")
+Rel(c_qms, qc, "QC templates & CAPA extensions")
+
+
+Rel(pur, inv, "Receive to stock; lot/expiry capture")
+Rel(mrp, inv, "Consume raw; produce FGs")
+Rel(qc, inv, "Block/approve stock moves")
+Rel(maint, inv, "Consume spare parts")
+
+
+SHOW_LEGEND()
 @enduml
