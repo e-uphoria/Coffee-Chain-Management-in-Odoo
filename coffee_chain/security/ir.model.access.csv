@@ -3,3 +3,4 @@ access_coffee_outlet_user,access.coffee.outlet.user,model_coffee_outlet,base.gro
 access_crm_lead_inherit_user,access.crm.lead.inherit.user,crm.model_crm_lead,base.group_user,1,1,1,1
 access_res_partner_inherit_user,access.res.partner.inherit.user,base.model_res_partner,base.group_user,1,1,1,1
 access_coffee_help_user,access.coffee.help.user,model_coffee_help,,1,0,0,0
+access_coffee_crm_help_user,access.coffee.crm.help.user,model_coffee_crm_help,,1,0,0,0
