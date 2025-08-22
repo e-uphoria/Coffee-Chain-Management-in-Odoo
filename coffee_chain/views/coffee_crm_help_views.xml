@@ -2,7 +2,8 @@
 <odoo>
     <data>
 
-        <!-- CRM Help Root -->
+        
+         <!-- CRM Help Root -->
         <menuitem id="coffee_crm_help_root"
                   name="Help"
                   parent="crm.crm_menu_root"
@@ -13,20 +14,19 @@
             <field name="name">coffee.crm.help.about.form</field>
             <field name="model">coffee.crm.help</field>
             <field name="arch" type="xml">
-                <form string="About CRM Integration" create="false" edit="false" delete="false">
+                <form string="About CRM Integration" create="false" edit="false" delete="false" nolabel="1">
                     <sheet>
-                        <h2>CRM &amp; Coffee Outlets</h2>
-                        <p>
-                            The <b>Coffee Outlet</b> model is integrated with CRM.  
-                            Every outlet can be linked to:
-                        </p>
-                        <ul>
-                            <li>A <b>Customer</b> (<i>res.partner</i>) → so outlets belong to a customer</li>
-                            <li>A <b>Lead/Opportunity</b> (<i>crm.lead</i>) → automatically created when a new outlet is added</li>
-                        </ul>
-                        <p>
+                        <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+                            About CRM Integration
+                        </h2>
+                        <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
+                            The <b>Coffee Outlet</b> model is integrated with CRM. Every outlet can be linked to:
+                            <ul>
+                                <li>A <b>Customer</b> (<i>res.partner</i>) → so outlets belong to a customer</li>
+                                <li>A <b>Lead/Opportunity</b> (<i>crm.lead</i>) → automatically created when a new outlet is added</li>
+                            </ul>
                             This ensures sales teams can track opportunities directly from outlet creation.
-                        </p>
+                        </div>
                     </sheet>
                 </form>
             </field>
@@ -50,18 +50,21 @@
             <field name="name">coffee.crm.help.use.form</field>
             <field name="model">coffee.crm.help</field>
             <field name="arch" type="xml">
-                <form string="How to Use CRM with Outlets" create="false" edit="false" delete="false">
+                <form string="How to Use CRM with Outlets" create="false" edit="false" delete="false" nolabel="1">
                     <sheet>
-                        <h2>How to Use</h2>
-                        <ol>
-                            <li>Create a new <b>Coffee Outlet</b> under Coffee Chain → Outlets.</li>
-                            <li>When you save, the system automatically creates a <b>CRM Opportunity</b>.</li>
-                            <li>You can view the linked opportunity inside the CRM app.</li>
-                            <li>Outlets can also be tied to existing customers (res.partner).</li>
-                        </ol>
-                        <p>
+                        <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+                            How to Use CRM with Outlets
+                        </h2>
+                        <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
+                            <ol>
+                                <li>Create a new <b>Coffee Outlet</b> under Coffee Chain → Outlets.</li>
+                                <li>When you save, the system automatically creates a <b>CRM Opportunity</b>.</li>
+                                <li>You can view the linked opportunity inside the CRM app.</li>
+                                <li>Outlets can also be tied to existing customers (res.partner).</li>
+                            </ol>
+                            <br/>
                             This workflow connects outlet operations with sales tracking in CRM.
-                        </p>
+                        </div>
                     </sheet>
                 </form>
             </field>
@@ -85,13 +88,16 @@
             <field name="name">coffee.crm.help.c4.form</field>
             <field name="model">coffee.crm.help</field>
             <field name="arch" type="xml">
-                <form string="CRM Integration Diagram" create="false" edit="false" delete="false">
+                <form string="CRM Integration Diagram" create="false" edit="false" delete="false" nolabel="1">
                     <sheet>
-                        <h2>CRM &amp; Outlet C4 Diagram</h2>
-                        <p>The following diagram shows how the CRM app integrates with Outlets:</p>
-                        <img src="/coffee_chain/static/src/img/coffee_crm_c4.png"
-                             alt="CRM Integration C4 Diagram"
-                             style="max-width:100%;"/>
+                        <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+                            CRM &amp; Outlet C4 Diagram
+                        </h2>
+                        <div style="text-align:center; margin-top:20px;">
+                            <img src="/coffee_chain/static/src/img/coffee_crm_c4.png"
+                                 style="max-width:100%; border-radius:6px;"
+                                 alt="CRM Integration C4 Diagram"/>
+                        </div>
                     </sheet>
                 </form>
             </field>

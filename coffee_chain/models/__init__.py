@@ -10,3 +10,4 @@ from . import pos_order_line
 from . import pos_payment
 from . import coffee_help
 from . import coffee_crm_help
+from . import coffee_sales_help

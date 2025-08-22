@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+    <!-- Help Root -->
+    <menuitem id="coffee_sales_help_root"
+              name="Help"
+              parent="sale.sale_menu_root"
+              sequence="99"/>
+
+    <!-- About Sales & Coffee Outlets -->
+    <record id="view_coffee_sales_help_about" model="ir.ui.view">
+      <field name="name">coffee.sales.help.about.form</field>
+      <field name="model">coffee.sales.help</field>
+      <field name="arch" type="xml">
+        <form string="About Sales Integration" create="false" edit="false" delete="false" nolabel="1">
+          <sheet>
+            <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+              About Sales &amp; Coffee Outlets
+            </h2>
+            <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
+              The Coffee Outlet module is fully integrated with Sales.
+              <br/><br/>
+              In summary:
+              <ul>
+                <li>Every outlet can have multiple sale orders.</li>
+                <li>Orders can be customized with <b>Coffee Menu Items</b>, milk types, syrup, size, and extra shots.</li>
+                <li><b>Invoices</b> and <b>payments</b> are linked to the outlet automatically.</li>
+              </ul>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_coffee_sales_help_about" model="ir.actions.act_window">
+      <field name="name">About Sales Integration</field>
+      <field name="res_model">coffee.sales.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_sales_help_about"/>
+      <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_coffee_sales_help_about"
+              name="About Sales Integration"
+              parent="coffee_sales_help_root"
+              action="action_coffee_sales_help_about"/>
+
+    <!-- How to Use Sales -->
+    <record id="view_coffee_sales_help_use" model="ir.ui.view">
+      <field name="name">coffee.sales.help.use.form</field>
+      <field name="model">coffee.sales.help</field>
+      <field name="arch" type="xml">
+        <form string="How to Use Sales with Outlets" create="false" edit="false" delete="false" nolabel="1">
+          <sheet>
+            <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+              How to Use Sales with Coffee Outlets
+            </h2>
+            <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
+              <ol>
+                <li>Create a new sale order under <b>Sales → Orders</b>.</li>
+                <li>Select the <b>Coffee Outlet</b> for this order.</li>
+                <li>Add <b>Coffee Menu Items</b> and configure milk, size, syrup, and extra shot.</li>
+                <li>Save to automatically generate <b>invoice</b> and <b>payment entries</b> linked to the outlet.</li>
+                <li>Track sales performance via <b>Coffee Reporting</b> menu.</li>
+              </ol>
+              <br/>
+              <div style="text-align:center; margin-top:20px;">
+                <img src="/coffee_chain/static/src/img/sales_order_form.png" style="max-width:100%; border-radius:6px;" alt="Sales Order Form Screenshot"/>
+              </div>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_coffee_sales_help_use" model="ir.actions.act_window">
+      <field name="name">How to Use Sales</field>
+      <field name="res_model">coffee.sales.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_sales_help_use"/>
+      <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_coffee_sales_help_use"
+              name="How to Use"
+              parent="coffee_sales_help_root"
+              action="action_coffee_sales_help_use"/>
+
+    <!-- C4 Diagrams -->
+    <record id="view_coffee_sales_help_c4" model="ir.ui.view">
+      <field name="name">coffee.sales.help.c4.form</field>
+      <field name="model">coffee.sales.help</field>
+      <field name="arch" type="xml">
+        <form string="Sales C4 Diagrams" create="false" edit="false" delete="false" nolabel="1">
+          <sheet>
+            <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+              C4 Diagrams of Sales Integration
+            </h2>
+            <div style="text-align:center; margin-top:20px;">
+              <!-- Context Diagram -->
+              <h3 style="color:#34495E; margin-bottom:10px;">Context Diagram</h3>
+              <img src="/coffee_chain/static/src/img/sales_c4_context.png" style="max-width:100%; border-radius:6px; margin-bottom:15px;" alt="Sales C4 Context Diagram"/>
+
+              <!-- Container Diagram -->
+              <h3 style="color:#34495E; margin-bottom:10px;">Container Diagram</h3>
+              <img src="/coffee_chain/static/src/img/sales_c4_container.png" style="max-width:100%; border-radius:6px; margin-bottom:15px;" alt="Sales C4 Container Diagram"/>
+
+              <!-- Component Diagram -->
+              <h3 style="color:#34495E; margin-bottom:10px;">Component Diagram</h3>
+              <img src="/coffee_chain/static/src/img/sales_c4_component.png" style="max-width:100%; border-radius:6px; margin-bottom:15px;" alt="Sales C4 Component Diagram"/>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_coffee_sales_help_c4" model="ir.actions.act_window">
+      <field name="name">Sales C4 Diagrams</field>
+      <field name="res_model">coffee.sales.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_sales_help_c4"/>
+      <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_coffee_sales_help_c4"
+              name="C4 Diagrams"
+              parent="coffee_sales_help_root"
+              action="action_coffee_sales_help_c4"/>
+  </data>
+</odoo>
