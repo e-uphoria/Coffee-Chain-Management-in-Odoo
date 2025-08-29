@@ -45,7 +45,7 @@
               parent="coffee_sales_help_root"
               action="action_coffee_sales_help_about"/>
 
-    <!-- How to Use Sales -->
+        <!-- How to Use Sales -->
     <record id="view_coffee_sales_help_use" model="ir.ui.view">
       <field name="name">coffee.sales.help.use.form</field>
       <field name="model">coffee.sales.help</field>
@@ -57,11 +57,17 @@
             </h2>
             <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
               <ol>
-                <li>Create a new sale order under <b>Sales → Orders</b>.</li>
-                <li>Select the <b>Coffee Outlet</b> for this order.</li>
-                <li>Add <b>Coffee Menu Items</b> and configure milk, size, syrup, and extra shot.</li>
-                <li>Save to automatically generate <b>invoice</b> and <b>payment entries</b> linked to the outlet.</li>
-                <li>Track sales performance via <b>Coffee Reporting</b> menu.</li>
+                <li>Create a new quotation under <b>Sales → Quotations</b>. Select a customer and propose coffee items.</li>
+                <li>Convert the quotation into a <b>Sales Order</b> once confirmed by the customer.</li>
+                <li>Select the <b>Coffee Outlet</b> for this order to link invoices, payments, and reports to the correct branch.</li>
+                <li>Add <b>Coffee Menu Items</b> and configure milk, size, syrup, and extra shot options.</li>
+                <li>Save and confirm the order. This will reserve stock and automatically prepare <b>invoice</b> and <b>payment entries</b> linked to the outlet.</li>
+                <li>Register the customer’s payment. The payment will be reconciled against the invoice and tied to the outlet for accounting.</li>
+                <li>Use Odoo’s built-in <b>Pricelists</b> to apply discounts or seasonal promotions (e.g., Happy Hour, Loyalty offers).</li>
+                <li>Send quotations by email or let customers confirm directly through the <b>Customer Portal</b>.</li>
+                <li>Integrate with <b>Delivery</b> if selling packaged coffee or merchandise that requires shipping.</li>
+                <li>Analyze performance in <b>Reporting → Sales Analysis</b>, filtering by Outlet, Payment Method, or Coffee Products.</li>
+                <li>Use Odoo’s <b>Upsell &amp; Cross-sell</b> features to suggest add-ons (e.g., pastries or larger coffee sizes).</li>
               </ol>
               <br/>
               <div style="text-align:center; margin-top:20px;">
@@ -72,6 +78,7 @@
         </form>
       </field>
     </record>
+
 
     <record id="action_coffee_sales_help_use" model="ir.actions.act_window">
       <field name="name">How to Use Sales</field>
@@ -96,18 +103,23 @@
             <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
               C4 Diagrams of Sales Integration
             </h2>
-            <div style="text-align:center; margin-top:20px;">
-              <!-- Context Diagram -->
-              <h3 style="color:#34495E; margin-bottom:10px;">Context Diagram</h3>
-              <img src="/coffee_chain/static/src/img/sales_c4_context.png" style="max-width:100%; border-radius:6px; margin-bottom:15px;" alt="Sales C4 Context Diagram"/>
-
-              <!-- Container Diagram -->
-              <h3 style="color:#34495E; margin-bottom:10px;">Container Diagram</h3>
-              <img src="/coffee_chain/static/src/img/sales_c4_container.png" style="max-width:100%; border-radius:6px; margin-bottom:15px;" alt="Sales C4 Container Diagram"/>
-
-              <!-- Component Diagram -->
-              <h3 style="color:#34495E; margin-bottom:10px;">Component Diagram</h3>
-              <img src="/coffee_chain/static/src/img/sales_c4_component.png" style="max-width:100%; border-radius:6px; margin-bottom:15px;" alt="Sales C4 Component Diagram"/>
+            <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px;">
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Context Diagram</h3>
+                <img src="/coffee_chain/static/src/img/ContextDiagram.png" style="max-width:100%; border-radius:6px;" alt="Context Diagram"/>
+              </div>
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Container Diagram</h3>
+                <img src="/coffee_chain/static/src/img/ContainerDiagram.png" style="max-width:100%; border-radius:6px;" alt="Container Diagram"/>
+              </div>
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Component Diagram</h3>
+                <img src="/coffee_chain/static/src/img/ComponentDiagram.png" style="max-width:100%; border-radius:6px;" alt="Component Diagram"/>
+              </div>
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Code Diagram</h3>
+                <img src="/coffee_chain/static/src/img/Code_sales.png" style="max-width:100%; border-radius:6px;" alt="Code Diagram"/>
+              </div>
             </div>
           </sheet>
         </form>
@@ -126,5 +138,74 @@
               name="C4 Diagrams"
               parent="coffee_sales_help_root"
               action="action_coffee_sales_help_c4"/>
+
+    <record id="view_coffee_sales_help_faq" model="ir.ui.view">
+      <field name="name">coffee.sales.help.faq.form</field>
+      <field name="model">coffee.sales.help</field>
+      <field name="arch" type="xml">
+        <form string="Sales FAQ" create="false" edit="false" delete="false" nolabel="1">
+          <sheet>
+            <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+              Frequently Asked Questions (FAQ) – Sales &amp; Outlets
+            </h2>
+            <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
+              <ul style="list-style-type:disc; margin-left:20px;">
+                
+                <li>
+                  <b>Q:</b> What happens if I don’t select a Coffee Outlet when creating a Sale Order?<br/>
+                  <b>A:</b> The <b>Outlet</b> is a required field in sales. You must select one, since invoices and payments are tied to outlets for reporting.
+                </li>
+                <br/>
+
+                <li>
+                  <b>Q:</b> How does the system decide which Coffee Menu Items I can add?<br/>
+                  <b>A:</b> Only menu items with <b>status = Active or Seasonal</b> can be added. If a menu item does not yet have a product, the system auto-creates one.
+                </li>
+                <br/>
+
+                <li>
+                  <b>Q:</b> Can I set default customers and payment methods for walk-in sales?<br/>
+                  <b>A:</b> Yes. By default, the system assigns <b>Walk-in Customer</b> and <b>Cash</b> as defaults. These can be changed in the sale order if needed.
+                </li>
+                <br/>
+
+                <li>
+                  <b>Q:</b> How are invoices and payments linked to the outlet?<br/>
+                  <b>A:</b> When confirming a Sale Order, the <b>outlet_id</b> and <b>payment_method_id</b> are automatically passed to the invoice (`account.move`) and payment (`account.payment`).
+                </li>
+                <br/>
+
+                <li>
+                  <b>Q:</b> Where can I view sales performance by outlet or payment method?<br/>
+                  <b>A:</b> Go to <b>Coffee Reporting</b> in the Sales menu. Use the dashboards for <b>Sales Overview</b>, <b>Sales by Outlet/Payment</b>, and <b>Top Products</b>.
+                </li>
+                <br/>
+
+                <li>
+                  <b>Q:</b> Can I customize drinks (milk, size, syrup, extra shot) in sales orders?<br/>
+                  <b>A:</b> Yes. Customization fields are available on <b>Sale Order Lines</b> whenever the product category is <b>Drinks</b>.
+                </li>
+                <br/>
+
+              </ul>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_coffee_sales_help_faq" model="ir.actions.act_window">
+      <field name="name">Sales FAQ</field>
+      <field name="res_model">coffee.sales.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_sales_help_faq"/>
+      <field name="target">current</field>
+    </record>
+
+    <menuitem id="menu_coffee_sales_help_faq"
+              name="FAQ"
+              parent="coffee_sales_help_root"
+              action="action_coffee_sales_help_faq"/>
+
   </data>
 </odoo>

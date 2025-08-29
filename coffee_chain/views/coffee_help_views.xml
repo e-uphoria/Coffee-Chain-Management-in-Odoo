@@ -75,11 +75,26 @@
       <field name="name">coffee.help.c4.form</field>
       <field name="model">coffee.help</field>
       <field name="arch" type="xml">
-        <form string="Coffee Outlet C4 Diagram" create="false" edit="false" delete="false" nolabel="1">
+        <form string="Coffee Outlet C4 Diagrams" create="false" edit="false" delete="false" nolabel="1">
           <sheet>
-            <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">C4 Diagram of Coffee Outlet Module</h2>
-            <div style="text-align:center; margin-top:20px;">
-              <img src="/coffee_chain/static/src/img/coffee_outlet_c4.png" style="max-width:100%; border-radius:6px;" alt="C4 Diagram"/>
+            <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">C4 Diagrams of Coffee Outlet Module</h2>
+            <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px;">
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Context Diagram</h3>
+                <img src="/coffee_chain/static/src/img/ContextDiagram.png" style="max-width:100%; border-radius:6px;" alt="C4 Context"/>
+              </div>
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Container Diagram</h3>
+                <img src="/coffee_chain/static/src/img/ContainerDiagram.png" style="max-width:100%; border-radius:6px;" alt="C4 Container"/>
+              </div>
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Component Diagram</h3>
+                <img src="/coffee_chain/static/src/img/ComponentDiagram.png" style="max-width:100%; border-radius:6px;" alt="C4 Component"/>
+              </div>
+              <div style="flex: 1 1 45%; text-align:center;">
+                <h3 style="color:#2C3E50; font-weight:bold;">Code Diagram</h3>
+                <img src="/coffee_chain/static/src/img/Code_outlet.png" style="max-width:100%; border-radius:6px;" alt="C4 Code"/>
+              </div>
             </div>
           </sheet>
         </form>
@@ -87,18 +102,52 @@
     </record>
 
     <record id="action_coffee_help_c4" model="ir.actions.act_window">
-      <field name="name">C4 Diagram</field>
+      <field name="name">C4 Diagrams</field>
       <field name="res_model">coffee.help</field>
       <field name="view_mode">form</field>
       <field name="view_id" ref="view_coffee_help_c4"/>
       <field name="target">current</field>
     </record>
 
+    <record id="view_coffee_help_faq" model="ir.ui.view">
+      <field name="name">coffee.help.faq.form</field>
+      <field name="model">coffee.help</field>
+      <field name="arch" type="xml">
+        <form string="Coffee Outlet Module FAQ" create="false" edit="false" delete="false" nolabel="1">
+          <sheet>
+            <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">Frequently Asked Questions</h2>
+            <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
+              <ul>
+                
+                <li><b>Q:</b> How do I create a new coffee outlet?<br/><b>A:</b> Go to Outlets → New, fill in the details, select the owning Customer, and save. A CRM opportunity will be automatically generated.</li>
+                <li><b>Q:</b> How are CRM opportunities generated?<br/><b>A:</b> Whenever you create a new outlet, the system automatically creates a linked CRM lead for follow-up.</li>
+                <li><b>Q:</b> How can I link multiple outlets to a single customer?<br/><b>A:</b> Select the same Customer for all outlets that belong to that organization.</li>
+                <li><b>Q:</b> Can I edit the CRM opportunity after the outlet is created?<br/><b>A:</b> Yes, the linked CRM lead can be updated in the CRM module just like any other opportunity.</li>
+                <li><b>Q:</b> What happens if I update the outlet information?<br/><b>A:</b> The changes are saved in the outlet record; the linked CRM lead remains associated but won’t automatically update unless manually modified.</li>
+                <li><b>Q:</b> Can I create an outlet without specifying the manager?<br/><b>A:</b> Yes, but it is recommended to fill in the manager and regional manager fields for proper tracking and accountability.</li>
+
+
+              </ul>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="action_coffee_help_faq" model="ir.actions.act_window">
+      <field name="name">Coffee Outlet Module FAQ</field>
+      <field name="res_model">coffee.help</field>
+      <field name="view_mode">form</field>
+      <field name="view_id" ref="view_coffee_help_faq"/>
+      <field name="target">current</field>
+    </record>
+
+
     <!-- Help Menu -->
     <menuitem id="coffee_chain_help_root" name="Help" parent="coffee_chain_root" sequence="10"/>
     <menuitem id="coffee_help_about_module" name="About the Module" parent="coffee_chain_help_root" action="action_coffee_help_about" sequence="1"/>
     <menuitem id="coffee_help_how_to_use" name="How to Use It" parent="coffee_chain_help_root" action="action_coffee_help_how_to_use" sequence="2"/>
     <menuitem id="coffee_help_c4_diagrams" name="C4 Diagram" parent="coffee_chain_help_root" action="action_coffee_help_c4" sequence="3"/>
-
+    <menuitem id="coffee_help_faq" name="FAQ" parent="coffee_chain_help_root" action="action_coffee_help_faq" sequence="4"/>
   </data>
 </odoo>

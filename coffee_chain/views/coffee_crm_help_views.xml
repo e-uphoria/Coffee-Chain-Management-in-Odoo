@@ -46,6 +46,7 @@
                   action="action_coffee_crm_help_about"/>
 
         <!-- How To Use -->
+       
         <record id="view_coffee_crm_help_use" model="ir.ui.view">
             <field name="name">coffee.crm.help.use.form</field>
             <field name="model">coffee.crm.help</field>
@@ -61,14 +62,27 @@
                                 <li>When you save, the system automatically creates a <b>CRM Opportunity</b>.</li>
                                 <li>You can view the linked opportunity inside the CRM app.</li>
                                 <li>Outlets can also be tied to existing customers (res.partner).</li>
+                                <li>Use default CRM features to manage the opportunity:
+                                    <ul>
+                                        <li><b>Stages:</b> Move leads/opportunities through different stages of your sales pipeline.</li>
+                                        <li><b>Activities:</b> Schedule calls, meetings, and tasks related to the opportunity.</li>
+                                        <li><b>Notes and Tags:</b> Add internal notes, tags, and labels to organize opportunities.</li>
+                                        <li><b>Pipeline View:</b> Visualize your sales funnel and track multiple opportunities at once.</li>
+                                        <li><b>Reports:</b> Use CRM reports and dashboards to analyze sales performance for outlets and customers.</li>
+                                    </ul>
+                                </li>
                             </ol>
                             <br/>
-                            This workflow connects outlet operations with sales tracking in CRM.
+                            This workflow connects outlet operations with sales tracking in CRM and lets you leverage all of Odoo’s standard CRM functionalities for better sales management.
+                            <div style="text-align:center; margin-top:20px;">
+                                <img src="/coffee_chain/static/src/img/coffee_crm.png" style="max-width:100%; border-radius:6px;" alt="Coffee CRM LEAD Screenshot"/>
+                            </div>
                         </div>
                     </sheet>
                 </form>
             </field>
         </record>
+
 
         <record id="action_coffee_crm_help_use" model="ir.actions.act_window">
             <field name="name">How to Use</field>
@@ -84,19 +98,32 @@
                   action="action_coffee_crm_help_use"/>
 
         <!-- C4 Diagram -->
-        <record id="view_coffee_crm_help_c4" model="ir.ui.view">
+         <record id="view_coffee_crm_help_c4" model="ir.ui.view">
             <field name="name">coffee.crm.help.c4.form</field>
             <field name="model">coffee.crm.help</field>
             <field name="arch" type="xml">
-                <form string="CRM Integration Diagram" create="false" edit="false" delete="false" nolabel="1">
+                <form string="CRM &amp; Outlet C4 Diagrams" create="false" edit="false" delete="false" nolabel="1">
                     <sheet>
                         <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
-                            CRM &amp; Outlet C4 Diagram
+                            CRM &amp; Outlet C4 Diagrams
                         </h2>
-                        <div style="text-align:center; margin-top:20px;">
-                            <img src="/coffee_chain/static/src/img/coffee_crm_c4.png"
-                                 style="max-width:100%; border-radius:6px;"
-                                 alt="CRM Integration C4 Diagram"/>
+                        <div style="display:flex; flex-wrap:wrap; gap:20px; justify-content:center; margin-top:20px;">
+                            <div style="flex: 1 1 45%; text-align:center;">
+                                <h3 style="color:#2C3E50; font-weight:bold;">Context Diagram</h3>
+                                <img src="/coffee_chain/static/src/img/ContextDiagram.png" style="max-width:100%; border-radius:6px;" alt="Context Diagram"/>
+                            </div>
+                            <div style="flex: 1 1 45%; text-align:center;">
+                                <h3 style="color:#2C3E50; font-weight:bold;">Container Diagram</h3>
+                                <img src="/coffee_chain/static/src/img/ContainerDiagram.png" style="max-width:100%; border-radius:6px;" alt="Container Diagram"/>
+                            </div>
+                            <div style="flex: 1 1 45%; text-align:center;">
+                                <h3 style="color:#2C3E50; font-weight:bold;">Component Diagram</h3>
+                                <img src="/coffee_chain/static/src/img/ComponentDiagram.png" style="max-width:100%; border-radius:6px;" alt="Component Diagram"/>
+                            </div>
+                            <div style="flex: 1 1 45%; text-align:center;">
+                                <h3 style="color:#2C3E50; font-weight:bold;">Code Diagram</h3>
+                                <img src="/coffee_chain/static/src/img/Code_crm.png" style="max-width:100%; border-radius:6px;" alt="Code Diagram"/>
+                            </div>
                         </div>
                     </sheet>
                 </form>
@@ -104,7 +131,7 @@
         </record>
 
         <record id="action_coffee_crm_help_c4" model="ir.actions.act_window">
-            <field name="name">C4 Diagram</field>
+            <field name="name">C4 Diagrams</field>
             <field name="res_model">coffee.crm.help</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="view_coffee_crm_help_c4"/>
@@ -115,6 +142,42 @@
                   name="C4 Diagram"
                   parent="coffee_crm_help_root"
                   action="action_coffee_crm_help_c4"/>
+        
+        <record id="view_coffee_crm_help_faq" model="ir.ui.view">
+            <field name="name">coffee.crm.help.faq.form</field>
+            <field name="model">coffee.crm.help</field>
+            <field name="arch" type="xml">
+                <form string="CRM Integration FAQs" create="false" edit="false" delete="false" nolabel="1">
+                    <sheet>
+                        <h2 style="color:#673AB7; font-weight:bold; font-size:28px; margin-bottom:15px; border-bottom:2px solid #673AB7; padding-bottom:8px;">
+                            Frequently Asked Questions
+                        </h2>
+                        <div style="font-size:16px; line-height:1.7; color:#2C3E50;">
+                            <ul>
+                                <li><b>Q:</b> How do I link a new outlet to CRM?<br/><b>A:</b> When a new outlet is created, a CRM lead is automatically generated and linked.</li>
+                                <li><b>Q:</b> Can I associate multiple outlets with the same CRM lead?<br/><b>A:</b> Yes, you can link multiple outlets to one lead using the coffee_outlet_ids field.</li>
+                                <li><b>Q:</b> How do I edit the CRM opportunity?<br/><b>A:</b> Open the linked CRM lead in the CRM app and update details like expected revenue, stage, or notes.</li>
+                                <li><b>Q:</b> What happens if I change the customer for an outlet?<br/><b>A:</b> The CRM lead remains linked to the outlet; you may manually update the partner if needed.</li>
+                                <li><b>Q:</b> Can I create an outlet without specifying the manager?<br/><b>A:</b> Yes, but it is recommended to fill in manager fields for proper sales tracking.</li>
+                            </ul>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_coffee_crm_help_faq" model="ir.actions.act_window">
+            <field name="name">CRM FAQs</field>
+            <field name="res_model">coffee.crm.help</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_coffee_crm_help_faq"/>
+            <field name="target">current</field>
+        </record>
+
+        <menuitem id="menu_coffee_crm_help_faq"
+                  name="FAQs"
+                  parent="coffee_crm_help_root"
+                  action="action_coffee_crm_help_faq"/>
 
     </data>
 </odoo>
