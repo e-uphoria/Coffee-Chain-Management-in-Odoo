@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Provider form extras -->
+    <record id="view_payment_provider_form_esewa" model="ir.ui.view">
+        <field name="name">payment.provider.form.esewa</field>
+        <field name="model">payment.provider</field>
+        <field name="inherit_id" ref="payment.payment_provider_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <group string="eSewa Credentials">
+                    <field name="esewa_merchant_id"/>
+                    <field name="esewa_secret_key"/>
+                    <field name="esewa_token"/>
+                    <field name="esewa_client_id"/>
+                    <field name="esewa_client_secret"/>
+                    <field name="esewa_test_mode"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- POS payment method extras -->
+    <record id="view_pos_payment_method_form_esewa" model="ir.ui.view">
+        <field name="name">pos.payment.method.form.esewa</field>
+        <field name="model">pos.payment.method</field>
+        <field name="inherit_id" ref="point_of_sale.pos_payment_method_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//group" position="inside">
+                <group string="eSewa Terminal">
+                    <field name="esewa_use_terminal"/>
+                    <field name="esewa_provider_id"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+</odoo>

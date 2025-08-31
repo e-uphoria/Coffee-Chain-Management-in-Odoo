@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="esewa_redirect_form" inherit_id="website_payment.payment_form">
+        <!-- Insert eSewa redirect before the payment form -->
+        <xpath expr="//form[contains(@class, 'o_payment_form')]" position="before">
+            <t t-if="rendering_values and rendering_values.get('tx') and rendering_values.get('tx').provider_code == 'esewa'">
+                <form t-att-action="rendering_values.get('api_url')" method="POST" id="o_esewa_redirect_form">
+                    <t t-set="payload" t-value="rendering_values.get('payload')"/>
+                    <t t-foreach="payload.items()" t-as="item">
+                        <input type="hidden" t-att-name="item[0]" t-att-value="item[1]"/>
+                    </t>
+                    <div class="alert alert-info mt-3">
+                        <span>Redirecting to eSewa...</span>
+                    </div>
+                    <script>
+                        window.addEventListener('load', function() {
+                            document.getElementById('o_esewa_redirect_form').submit();
+                        });
+                    </script>
+                </form>
+            </t>
+        </xpath>
+    </template>
+</odoo>

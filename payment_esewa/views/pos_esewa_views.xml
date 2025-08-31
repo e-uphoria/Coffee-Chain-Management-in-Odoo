@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Load POS assets (JS already declared in manifest) if any template is needed later -->
+    <!-- Currently all POS logic is in JS and the extra fields are in payment_esewa_views.xml -->
+</odoo>

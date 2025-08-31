@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_payment_esewa_helper,payment.esewa.helper,model_payment_esewa_helper,base.group_system,1,1,1,1
+access_pos_payment_method_esewa,pos.payment.method,model_pos_payment_method,base.group_system,1,1,1,1

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- eSewa Payment Method -->
+    <record id="payment_method_esewa" model="account.payment.method">
+        <field name="name">eSewa</field>
+        <field name="payment_type">inbound</field>
+        <field name="code">esewa</field>
+        <!-- journal_ids removed -->
+    </record>
+
+    <!-- eSewa Payment Provider -->
+    <record id="payment_provider_esewa" model="payment.provider">
+        <field name="name">eSewa</field>
+        <field name="code">esewa</field>
+        <field name="state">test</field>
+        <field name="esewa_merchant_id">EPAYTEST</field>
+        <field name="esewa_secret_key">8gBm/:&amp;EnhH.1/q</field>
+        <field name="esewa_token">123456</field>
+        <field name="esewa_client_id">JB0BBQ4aD0UqIThFJwAKBgAXEUkEGQUBBAwdOgABHD4DChwUAB0R</field>
+        <field name="esewa_client_secret">BhwIWQQADhIYSxILExMcAgFXFhcOBwAKBgAXEQ==</field>
+        <field name="esewa_test_mode">True</field>
+        <field name="payment_method_ids" eval="[(6,0,[ref('payment_method_esewa')])]"/>
+        <field name="support_tokenization">False</field>
+    </record>
+</odoo>
