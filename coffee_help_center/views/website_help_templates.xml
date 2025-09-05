@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="website_helpcenter_page" name="Website Help Center Page">
+        <t t-call="website.layout">
+            <div class="container mt16 mb16">
+                <h1>Help Center</h1>
+                <t t-foreach="request.env['coffee.helpcenter.article'].sudo().search([('published','=',True)], order='sequence')" t-as="article">
+                    <div class="help-article mb16">
+                        <h2><t t-esc="article.name"/></h2>
+                        <div t-raw="article.content"/>
+                    </div>
+                </t>
+            </div>
+        </t>
+    </template>
+</odoo>

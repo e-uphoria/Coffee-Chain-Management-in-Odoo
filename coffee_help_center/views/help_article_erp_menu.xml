@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- ERP Frontend Action (readonly, only published articles) -->
+    <record id="action_helpcenter_article_erp" model="ir.actions.act_window">
+        <field name="name">Help Articles</field>
+        <field name="res_model">coffee.helpcenter.article</field>
+        <field name="view_mode">list,form</field>
+        <field name="domain">[('published','=',True)]</field>
+        <field name="context">{'readonly_by_default': True}</field>
+    </record>
+
+    <!-- ERP Menu under Coffee Chain Root -->
+   <menuitem id="coffee_helpcenter_root_erp" 
+          name="Help Center" 
+          sequence="90"/>
+
+    <menuitem id="coffee_helpcenter_articles_erp" 
+            name="Articles" 
+            parent="coffee_helpcenter_root_erp" 
+            action="action_helpcenter_article_erp"/>
+</odoo>
