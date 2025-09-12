@@ -1,61 +1,109 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Article List -->
-    <record id="view_helpcenter_article_list" model="ir.ui.view">
+    <!-- Tree View -->
+    <record id="view_helpcenter_article_tree" model="ir.ui.view">
         <field name="name">coffee.helpcenter.article.list</field>
         <field name="model">coffee.helpcenter.article</field>
         <field name="arch" type="xml">
             <list>
+                <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="category_id"/>
-                <field name="sequence"/>
                 <field name="published"/>
             </list>
         </field>
     </record>
 
-    <!-- Article Form -->
+    <!-- Form View -->
     <record id="view_helpcenter_article_form" model="ir.ui.view">
         <field name="name">coffee.helpcenter.article.form</field>
         <field name="model">coffee.helpcenter.article</field>
         <field name="arch" type="xml">
-            <form>
+            <form string="Help Center Article">
                 <sheet>
                     <group>
-                        <field name="name"/>
+                        <field name="name" placeholder="Article Title"/>
                         <field name="category_id"/>
                         <field name="sequence"/>
                         <field name="published"/>
-                        <field name="content"/>
                     </group>
+
+                    <notebook>
+                        <!-- About Tab -->
+                        <page string="About the Module">
+                            <group>
+                                <field name="about_html" widget="html" placeholder="Write about this module..."/>
+                                <separator string="Attachments"/>
+                                <field name="about_attachment_ids" widget="many2many_binary"
+                                       options="{'no_create': False, 'filename_field': 'name'}"
+                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
+                                       class="oe_inline"/>
+                            </group>
+                        </page>
+
+                        <!-- How to Use Tab -->
+                        <page string="How to Use">
+                            <group>
+                                <field name="howto_html" widget="html" placeholder="Provide step-by-step instructions..."/>
+                                <separator string="Attachments"/>
+                                <field name="howto_attachment_ids" widget="many2many_binary"
+                                       options="{'no_create': False, 'filename_field': 'name'}"
+                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
+                                       class="oe_inline"/>
+                            </group>
+                        </page>
+
+                        <!-- C4 Model Tab -->
+                        <page string="C4 Model Diagram">
+                            <group>
+                                <field name="c4_html" widget="html" placeholder="Describe your architecture or upload diagrams..."/>
+                                <separator string="Attachments"/>
+                                <field name="c4_attachment_ids" widget="many2many_binary"
+                                       options="{'no_create': False, 'filename_field': 'name'}"
+                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
+                                       class="oe_inline"/>
+                            </group>
+                        </page>
+
+                        <!-- FAQ Tab -->
+                        <page string="FAQ">
+                            <group>
+                                <field name="faq_html" widget="html" placeholder="Add common questions and answers..."/>
+                                <separator string="Attachments"/>
+                                <field name="faq_attachment_ids" widget="many2many_binary"
+                                       options="{'no_create': False, 'filename_field': 'name'}"
+                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
+                                       class="oe_inline"/>
+                            </group>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>
     </record>
 
-    <!-- Category List -->
-    <record id="view_helpcenter_category_list" model="ir.ui.view">
-        <field name="name">coffee.helpcenter.category.list</field>
-        <field name="model">coffee.helpcenter.category</field>
+    <!-- Search View -->
+    <record id="view_helpcenter_article_search" model="ir.ui.view">
+        <field name="name">coffee.helpcenter.article.search</field>
+        <field name="model">coffee.helpcenter.article</field>
         <field name="arch" type="xml">
-            <list>
+            <search>
                 <field name="name"/>
-            </list>
+                <field name="category_id"/>
+                <filter string="Published" name="published" domain="[('published','=',True)]"/>
+            </search>
         </field>
     </record>
 
-    <!-- Category Form -->
-    <record id="view_helpcenter_category_form" model="ir.ui.view">
-        <field name="name">coffee.helpcenter.category.form</field>
-        <field name="model">coffee.helpcenter.category</field>
-        <field name="arch" type="xml">
-            <form>
-                <sheet>
-                    <group>
-                        <field name="name"/>
-                    </group>
-                </sheet>
-            </form>
+    <!-- Action -->
+    <record id="action_helpcenter_article" model="ir.actions.act_window">
+        <field name="name">Help Center Articles</field>
+        <field name="res_model">coffee.helpcenter.article</field>
+        <field name="view_mode">list,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create your first Help Center Article and start documenting your modules.
+            </p>
         </field>
     </record>
 </odoo>
