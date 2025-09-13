@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Tree View -->
-    <record id="view_helpcenter_article_tree" model="ir.ui.view">
+    <!-- List View -->
+    <record id="view_helpcenter_article_list" model="ir.ui.view">
         <field name="name">coffee.helpcenter.article.list</field>
         <field name="model">coffee.helpcenter.article</field>
         <field name="arch" type="xml">
@@ -9,6 +9,7 @@
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="category_id"/>
+                <field name="module_menu_id"/>
                 <field name="published"/>
             </list>
         </field>
@@ -22,58 +23,39 @@
             <form string="Help Center Article">
                 <sheet>
                     <group>
-                        <field name="name" placeholder="Article Title"/>
+                        <field name="name"/>
                         <field name="category_id"/>
+                        <field name="module_menu_id" options="{'no_create': True}"/>
                         <field name="sequence"/>
                         <field name="published"/>
                     </group>
-
                     <notebook>
-                        <!-- About Tab -->
                         <page string="About the Module">
                             <group>
-                                <field name="about_html" widget="html" placeholder="Write about this module..."/>
+                                <field name="about_html"/>
                                 <separator string="Attachments"/>
-                                <field name="about_attachment_ids" widget="many2many_binary"
-                                       options="{'no_create': False, 'filename_field': 'name'}"
-                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
-                                       class="oe_inline"/>
+                                <field name="about_attachment_ids" widget="many2many_binary"/>
                             </group>
                         </page>
-
-                        <!-- How to Use Tab -->
                         <page string="How to Use">
                             <group>
-                                <field name="howto_html" widget="html" placeholder="Provide step-by-step instructions..."/>
+                                <field name="howto_html"/>
                                 <separator string="Attachments"/>
-                                <field name="howto_attachment_ids" widget="many2many_binary"
-                                       options="{'no_create': False, 'filename_field': 'name'}"
-                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
-                                       class="oe_inline"/>
+                                <field name="howto_attachment_ids" widget="many2many_binary"/>
                             </group>
                         </page>
-
-                        <!-- C4 Model Tab -->
                         <page string="C4 Model Diagram">
                             <group>
-                                <field name="c4_html" widget="html" placeholder="Describe your architecture or upload diagrams..."/>
+                                <field name="c4_html"/>
                                 <separator string="Attachments"/>
-                                <field name="c4_attachment_ids" widget="many2many_binary"
-                                       options="{'no_create': False, 'filename_field': 'name'}"
-                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
-                                       class="oe_inline"/>
+                                <field name="c4_attachment_ids" widget="many2many_binary"/>
                             </group>
                         </page>
-
-                        <!-- FAQ Tab -->
                         <page string="FAQ">
                             <group>
-                                <field name="faq_html" widget="html" placeholder="Add common questions and answers..."/>
+                                <field name="faq_html"/>
                                 <separator string="Attachments"/>
-                                <field name="faq_attachment_ids" widget="many2many_binary"
-                                       options="{'no_create': False, 'filename_field': 'name'}"
-                                       context="{'default_res_model': 'coffee.helpcenter.article', 'default_res_id': id}"
-                                       class="oe_inline"/>
+                                <field name="faq_attachment_ids" widget="many2many_binary"/>
                             </group>
                         </page>
                     </notebook>
@@ -90,12 +72,14 @@
             <search>
                 <field name="name"/>
                 <field name="category_id"/>
-                <filter string="Published" name="published" domain="[('published','=',True)]"/>
+                <field name="module_menu_id"/>
+                <filter name="published_filter" string="Published" domain="[('published','=',True)]"/>
             </search>
         </field>
     </record>
 
-    <!-- Action -->
+
+    <!-- Admin / generic action -->
     <record id="action_helpcenter_article" model="ir.actions.act_window">
         <field name="name">Help Center Articles</field>
         <field name="res_model">coffee.helpcenter.article</field>

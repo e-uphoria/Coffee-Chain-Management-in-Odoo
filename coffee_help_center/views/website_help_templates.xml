@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
+    <!-- Main Page: Modules Grid (3x3) -->
     <template id="website_helpcenter_page" name="Website Help Center Page">
         <t t-call="website.layout">
-            <div class="container mt16 mb16">
+            <div class="container mt-4 mb-4">
                 <h1 class="text-center mb-4">Help Center</h1>
-
                 <div class="row">
-                    <t t-foreach="request.env['coffee.helpcenter.article'].sudo().search([('published','=',True)], order='sequence, id')" t-as="article">
-                        <div class="col-md-6 mb-4">
+                    <t t-foreach="categories" t-as="menu">
+                        <div class="col-md-4 mb-4">
                             <div class="card shadow-sm h-100">
-                                <div class="card-body">
-                                    <h3 class="card-title">
-                                        <t t-esc="article.name"/>
-                                    </h3>
-                                    <div class="text-muted mb-2">
-                                        <t t-esc="article.category_id.name or 'Uncategorized'"/>
-                                    </div>
-                                    <a t-att-href="'/helpcenter/article/%s' % article.id" class="btn btn-primary">
-                                        View Details
+                                <div class="card-body text-center">
+                                    <h3 class="card-title"><t t-esc="menu.name"/></h3>
+                                    <a t-att-href="'/helpcenter/category/%s' % menu.id" class="btn btn-primary mt-2">
+                                        View Articles
                                     </a>
                                 </div>
                             </div>
@@ -28,46 +23,79 @@
         </t>
     </template>
 
-    <template id="website_helpcenter_article_page" name="Help Center Article Detail">
+    <!-- Category Page: Articles for a Module -->
+    <template id="website_helpcenter_category" name="Website Help Center Category">
         <t t-call="website.layout">
-            <div class="container mt16 mb16">
-                <t t-set="article" t-value="request.env['coffee.helpcenter.article'].sudo().browse(int(request.params.get('article_id')))"/>
+            <div class="container mt-4 mb-4">
+                <h2 class="mb-3">Help Center: <t t-esc="menu.name"/></h2>
+                <div class="row">
+                    <t t-if="articles">
+                        <t t-foreach="articles" t-as="article">
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body d-flex flex-column justify-content-between">
+                                        <h5 class="card-title"><t t-esc="article.name"/></h5>
+                                        <a t-att-href="'/helpcenter/article/%s' % article.id" class="btn btn-primary mt-2">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </t>
+                    </t>
+                    <t t-else="">
+                        <div class="col-12">
+                            <p class="text-muted">No help articles available for this module yet.</p>
+                        </div>
+                    </t>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <!-- Article Page: Tabs with attachments -->
+    <template id="website_helpcenter_article_page" name="Help Center Article Page">
+        <t t-call="website.layout">
+            <div class="container mt-4 mb-4">
                 <h1 class="mb-4"><t t-esc="article.name"/></h1>
 
                 <ul class="nav nav-tabs mb-3" role="tablist">
-                    <li class="nav-item"><a class="nav-link active" data-bs-toggle="tab" href="#about" role="tab">About</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#howto" role="tab">How to Use</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#c4" role="tab">C4 Model</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#faq" role="tab">FAQ</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" t-att-class="'active' if active_tab=='about' else ''"
+                            t-att-href="'/helpcenter/article/%s/about' % article.id">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" t-att-class="'active' if active_tab=='howto' else ''"
+                            t-att-href="'/helpcenter/article/%s/howto' % article.id">How to Use</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" t-att-class="'active' if active_tab=='c4' else ''"
+                            t-att-href="'/helpcenter/article/%s/c4' % article.id">C4 Model</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" t-att-class="'active' if active_tab=='faq' else ''"
+                            t-att-href="'/helpcenter/article/%s/faq' % article.id">FAQ</a>
+                    </li>
                 </ul>
 
                 <div class="tab-content">
-                    <!-- About -->
-                    <div class="tab-pane fade show active" id="about" role="tabpanel">
+                    <div class="tab-pane fade" t-att-class="'show active' if active_tab=='about' else ''">
                         <t t-raw="article.about_html"/>
                         <t t-call="coffee_help_center.attachments_snippet">
                             <t t-set="attachments" t-value="article.about_attachment_ids"/>
                         </t>
                     </div>
-
-                    <!-- How to Use -->
-                    <div class="tab-pane fade" id="howto" role="tabpanel">
+                    <div class="tab-pane fade" t-att-class="'show active' if active_tab=='howto' else ''">
                         <t t-raw="article.howto_html"/>
                         <t t-call="coffee_help_center.attachments_snippet">
                             <t t-set="attachments" t-value="article.howto_attachment_ids"/>
                         </t>
                     </div>
-
-                    <!-- C4 Model -->
-                    <div class="tab-pane fade" id="c4" role="tabpanel">
+                    <div class="tab-pane fade" t-att-class="'show active' if active_tab=='c4' else ''">
                         <t t-raw="article.c4_html"/>
                         <t t-call="coffee_help_center.attachments_snippet">
                             <t t-set="attachments" t-value="article.c4_attachment_ids"/>
                         </t>
                     </div>
-
-                    <!-- FAQ -->
-                    <div class="tab-pane fade" id="faq" role="tabpanel">
+                    <div class="tab-pane fade" t-att-class="'show active' if active_tab=='faq' else ''">
                         <t t-raw="article.faq_html"/>
                         <t t-call="coffee_help_center.attachments_snippet">
                             <t t-set="attachments" t-value="article.faq_attachment_ids"/>
@@ -78,16 +106,14 @@
         </t>
     </template>
 
-    <!-- Attachments Snippet with Scrollable Gallery & Lightbox -->
+    <!-- Attachments Snippet: images, videos, PDFs -->
     <template id="attachments_snippet">
-        <div class="attachments-gallery d-flex gap-3 overflow-auto p-2" style="scroll-snap-type:x mandatory; white-space:nowrap;">
+        <div class="attachments-gallery d-flex gap-3 overflow-auto p-2" style="max-height:300px; scroll-snap-type: x mandatory; white-space: nowrap;">
             <t t-foreach="attachments" t-as="att">
                 <t t-if="att.mimetype.startswith('image/')">
                     <a t-att-href="att._get_stream_url()" data-bs-toggle="modal" t-att-data-bs-target="'#imgModal' + str(att.id)">
-                        <img t-att-src="att._get_stream_url()" class="img-thumbnail shadow" style="max-width: 150px; scroll-snap-align:start; cursor:pointer;"/>
+                        <img t-att-src="att._get_stream_url()" class="img-thumbnail shadow" style="max-width:150px; scroll-snap-align:start; cursor:pointer;"/>
                     </a>
-
-                    <!-- Modal for fullscreen image -->
                     <div t-att-id="'imgModal' + str(att.id)" class="modal fade" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered modal-lg">
                             <div class="modal-content bg-dark">
@@ -97,19 +123,19 @@
                     </div>
                 </t>
                 <t t-elif="att.mimetype.startswith('video/')">
-                    <video controls="controls" class="rounded shadow" style="max-width: 250px; scroll-snap-align:start;">
+                    <video controls="controls" class="rounded shadow" style="max-width:250px; scroll-snap-align:start;">
                         <source t-att-src="att._get_stream_url()" t-att-type="att.mimetype"/>
                         Your browser does not support the video tag.
                     </video>
                 </t>
                 <t t-elif="att.mimetype == 'application/pdf'">
                     <a t-att-href="att._get_stream_url()" target="_blank" class="btn btn-outline-secondary">
-                        <i class="fa fa-file-pdf-o"></i> View PDF
+                        View PDF
                     </a>
                 </t>
                 <t t-else="">
                     <a t-att-href="att._get_stream_url()" target="_blank" class="btn btn-outline-dark">
-                        <i class="fa fa-download"></i> <t t-esc="att.name"/>
+                        <t t-esc="att.name"/>
                     </a>
                 </t>
             </t>

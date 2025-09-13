@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--<?xml version="1.0" encoding="UTF-8"?>
 <odoo>
   <data>
 
@@ -150,4 +150,4 @@
     <menuitem id="coffee_help_c4_diagrams" name="C4 Diagram" parent="coffee_chain_help_root" action="action_coffee_help_c4" sequence="3"/>
     <menuitem id="coffee_help_faq" name="FAQ" parent="coffee_chain_help_root" action="action_coffee_help_faq" sequence="4"/>
   </data>
-</odoo>
+</odoo> -->

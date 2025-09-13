@@ -1,19 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <!-- Backend Admin Actions -->
-    <record id="action_helpcenter_article_admin" model="ir.actions.act_window">
-        <field name="name">Help Articles (Admin)</field>
-        <field name="res_model">coffee.helpcenter.article</field>
-        <field name="view_mode">list,form</field>
-    </record>
-
+    <!-- Admin Actions -->
     <record id="action_helpcenter_category_admin" model="ir.actions.act_window">
         <field name="name">Help Categories</field>
         <field name="res_model">coffee.helpcenter.category</field>
         <field name="view_mode">list,form</field>
     </record>
 
-    <!-- Shared Root Menu -->
+    <!-- Root Menu -->
     <menuitem id="coffee_helpcenter_root"
               name="Help Center"
               sequence="20"/>
@@ -22,7 +16,7 @@
     <menuitem id="coffee_helpcenter_articles_menu"
               name="Articles (Admin)"
               parent="coffee_helpcenter_root"
-              action="action_helpcenter_article_admin"
+              action="action_helpcenter_article"
               sequence="1"
               groups="base.group_system"/>
 
@@ -33,7 +27,7 @@
               sequence="2"
               groups="base.group_system"/>
 
-    <!-- ERP Frontend / regular users (read-only) -->
+    <!-- ERP / regular user -->
     <record id="action_helpcenter_article_user" model="ir.actions.act_window">
         <field name="name">Help Articles</field>
         <field name="res_model">coffee.helpcenter.article</field>
