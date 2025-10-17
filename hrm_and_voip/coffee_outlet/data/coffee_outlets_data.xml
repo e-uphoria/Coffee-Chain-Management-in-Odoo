@@ -1,0 +1,123 @@
+<odoo noupdate="1">
+
+    <!-- Kathmandu -->
+    <record id="coffee_outlet_kamaldin" model="coffee.outlet">
+        <field name="name">Kamaladi Outlet</field>
+        <field name="code">KTM-KMD</field>
+        <field name="street">Kamaladi Marg</field>
+        <field name="area">Kamaladi</field>
+        <field name="city">Kathmandu</field>
+        <field name="state">Bagmati Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-1-400001</field>
+    </record>
+
+    <!-- Lalitpur -->
+    <record id="coffee_outlet_patan" model="coffee.outlet">
+        <field name="name">Patan Durbar Outlet</field>
+        <field name="code">LTP-PDN</field>
+        <field name="street">Mangal Bazaar Road</field>
+        <field name="area">Patan Durbar Square</field>
+        <field name="city">Lalitpur</field>
+        <field name="state">Bagmati Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-1-400002</field>
+    </record>
+
+    <!-- Pokhara -->
+    <record id="coffee_outlet_lakeside" model="coffee.outlet">
+        <field name="name">Lakeside Outlet</field>
+        <field name="code">PKR-LKS</field>
+        <field name="street">Phewa Lakeside Road</field>
+        <field name="area">Baidam</field>
+        <field name="city">Pokhara</field>
+        <field name="state">Gandaki Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-61-400003</field>
+    </record>
+
+    <!-- Butwal -->
+    <record id="coffee_outlet_butwal" model="coffee.outlet">
+        <field name="name">Butwal Traffic Chowk Outlet</field>
+        <field name="code">BTL-TFC</field>
+        <field name="street">Traffic Chowk</field>
+        <field name="area">Butwal-9</field>
+        <field name="city">Butwal</field>
+        <field name="state">Lumbini Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-71-400004</field>
+    </record>
+
+    <!-- Bharatpur -->
+    <record id="coffee_outlet_bharatpur" model="coffee.outlet">
+        <field name="name">Bharatpur Narayani Outlet</field>
+        <field name="code">BRT-NRY</field>
+        <field name="street">Narayani Mall Road</field>
+        <field name="area">Bharatpur-3</field>
+        <field name="city">Bharatpur</field>
+        <field name="state">Bagmati Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-56-400005</field>
+    </record>
+
+    <!-- Hetauda -->
+    <record id="coffee_outlet_hetauda" model="coffee.outlet">
+        <field name="name">Hetauda Bypass Outlet</field>
+        <field name="code">HTD-BYP</field>
+        <field name="street">Bypass Road</field>
+        <field name="area">Hetauda-4</field>
+        <field name="city">Hetauda</field>
+        <field name="state">Bagmati Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-57-400006</field>
+    </record>
+
+    <!-- Biratnagar -->
+    <record id="coffee_outlet_biratnagar" model="coffee.outlet">
+        <field name="name">Main Road Outlet</field>
+        <field name="code">BIR-MRD</field>
+        <field name="street">Main Road</field>
+        <field name="area">Biratnagar-10</field>
+        <field name="city">Biratnagar</field>
+        <field name="state">Koshi Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-21-400007</field>
+    </record>
+
+    <!-- Dharan -->
+    <record id="coffee_outlet_dharan" model="coffee.outlet">
+        <field name="name">Dharan Bazaar Outlet</field>
+        <field name="code">DHR-BZR</field>
+        <field name="street">BP Chowk</field>
+        <field name="area">Dharan-6</field>
+        <field name="city">Dharan</field>
+        <field name="state">Koshi Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-25-400008</field>
+    </record>
+
+    <!-- Nepalgunj -->
+    <record id="coffee_outlet_nepalgunj" model="coffee.outlet">
+        <field name="name">Dhamboji Outlet</field>
+        <field name="code">NPL-DMB</field>
+        <field name="street">Dhamboji Road</field>
+        <field name="area">Nepalgunj-5</field>
+        <field name="city">Nepalgunj</field>
+        <field name="state">Banke District</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-81-400009</field>
+    </record>
+
+    <!-- Dhangadhi -->
+    <record id="coffee_outlet_dhangadhi" model="coffee.outlet">
+        <field name="name">Campus Road Outlet</field>
+        <field name="code">DNG-CMP</field>
+        <field name="street">Campus Road</field>
+        <field name="area">Hasanpur</field>
+        <field name="city">Dhangadhi</field>
+        <field name="state">Sudurpashchim Province</field>
+        <field name="country">Nepal</field>
+        <field name="phone">+977-91-400010</field>
+    </record>
+
+</odoo>

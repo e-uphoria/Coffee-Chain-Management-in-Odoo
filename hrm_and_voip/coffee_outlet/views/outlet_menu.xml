@@ -1,0 +1,39 @@
+<odoo>
+    <data>
+        <!-- Root menu -->
+        <menuitem id="menu_coffee_root" name="Coffee Chain" sequence="10"/>
+
+        <!-- Outlets submenu -->
+        <menuitem id="menu_coffee_outlets" name="Outlets" parent="menu_coffee_root" sequence="10"/>
+        <record id="action_coffee_outlet" model="ir.actions.act_window">
+            <field name="name">Outlets</field>
+            <field name="res_model">coffee.outlet</field>
+            <field name="view_mode">list,form</field>
+            <field name="view_id" ref="view_coffee_outlet_list"/> 
+        </record>   
+
+        <menuitem id="menu_coffee_outlet_action" name="Manage Outlets"
+                  parent="menu_coffee_outlets" action="action_coffee_outlet" sequence="1"/>
+
+        <!-- Employees submenu -->
+        <menuitem id="menu_coffee_employees" name="Employees" parent="menu_coffee_root" sequence="20"/>
+        <record id="action_coffee_employee" model="ir.actions.act_window">
+            <field name="name">Employees</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_mode">kanban,list,form</field>
+        </record>
+        <menuitem id="menu_coffee_employee_action" name="Manage Employees"
+                  parent="menu_coffee_employees" action="action_coffee_employee" sequence="1"/>
+
+        <!-- Employee Stages submenu -->
+        <menuitem id="menu_coffee_employee_stages" name="Employee Stages"
+                  parent="menu_coffee_root" sequence="30"/>
+        <record id="action_coffee_employee_stage" model="ir.actions.act_window">
+            <field name="name">Employee Stages</field>
+            <field name="res_model">coffee.employee.stage</field>
+            <field name="view_mode">list,form</field>
+        </record>
+        <menuitem id="menu_coffee_employee_stage_action" name="Manage Stages"
+                  parent="menu_coffee_employee_stages" action="action_coffee_employee_stage" sequence="1"/>
+    </data>
+</odoo>

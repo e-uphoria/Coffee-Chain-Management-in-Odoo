@@ -1,0 +1,111 @@
+<odoo noupdate="1">
+    <data>
+
+        <!-- ============================= -->
+        <!-- Employee Stages -->
+        <!-- ============================= -->
+        <record id="stage_new" model="coffee.employee.stage">
+            <field name="name">New</field>
+            <field name="code">new</field>
+            <field name="sequence">10</field>
+        </record>
+        <record id="stage_active" model="coffee.employee.stage">
+            <field name="name">Active</field>
+            <field name="code">active</field>
+            <field name="sequence">20</field>
+        </record>
+        <record id="stage_on_leave" model="coffee.employee.stage">
+            <field name="name">On Leave</field>
+            <field name="code">on_leave</field>
+            <field name="sequence">30</field>
+        </record>
+        <record id="stage_inactive" model="coffee.employee.stage">
+            <field name="name">Inactive</field>
+            <field name="code">inactive</field>
+            <field name="sequence">40</field>
+        </record>
+        <record id="stage_resigned" model="coffee.employee.stage">
+            <field name="name">Resigned</field>
+            <field name="code">resigned</field>
+            <field name="sequence">50</field>
+        </record>
+
+        <!-- ===================================================== -->
+        <!-- 1️⃣ Kathmandu (KTM-KMD) -->
+        <!-- ===================================================== -->
+        <record id="emp_kathmandu_manager" model="hr.employee">
+            <field name="name">Anish Shrestha</field>
+            <field name="outlet_id" ref="coffee_outlet_kamaldin"/>
+            <field name="role">manager</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+        <record id="emp_kathmandu_barista1" model="hr.employee">
+            <field name="name">Mina Koirala</field>
+            <field name="outlet_id" ref="coffee_outlet_kamaldin"/>
+            <field name="role">barista</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+        <record id="emp_kathmandu_waiter1" model="hr.employee">
+            <field name="name">Ramesh Gurung</field>
+            <field name="outlet_id" ref="coffee_outlet_kamaldin"/>
+            <field name="role">waiter</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+
+        <!-- ===================================================== -->
+        <!-- 2️⃣ Lalitpur (LTP-PDN) -->
+        <!-- ===================================================== -->
+        <record id="emp_lalitpur_manager" model="hr.employee">
+            <field name="name">Binita Manandhar</field>
+            <field name="outlet_id" ref="coffee_outlet_patan"/>
+            <field name="role">manager</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+        <record id="emp_lalitpur_barista1" model="hr.employee">
+            <field name="name">Kishor Shakya</field>
+            <field name="outlet_id" ref="coffee_outlet_patan"/>
+            <field name="role">barista</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+
+        <!-- ===================================================== -->
+        <!-- 3️⃣ Pokhara (PKR-LKS) -->
+        <!-- ===================================================== -->
+        <record id="emp_pokhara_manager" model="hr.employee">
+            <field name="name">John Smith</field>
+            <field name="outlet_id" ref="coffee_outlet_lakeside"/>
+            <field name="role">manager</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+        <record id="emp_pokhara_barista1" model="hr.employee">
+            <field name="name">Emma Stone</field>
+            <field name="outlet_id" ref="coffee_outlet_lakeside"/>
+            <field name="role">barista</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+
+        <!-- ===================================================== -->
+        <!-- 4️⃣ Butwal (BTL-TFC) -->
+        <!-- ===================================================== -->
+        <record id="emp_butwal_manager" model="hr.employee">
+            <field name="name">Hari Kandel</field>
+            <field name="outlet_id" ref="coffee_outlet_butwal"/>
+            <field name="role">manager</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+        <record id="emp_butwal_barista1" model="hr.employee">
+            <field name="name">Sunita Bista</field>
+            <field name="outlet_id" ref="coffee_outlet_butwal"/>
+            <field name="role">barista</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+        <record id="emp_butwal_waiter1" model="hr.employee">
+            <field name="name">Rabin Thapa</field>
+            <field name="outlet_id" ref="coffee_outlet_butwal"/>
+            <field name="role">waiter</field>
+            <field name="stage_id" ref="stage_active"/>
+        </record>
+
+
+    </data>
+</odoo>

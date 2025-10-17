@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <!-- List view -->
+        <record id="view_coffee_outlet_list" model="ir.ui.view">
+            <field name="name">coffee.outlet.list</field>
+            <field name="model">coffee.outlet</field>
+            <field name="arch" type="xml">
+                <list string="Coffee Outlets">
+                    <field name="name"/>
+                    <field name="code"/>
+                    <field name="area"/>
+                    <field name="city"/>
+                    <field name="phone"/>
+                    <field name="manager_id"/>
+                    <field name="active"/>
+                </list>
+            </field>
+        </record>
+
+        <!-- Form view -->
+        <record id="view_coffee_outlet_form" model="ir.ui.view">
+            <field name="name">coffee.outlet.form</field>
+            <field name="model">coffee.outlet</field>
+            <field name="arch" type="xml">
+                <form string="Coffee Outlet">
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="code"/>
+                        </group>
+                        <group string="Location">
+                            <field name="street"/>
+                            <field name="area"/>
+                            <field name="city"/>
+                            <field name="state"/>
+                            <field name="country"/>
+                        </group>
+                        <group string="Contacts">
+                            <field name="phone"/>
+                            <field name="manager_id"/>
+                            <field name="active"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+    </data>  
+</odoo>

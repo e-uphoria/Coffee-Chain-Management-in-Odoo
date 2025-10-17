@@ -1,0 +1,37 @@
+<odoo>
+    <data>
+        <!-- Form view inheritance -->
+        <record id="view_hr_employee_form_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.form.coffee</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//sheet/group[1]" position="inside">
+                    <group string="Coffee Info">
+                        <field name="outlet_id"/>
+                        <field name="role"/>
+                        <field name="stage_id"/>
+                        <field name="advance_salary"/>
+                        <field name="is_defaulter" readonly="1"/>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- List view inheritance (replacing tree with list) -->
+        <record id="view_hr_employee_list_inherit" model="ir.ui.view">
+            <field name="name">hr.employee.list.coffee</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_tree"/> <!-- still use original tree view ID -->
+            <field name="arch" type="xml">
+                <xpath expr="//list" position="inside">
+                    <field name="outlet_id"/>
+                    <field name="role"/>
+                    <field name="stage_id"/>
+                    <field name="advance_salary"/>
+                    <field name="is_defaulter"/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>
