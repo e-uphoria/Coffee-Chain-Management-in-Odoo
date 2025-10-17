@@ -1,0 +1,37 @@
+@startuml Context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+' People
+Person(barista, "Barista (Employee)", "Checks in/out for shifts, views payslips, submits leave requests.")
+Person(branch_manager, "Branch Manager", "Oversees staff at a branch, approves attendance, manages schedules, and forwards HR data to HQ.")
+Person(hr_officer, "HR Officer (HQ)", "Maintains employee records, contracts, and processes payroll centrally.")
+Person(hr_manager, "HR Manager (HQ)", "Oversees HR operations, appraisals, and compliance across all branches.")
+Person(finance, "Finance Team (HQ)", "Uses payroll data for accounting and salary disbursement.")
+
+' External Systems
+System_Ext(voip_system, "VoIP System", "Handles interview calls and branch-level communication.")
+System_Ext(dms, "Document Management System", "Stores contracts, payslips, and HR policies securely.")
+System_Ext(attendance_device, "Branch Attendance Device", "Captures check-in/out times of employees at the store.")
+System_Ext(bank, "Bank", "Executes salary transfers and payroll settlements.")
+System_Ext(government_portal, "Government Compliance Portal", "Used for labor law and tax reporting.")
+
+' ERP System Boundary
+System_Boundary(erp_boundary, "Coffee Chain ERP (Odoo)") {
+    System(hr_module, "HR Module", "Centralized HR system: employees, attendance, payroll, appraisals.")
+}
+
+' Relationships
+Rel(barista, hr_module, "Uses for schedules, attendance, leave, payslips", "Mobile/Web UI")
+Rel(branch_manager, hr_module, "Approves attendance, manages rosters, submits branch-level HR updates", "Web UI")
+Rel(hr_officer, hr_module, "Runs payroll, updates employee records", "Web UI")
+Rel(hr_manager, hr_module, "Monitors KPIs, approves appraisals, ensures compliance", "Web UI")
+Rel(finance, hr_module, "Receives payroll and accounting outputs", "Reports/API")
+
+' Branch integrations
+Rel(attendance_device, hr_module, "Sends attendance logs from branch", "CSV/API")
+Rel(hr_module, voip_system, "Integrates with for interviews & communication", "API/Webhooks")
+Rel(hr_module, dms, "Stores HR documents in", "Internal Storage/API")
+Rel(hr_module, bank, "Sends salary payment instructions to", "API/File Export")
+Rel(hr_module, government_portal, "Submits compliance/tax reports to", "API/Upload")
+
+@enduml

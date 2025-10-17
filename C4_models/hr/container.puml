@@ -1,0 +1,33 @@
+@startuml C4_Container_HR_Simple_NoFinance
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Person(barista, "Barista")
+Person(branch_mgr, "Branch Manager")
+Person(hr_officer, "HR Officer")
+Person(hr_manager, "HR Manager")
+
+System_Boundary(erp, "Coffee Chain ERP (Odoo)") {
+  Container(app, "Odoo Application Server", "Web/API", "HR UI & business logic")
+  ContainerDb(db, "PostgreSQL", "RDBMS", "Employees, attendance, payroll, appraisals")
+  Container(files, "Documents Store", "Files", "Contracts, payslips, policies")
+}
+
+Container_Ext(att_dev, "Attendance Device", "Branch hardware", "Check-in/out logs")
+Container_Ext(voip, "VoIP System", "Asterisk/FreePBX", "Calls & interview logs")
+Container_Ext(bank, "Bank", "API/File", "Salary transfers")
+Container_Ext(gov, "Govt Portal", "Upload/API", "Labor/tax submissions")
+
+Rel(barista, app, "Uses", "Web/Mobile")
+Rel(branch_mgr, app, "Approves attendance & manages schedules", "Web")
+Rel(hr_officer, app, "Runs payroll & updates HR data", "Web")
+Rel(hr_manager, app, "Monitors HR & compliance", "Web")
+
+Rel(app, db, "CRUD")
+Rel(app, files, "Attach/retrieve docs")
+
+Rel(att_dev, app, "Send attendance", "CSV/API")
+Rel(app, voip, "Call/receive events", "API/Webhook")
+Rel(app, bank, "Salary payment instructions", "API/File")
+Rel(app, gov, "Compliance reports", "Upload/API")
+
+@enduml

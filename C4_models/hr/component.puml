@@ -1,0 +1,67 @@
+@startuml C4_Component_HR_Clean
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+' ----- Layout + styling for clean lines -----
+top to bottom direction
+skinparam linetype ortho            ' Manhattan lines
+
+
+Boundary(app, "Odoo Application Server (HR)") {
+
+  ' ===== Row 1 (Top) =====
+  together {
+    Component(report,   "Reporting & Approvals", "Service", "Dashboards, approvals, activities")
+  }
+
+  ' ===== Row 2 =====
+  together {
+    Component(appraise, "Appraisals",       "Odoo module", "Cycles, KPIs, outcomes")
+    Component(voip,     "VoIP Integration",  "Service",     "Click-to-call, call logs")
+    Component(docs,     "Documents",         "Odoo module", "Contracts, payslips")
+  }
+
+  ' ===== Row 3 (Center) =====
+  together {
+    Component(hr_core,  "Employees & Contracts", "Odoo module", "Employee master data, contracts")
+  }
+
+  ' ===== Row 4 =====
+  together {
+    Component(att,      "Attendance", "Odoo module", "Check-in/out, approvals")
+    Component(pay,      "Payroll",    "Odoo module", "Structures, payslips, accounting")
+  }
+
+  ' ===== Row 5 (Bottom Left) =====
+  together {
+    Component(comp,     "Compliance Export", "Service", "Labor/tax/social security files")
+  }
+
+  ' ----- Clean directional relationships -----
+
+  ' Top reporting pulls KPIs upward from each area
+  Rel_D(report, appraise, "Approval & appraisal KPIs")
+  Rel_D(report, att,      "Attendance KPIs")
+  Rel_D(report, pay,      "Payroll KPIs")
+
+  ' Appraisal outcomes can update contract data (point down to core)
+  Rel_D(appraise, hr_core, "Outcome may update contracts")
+
+  ' VoIP logs link to people (point to core)
+  Rel_D(voip, hr_core, "Interview/operational call logs")
+
+  ' Documents attach to core & payroll (keep on same row to avoid cross)
+  Rel_D(docs, hr_core, "Contracts storage")
+  Rel_R(docs, pay,     "Payslip PDFs")
+
+  ' Core feeds attendance & payroll
+  Rel_D(hr_core, att, "Employees, schedules")
+  Rel_R(hr_core, pay, "Contracts & structures")
+
+  ' Attendance feeds payroll (left -> right to avoid crossing)
+  Rel_R(att, pay, "Validated attendance")
+
+  ' Compliance takes inputs from payroll (downward)
+  Rel_D(pay, comp, "Compliance inputs")
+
+}
+@enduml

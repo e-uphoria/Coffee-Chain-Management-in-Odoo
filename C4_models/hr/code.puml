@@ -1,0 +1,134 @@
+@startuml HR_Code_Complete_Minimal
+skinparam linetype ortho
+skinparam class {
+  BackgroundColor White
+  BorderColor Black
+  FontSize 11
+  RoundCorner 5
+}
+title HR Module – Code Level (Essential Schema)
+
+' -------- Core Org --------
+class Branch as "hr.branch" {
+  +id : int
+  +name : char
+  +code : char
+  +company_id : m2o
+}
+
+class Department as "hr.department" {
+  +id : int
+  +name : char
+  +manager_id : m2o(hr.employee)
+}
+
+' -------- People & Contracts --------
+class Employee as "hr.employee" {
+  +id : int
+  +name : char
+  +work_email : char
+  +mobile_phone : char
+  +identification_id : char
+  +bank_account_id : m2o
+  +branch_id : m2o(hr.branch)
+  +department_id : m2o(hr.department)
+  +job_id : m2o
+  +company_id : m2o
+  +active : bool
+}
+
+class Contract as "hr.contract" {
+  +id : int
+  +employee_id : m2o(hr.employee)
+  +date_start : date
+  +date_end : date
+  +wage : monetary
+  +struct_id : m2o(pay structure)
+  +resource_calendar_id : m2o(schedule)
+  +state : selection(draft,running,closed)
+}
+
+' -------- Attendance --------
+class Attendance as "hr.attendance" {
+  +id : int
+  +employee_id : m2o(hr.employee)
+  +check_in : datetime
+  +check_out : datetime
+  +worked_hours : float (computed)
+  +source : selection(kiosk,mobile,api)
+  +state : selection(draft,validated)
+}
+
+' -------- Payroll --------
+class PayslipRun as "hr.payslip.run" {
+  +id : int
+  +name : char
+  +date_start : date
+  +date_end : date
+  +state : selection(draft,close)
+}
+
+class Payslip as "hr.payslip" {
+  +id : int
+  +employee_id : m2o(hr.employee)
+  +contract_id : m2o(hr.contract)
+  +date_from : date
+  +date_to : date
+  +state : selection(draft,done)
+  +journal_id : m2o
+  +move_id : m2o(account.move)
+  +net_wage : monetary (computed)
+}
+
+' -------- Appraisal --------
+class Appraisal as "hr.appraisal" {
+  +id : int
+  +employee_id : m2o(hr.employee)
+  +manager_id : m2o(hr.employee)
+  +date_close : date
+  +final_score : float
+  +state : selection(draft,in_progress,done)
+}
+
+' -------- Documents (DMS) --------
+class Document as "documents.document" {
+  +id : int
+  +name : char
+  +res_model : char
+  +res_id : int
+  +mimetype : char
+  +owner_id : m2o(res.users)
+  +folder_id : m2o
+  +sensitive : bool
+}
+
+' -------- VoIP Integration --------
+class CallLog as "voip.call.log" {
+  +id : int
+  +employee_id : m2o(hr.employee)
+  +direction : selection(in,out)
+  +status : selection(ringing,answered,failed)
+  +duration_sec : int
+  +recording_url : char
+  +external_id : char (unique)
+  +timestamp : datetime
+}
+
+' -------- Relationships --------
+Employee "1" -- "0..*" Contract
+Employee "1" -- "0..*" Attendance
+Employee "1" -- "0..*" Payslip
+Employee "1" -- "0..*" Appraisal
+Employee "1" -- "0..*" CallLog
+
+PayslipRun "1" -- "0..*" Payslip
+Contract "1" -- "0..*" Payslip
+
+Employee "many" -- "1" Branch
+Employee "many" -- "1" Department
+
+Document ..> Employee : attached to
+Document ..> Contract
+Document ..> Payslip
+Document ..> Appraisal
+@enduml
