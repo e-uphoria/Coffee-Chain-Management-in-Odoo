@@ -1,0 +1,19 @@
+<odoo>
+  <template id="discuss_voip_sidebar_contacts" inherit_id="mail.DiscussSidebar">
+    <xpath expr="//div[contains(@class, 'o_DiscussSidebar_category')][last()]" position="after">
+      <div class="o_DiscussSidebar_category">
+        <div class="o_DiscussSidebar_categoryTitle">Contacts</div>
+        <t t-foreach="env.models['res.partner'].search([('sip_extension','!=',False)])" t-as="partner">
+          <div class="o_DiscussSidebar_item">
+            <span><t t-esc="partner.name"/></span>
+            <button type="button" class="btn btn-sm btn-success o_contact_call_btn"
+                    t-att-data-extension="partner.sip_extension"
+                    t-att-title="'Call ' + partner.name">
+              <i class="fa fa-phone"></i>
+            </button>
+          </div>
+        </t>
+      </div>
+    </xpath>
+  </template>
+</odoo>

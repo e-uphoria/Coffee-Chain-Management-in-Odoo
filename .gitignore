@@ -1,2 +1,4 @@
 venv/
 odoo
+__pycache__/
+.vscode/
